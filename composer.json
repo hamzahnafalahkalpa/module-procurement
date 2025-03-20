@@ -1,0 +1,61 @@
+{
+  "name": "zahzah/module-procurement",
+  "autoload": {
+    "psr-4": {
+      "Zahzah\\ModuleProcurement\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "authors": [
+    {
+      "name": "hamzah",
+      "email": "hamzahnuralfalah@gmail.com"
+    }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Zahzah\\ModuleProcurement\\ModuleProcurementServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true
+    }
+  },
+  "scripts": {
+    "test": "./vendor/bin/pest",
+    "test-coverage": "vendor/bin/pest --coverage-html coverage",
+    "lint": [
+      "@php ./vendor/bin/phpstan analyse src tests"
+    ],
+    "pint": "./vendor/bin/pint",
+    "pint-lint": [
+      "@pint",
+      "@lint"
+    ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": false,
+  "require": {
+    "php": "^8.2",
+    "gii/module-item": "1.x",
+    "illuminate/database": "^11",
+    "illuminate/support": "*",
+    "zahzah/laravel-support": "1.x",
+    "zahzah/module-transaction": "1.x"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.13",
+    "orchestra/testbench": "^9",
+    "pestphp/pest": "^3.6",
+    "phpstan/phpstan": "^2.0"
+  }
+}
