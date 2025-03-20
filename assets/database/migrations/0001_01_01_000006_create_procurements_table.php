@@ -1,7 +1,7 @@
 <?php
 
-use Zahzah\ModuleProcurement\Models\Procurement;
-use Zahzah\ModuleProcurement\Models\Supplier;
+use Hanafalah\ModuleProcurement\Models\Procurement;
+use Hanafalah\ModuleProcurement\Models\Supplier;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -9,7 +9,7 @@ use Projects\Klinik\Models\Funding\Funding;
 
 return new class extends Migration
 {
-    use Zahzah\LaravelSupport\Concerns\NowYouSeeMe;
+    use Hanafalah\LaravelSupport\Concerns\NowYouSeeMe;
 
     private $__table;
 
@@ -43,15 +43,15 @@ return new class extends Migration
                     ->index()->constrained()->cascadeOnUpdate()
                     ->nullOnDelete();
 
-                $table->string('warehouse_type',50)->nullable(false);
-                $table->string('warehouse_id',36)->nullable(false);
-                $table->string('status',50)->nullable(false);
+                $table->string('warehouse_type', 50)->nullable(false);
+                $table->string('warehouse_id', 36)->nullable(false);
+                $table->string('status', 50)->nullable(false);
 
                 $table->json('props')->nullable();
                 $table->timestamps();
                 $table->softDeletes();
 
-                $table->index(['warehouse_type','warehouse_id'],'fk_warehouse');
+                $table->index(['warehouse_type', 'warehouse_id'], 'fk_warehouse');
             });
         }
     }

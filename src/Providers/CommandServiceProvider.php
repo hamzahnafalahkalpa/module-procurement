@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Zahzah\ModuleProcurement\Providers;
+namespace Hanafalah\ModuleProcurement\Providers;
 
-use Zahzah\ModuleProcurement\Commands as Commands;
+use Hanafalah\ModuleProcurement\Commands as Commands;
 use Illuminate\Support\ServiceProvider;
 
 class CommandServiceProvider extends ServiceProvider

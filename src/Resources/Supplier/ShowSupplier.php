@@ -1,8 +1,8 @@
 <?php
 
-namespace Zahzah\ModuleProcurement\Resources\Supplier;
+namespace Hanafalah\ModuleProcurement\Resources\Supplier;
 
-use Zahzah\ModuleProcurement\Resources\Procurement\ShowProcurement;
+use Hanafalah\ModuleProcurement\Resources\Procurement\ShowProcurement;
 
 class ShowSupplier extends ViewSupplier
 {
@@ -25,7 +25,7 @@ class ShowSupplier extends ViewSupplier
         ];
 
         $arr = $this->mergeArray(parent::toArray($request), $arr);
-        
+
 
         return $arr;
     }

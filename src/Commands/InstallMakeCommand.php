@@ -1,6 +1,6 @@
 <?php
 
-namespace Zahzah\ModuleProcurement\Commands;
+namespace Hanafalah\ModuleProcurement\Commands;
 
 class InstallMakeCommand extends EnvironmentCommand
 {
@@ -23,7 +23,7 @@ class InstallMakeCommand extends EnvironmentCommand
      */
     public function handle()
     {
-        $provider = 'Zahzah\ModuleProcurement\ModuleProcurementServiceProvider';
+        $provider = 'Hanafalah\ModuleProcurement\ModuleProcurementServiceProvider';
 
         $this->callSilent('vendor:publish', [
             '--provider' => $provider,
@@ -41,6 +41,6 @@ class InstallMakeCommand extends EnvironmentCommand
         ]);
         $this->info('✔️  Module Procurement tables migrated');
 
-        $this->comment('zahzah/module-procurement installed successfully.');
+        $this->comment('hanafalah/module-procurement installed successfully.');
     }
 }

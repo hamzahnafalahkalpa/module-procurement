@@ -1,8 +1,8 @@
 <?php
 
-namespace Zahzah\ModuleProcurement\Resources\Supplier;
+namespace Hanafalah\ModuleProcurement\Resources\Supplier;
 
-use Zahzah\LaravelSupport\Resources\ApiResource;
+use Hanafalah\LaravelSupport\Resources\ApiResource;
 
 class ViewSupplier extends ApiResource
 {
@@ -11,7 +11,8 @@ class ViewSupplier extends ApiResource
      *
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray(\Illuminate\Http\Request $request): array{
+    public function toArray(\Illuminate\Http\Request $request): array
+    {
         $props = $this->getOriginal()['props'] ?? [];
         $arr = [
             'id' => $this->id,
@@ -23,7 +24,7 @@ class ViewSupplier extends ApiResource
         foreach ($props as $key => $prop) {
             $arr[$key] = $prop;
         }
-        
+
 
         return $arr;
     }

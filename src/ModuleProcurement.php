@@ -1,8 +1,8 @@
 <?php
 
-namespace Zahzah\ModuleProcurement;
+namespace Hanafalah\ModuleProcurement;
 
-use Zahzah\ModuleProcurement\Contracts\ModuleProcurement as ContractsModuleProcurement;
-use Zahzah\LaravelSupport\Supports\PackageManagement;
+use Hanafalah\ModuleProcurement\Contracts\ModuleProcurement as ContractsModuleProcurement;
+use Hanafalah\LaravelSupport\Supports\PackageManagement;
 
 class ModuleProcurement extends PackageManagement implements ContractsModuleProcurement {}

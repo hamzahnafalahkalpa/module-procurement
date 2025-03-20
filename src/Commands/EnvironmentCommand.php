@@ -1,10 +1,10 @@
 <?php
 
-namespace Zahzah\ModuleProcurement\Commands;
+namespace Hanafalah\ModuleProcurement\Commands;
 
-use Zahzah\LaravelSupport\Concerns\ServiceProvider\HasMigrationConfiguration;
+use Hanafalah\LaravelSupport\Concerns\ServiceProvider\HasMigrationConfiguration;
 
-class EnvironmentCommand extends \Zahzah\LaravelSupport\Commands\BaseCommand
+class EnvironmentCommand extends \Hanafalah\LaravelSupport\Commands\BaseCommand
 {
     use HasMigrationConfiguration;
 
@@ -15,6 +15,6 @@ class EnvironmentCommand extends \Zahzah\LaravelSupport\Commands\BaseCommand
 
     protected function dir(): string
     {
-        return __DIR__.'/../';
+        return __DIR__ . '/../';
     }
 }

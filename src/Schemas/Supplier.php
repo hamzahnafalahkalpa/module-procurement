@@ -1,14 +1,14 @@
 <?php
 
-namespace Zahzah\ModuleProcurement\Schemas;
+namespace Hanafalah\ModuleProcurement\Schemas;
 
-use Zahzah\ModuleProcurement\Contracts\Supplier as ContractsSupplier;
-use Zahzah\ModuleProcurement\Resources\Supplier\ShowSupplier;
-use Zahzah\ModuleProcurement\Resources\Supplier\ViewSupplier;
+use Hanafalah\ModuleProcurement\Contracts\Supplier as ContractsSupplier;
+use Hanafalah\ModuleProcurement\Resources\Supplier\ShowSupplier;
+use Hanafalah\ModuleProcurement\Resources\Supplier\ViewSupplier;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Zahzah\LaravelSupport\Supports\PackageManagement;
+use Hanafalah\LaravelSupport\Supports\PackageManagement;
 
 class Supplier extends PackageManagement implements ContractsSupplier
 {
@@ -30,15 +30,17 @@ class Supplier extends PackageManagement implements ContractsSupplier
         ],
     ];
 
-    
 
-    public function getSupplier(): mixed{
+
+    public function getSupplier(): mixed
+    {
         return static::$supplier_model;
     }
 
-    public function prepareShowSupplier(?Model $model = null): ?Model{
+    public function prepareShowSupplier(?Model $model = null): ?Model
+    {
         $model ??= $this->getSupplier();
-        if (!isset($model)){
+        if (!isset($model)) {
             $id = request()->id;
             if (! request()->has('id')) {
                 throw new \Exception('No id provided', 422);
@@ -49,11 +51,13 @@ class Supplier extends PackageManagement implements ContractsSupplier
         return static::$supplier_model = $model;
     }
 
-    public function showSupplier(?Model $model = null): array{
+    public function showSupplier(?Model $model = null): array
+    {
         return $this->transforming($this->__resources['show'], $this->prepareShowSupplier($model));
     }
 
-    public function prepareStoreSupplier(mixed $attributes = null): Model{
+    public function prepareStoreSupplier(mixed $attributes = null): Model
+    {
         $attributes ??= request()->all();
 
         $supplier = $this->SupplierModel()->updateOrCreate([
@@ -71,20 +75,23 @@ class Supplier extends PackageManagement implements ContractsSupplier
         return static::$supplier_model = $supplier;
     }
 
-    public function storeSupplier(): array{
+    public function storeSupplier(): array
+    {
         return $this->transaction(function () {
             return $this->showSupplier($this->prepareStoreSupplier());
         });
     }
 
-    public function prepareViewSupplierList(mixed $attributes = null): Collection{
+    public function prepareViewSupplierList(mixed $attributes = null): Collection
+    {
         $attributes ??= request()->all();
         return static::$supplier_model = $this->cacheWhen(!$this->isSearch(), $this->__cache['index'], function () {
             return $this->supplier()->get();
         });
     }
 
-    public function viewSupplierList(): array{
+    public function viewSupplierList(): array
+    {
         return $this->transforming($this->__resources['view'], function () {
             return $this->prepareViewSupplierList();
         });
@@ -101,7 +108,8 @@ class Supplier extends PackageManagement implements ContractsSupplier
         });
     }
 
-    public function supplier(mixed $conditionals = null): Builder{
+    public function supplier(mixed $conditionals = null): Builder
+    {
         $this->booting();
 
         return $this->SupplierModel()->conditionals($conditionals)->withParameters()->orderBy('name', 'asc');

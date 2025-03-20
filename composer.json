@@ -1,8 +1,8 @@
 {
-  "name": "zahzah/module-procurement",
+  "name": "hanafalah/module-procurement",
   "autoload": {
     "psr-4": {
-      "Zahzah\\ModuleProcurement\\": "src/"
+      "Hanafalah\\ModuleProcurement\\": "src/"
     }
   },
   "autoload-dev": {
@@ -19,7 +19,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Zahzah\\ModuleProcurement\\ModuleProcurementServiceProvider"
+        "Hanafalah\\ModuleProcurement\\ModuleProcurementServiceProvider"
       ]
     }
   },
@@ -46,11 +46,11 @@
   "prefer-stable": false,
   "require": {
     "php": "^8.2",
-    "gii/module-item": "1.x",
+    "hanafalah/module-item": "1.x",
     "illuminate/database": "^11",
     "illuminate/support": "*",
-    "zahzah/laravel-support": "1.x",
-    "zahzah/module-transaction": "1.x"
+    "hanafalah/laravel-support": "1.x",
+    "hanafalah/module-transaction": "1.x"
   },
   "require-dev": {
     "laravel/pint": "^1.13",

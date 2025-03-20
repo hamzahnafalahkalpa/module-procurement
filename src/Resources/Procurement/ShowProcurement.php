@@ -1,6 +1,6 @@
 <?php
 
-namespace Zahzah\ModuleProcurement\Resources\Procurement;
+namespace Hanafalah\ModuleProcurement\Resources\Procurement;
 
 class ShowProcurement extends ViewProcurement
 {
@@ -21,8 +21,8 @@ class ShowProcurement extends ViewProcurement
             'funding' => $this->relationValidation('funding', function () {
                 return $this->funding->toShowApi();
             }),
-            'card_stocks' => $this->relationValidation('cardStocks',function(){
-                return $this->cardStocks->transform(function($cardStock){
+            'card_stocks' => $this->relationValidation('cardStocks', function () {
+                return $this->cardStocks->transform(function ($cardStock) {
                     return $cardStock->toShowApi();
                 });
             })

@@ -1,38 +1,47 @@
 <?php
 
-namespace Zahzah\ModuleProcurement\Models;
+namespace Hanafalah\ModuleProcurement\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Zahzah\LaravelHasProps\Concerns\HasProps;
-use Zahzah\LaravelSupport\Models\BaseModel;
-use Zahzah\ModuleProcurement\Resources\Supplier\ShowSupplier;
-use Zahzah\ModuleProcurement\Resources\Supplier\ViewSupplier;
+use Hanafalah\LaravelHasProps\Concerns\HasProps;
+use Hanafalah\LaravelSupport\Models\BaseModel;
+use Hanafalah\ModuleProcurement\Resources\Supplier\ShowSupplier;
+use Hanafalah\ModuleProcurement\Resources\Supplier\ViewSupplier;
 
 class Supplier extends BaseModel
 {
     use HasProps, SoftDeletes;
 
     protected $list = [
-        'id', 'name', 'phone', 'description', 'address', 'props'
+        'id',
+        'name',
+        'phone',
+        'description',
+        'address',
+        'props'
     ];
 
     protected $casts = [
         'name' => 'string',
     ];
 
-    public function toViewApi(){
+    public function toViewApi()
+    {
         return new ViewSupplier($this);
     }
 
-    public function toShowApi(){
+    public function toShowApi()
+    {
         return new ShowSupplier($this);
     }
 
-    public function procurement(){
+    public function procurement()
+    {
         return $this->hasOneModel('Procurement');
     }
 
-    public function procurements(){
+    public function procurements()
+    {
         return $this->hasManyModel('Procurement');
     }
 }

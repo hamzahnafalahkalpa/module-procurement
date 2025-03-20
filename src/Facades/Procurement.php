@@ -1,6 +1,6 @@
 <?php
 
-namespace Zahzah\ModuleProcurement\Facades;
+namespace Hanafalah\ModuleProcurement\Facades;
 
 class Procurement
 {

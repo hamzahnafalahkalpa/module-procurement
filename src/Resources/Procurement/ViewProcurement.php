@@ -1,9 +1,9 @@
 <?php
 
-namespace Zahzah\ModuleProcurement\Resources\Procurement;
+namespace Hanafalah\ModuleProcurement\Resources\Procurement;
 
-use Zahzah\LaravelSupport\Resources\ApiResource;
-use Zahzah\ModuleTransaction\Resources\Transaction\ViewTransaction;
+use Hanafalah\LaravelSupport\Resources\ApiResource;
+use Hanafalah\ModuleTransaction\Resources\Transaction\ViewTransaction;
 
 class ViewProcurement extends ApiResource
 {
@@ -18,10 +18,10 @@ class ViewProcurement extends ApiResource
             'id' => $this->id,
             'funding_id' => $this->funding_id,
             'supplier_id' => $this->supplier_id,
-            'author' => $this->relationValidation('author',function(){
+            'author' => $this->relationValidation('author', function () {
                 return $this->author->toViewApi();
             }),
-            'warehouse' => $this->relationValidation('warehouse',function(){
+            'warehouse' => $this->relationValidation('warehouse', function () {
                 return $this->warehouse->toViewApi();
             }),
             'procurement_code' => $this->procurement_code,
@@ -38,7 +38,7 @@ class ViewProcurement extends ApiResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
-        
+
 
         return $arr;
     }

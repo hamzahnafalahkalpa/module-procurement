@@ -1,7 +1,7 @@
 <?php
 
-namespace Zahzah\ModuleProcurement\Contracts;
+namespace Hanafalah\ModuleProcurement\Contracts;
 
-use Zahzah\LaravelSupport\Contracts\DataManagement;
+use Hanafalah\LaravelSupport\Contracts\DataManagement;
 
 interface ModuleProcurement extends DataManagement {}

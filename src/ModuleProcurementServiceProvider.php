@@ -1,8 +1,8 @@
 <?php
 
-namespace Zahzah\ModuleProcurement;
+namespace Hanafalah\ModuleProcurement;
 
-use Zahzah\LaravelSupport\Providers\BaseServiceProvider;
+use Hanafalah\LaravelSupport\Providers\BaseServiceProvider;
 
 class ModuleProcurementServiceProvider extends BaseServiceProvider
 {
@@ -28,7 +28,7 @@ class ModuleProcurementServiceProvider extends BaseServiceProvider
 
     protected function dir(): string
     {
-        return __DIR__.'/';
+        return __DIR__ . '/';
     }
 
     protected function migrationPath(string $path = ''): string

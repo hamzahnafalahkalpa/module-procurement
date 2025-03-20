@@ -1,7 +1,7 @@
 <?php
 
-use Zahzah\ModuleProcurement\Commands;
-use Zahzah\ModuleProcurement\Models as ModuleProcurement;
+use Hanafalah\ModuleProcurement\Commands;
+use Hanafalah\ModuleProcurement\Models as ModuleProcurement;
 
 return [
     'commands' => [

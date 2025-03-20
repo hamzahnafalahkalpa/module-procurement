@@ -1,13 +1,13 @@
 <?php
 
-use Zahzah\ModuleProcurement\Models\Supplier;
+use Hanafalah\ModuleProcurement\Models\Supplier;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    use Zahzah\LaravelSupport\Concerns\NowYouSeeMe;
+    use Hanafalah\LaravelSupport\Concerns\NowYouSeeMe;
 
     private Supplier $__table;
 
