@@ -7,6 +7,10 @@ return [
     'commands' => [
         Commands\InstallMakeCommand::class,
     ],
+    'libs' => [
+        'model' => 'Models',
+        'contract' => 'Contracts'
+    ],
     'database' => [
         'models' => [
             'Procurement' => ModuleProcurement\Procurement::class,
