@@ -15,15 +15,7 @@ class ModuleProcurementServiceProvider extends BaseServiceProvider
     {
         $this->registerMainClass(ModuleProcurement::class)
             ->registerCommandService(Providers\CommandServiceProvider::class)
-            ->registers([
-                '*',
-                'Services' => function () {
-                    $this->binds([
-                        Contracts\Procurement::class => Schemas\Procurement::class,
-                        Contracts\Supplier::class => Schemas\Supplier::class
-                    ]);
-                },
-            ]);
+            ->registers(['*']);
     }
 
     protected function dir(): string

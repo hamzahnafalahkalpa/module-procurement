@@ -3,9 +3,7 @@
 namespace Hanafalah\ModuleProcurement\Schemas;
 
 use Hanafalah\ModuleProcurement\{
-    Contracts\Procurement as ContractsProcurement,
-    Resources\Procurement\ShowProcurement,
-    Resources\Procurement\ViewProcurement
+    Contracts\Schemas\Procurement as ContractsProcurement
 };
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -28,11 +26,6 @@ class Procurement extends PackageManagement implements ContractsProcurement
     protected string $__entity = 'Procurement';
     public static $procurement_model;
     public static $procurement_item_model;
-
-    protected array $__resources = [
-        'view' => ViewProcurement::class,
-        'show' => ShowProcurement::class
-    ];
 
     public function showUsingRelation(): array
     {
