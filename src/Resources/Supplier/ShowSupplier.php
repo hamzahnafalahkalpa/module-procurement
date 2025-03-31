@@ -19,7 +19,7 @@ class ShowSupplier extends ViewSupplier
                 $procurements = $this->procurements;
 
                 return $procurements->transform(function ($procurement) {
-                    return new ShowProcurement($procurement);
+                    return ShowProcurement($procurement);
                 });
             }),
         ];

@@ -19,20 +19,20 @@ class ViewProcurement extends ApiResource
             'funding_id' => $this->funding_id,
             'supplier_id' => $this->supplier_id,
             'author' => $this->relationValidation('author', function () {
-                return $this->author->toViewApi();
+                return $this->author->getViewResource();
             }),
             'warehouse' => $this->relationValidation('warehouse', function () {
-                return $this->warehouse->toViewApi();
+                return $this->warehouse->getViewResource();
             }),
             'procurement_code' => $this->procurement_code,
             'transaction' => $this->relationValidation('transaction', function () {
-                return $this->transaction->toViewApi();
+                return $this->transaction->getViewResource();
             }),
             'funding' => $this->relationValidation('funding', function () {
-                return $this->funding->toViewApi();
+                return $this->funding->getViewResource();
             }),
             'supplier' => $this->relationValidation('supplier', function () {
-                return $this->supplier->toViewApi();
+                return $this->supplier->getViewResource();
             }),
             'reported_at' => $this->reported_at,
             'created_at' => $this->created_at,

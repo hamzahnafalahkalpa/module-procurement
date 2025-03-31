@@ -17,8 +17,6 @@ return [
     ],
     'database' => [
         'models' => [
-            'Procurement' => ModuleProcurement\Procurement::class,
-            'Supplier' => ModuleProcurement\Supplier::class,
         ],
     ],
     'warehouse' => null, //add your warehouse model here

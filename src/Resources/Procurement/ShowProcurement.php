@@ -13,17 +13,17 @@ class ShowProcurement extends ViewProcurement
     {
         $arr = [
             'author' => $this->relationValidation('author', function () {
-                return $this->author->toViewApi();
+                return $this->author->getViewResource();
             }),
             'supplier' => $this->relationValidation('supplier', function () {
-                return $this->supplier->toShowApi();
+                return $this->supplier->getShowResource();
             }),
             'funding' => $this->relationValidation('funding', function () {
-                return $this->funding->toShowApi();
+                return $this->funding->getShowResource();
             }),
             'card_stocks' => $this->relationValidation('cardStocks', function () {
                 return $this->cardStocks->transform(function ($cardStock) {
-                    return $cardStock->toShowApi();
+                    return $cardStock->getShowResource();
                 });
             })
         ];
