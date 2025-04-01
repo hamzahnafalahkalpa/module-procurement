@@ -2,25 +2,17 @@
 
 namespace Hanafalah\ModuleProcurement\Schemas;
 
-use Hanafalah\ModuleProcurement\Contracts\Supplier as ContractsSupplier;
-use Hanafalah\ModuleProcurement\Resources\Supplier\ShowSupplier;
-use Hanafalah\ModuleProcurement\Resources\Supplier\ViewSupplier;
+use Hanafalah\ModuleProcurement\Contracts\Schemas\Supplier as ContractsSupplier;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Hanafalah\LaravelSupport\Supports\PackageManagement;
+use Hanafalah\ModuleProcurement\Contracts\Data\SupplierData;
 
 class Supplier extends PackageManagement implements ContractsSupplier
 {
-    protected array $__guard = ['id'];
-    protected array $__add = ['name', 'phone', 'address'];
     protected string $__entity = 'Supplier';
     public static $supplier_model;
-
-    protected array $__resources = [
-        'view' => ViewSupplier::class,
-        'show' => ShowSupplier::class,
-    ];
 
     protected array $__cache = [
         'index' => [
@@ -30,88 +22,88 @@ class Supplier extends PackageManagement implements ContractsSupplier
         ],
     ];
 
+    protected function viewUsingRelation(): array{
+        return [];
+    }
 
+    protected function showUsingRelation(): array{
+        return [];
+    }
 
-    public function getSupplier(): mixed
-    {
+    public function getSupplier(): mixed{
         return static::$supplier_model;
     }
 
-    public function prepareShowSupplier(?Model $model = null): ?Model
-    {
-        $model ??= $this->getSupplier();
+    public function prepareShowSupplier(?Model $model = null, ?array $attributes = null): ?Model{
+        $attributes ??= request()->all();
+        $model      ??= $this->getSupplier();
         if (!isset($model)) {
-            $id = request()->id;
-            if (! request()->has('id')) {
-                throw new \Exception('No id provided', 422);
-            }
-            $model = $this->supplier()->find($id);
+            $id = $attributes['id'] ?? null;
+            if (!isset($id)) throw new \Exception('No id provided', 422);
+            $model = $this->supplier()->with($this->showUsingRelation())->findOrFail($id);
+        }else{
+            $model->load($this->showUsingRelation());
         }
 
         return static::$supplier_model = $model;
     }
 
-    public function showSupplier(?Model $model = null): array
-    {
-        return $this->transforming($this->__resources['show'], $this->prepareShowSupplier($model));
+    public function showSupplier(?Model $model = null): array{
+        return $this->showEntityResource(function() use ($model){
+            return $this->prepareShowSupplier($model);
+        });
     }
 
-    public function prepareStoreSupplier(mixed $attributes = null): Model
-    {
-        $attributes ??= request()->all();
-
+    public function prepareStoreSupplier(SupplierData $supplier_dto): Model{
         $supplier = $this->SupplierModel()->updateOrCreate([
-            'id' => $attributes['id'] ?? null,
+            'id' => $supplier_dto->id ?? null,
         ], [
-            'name'    => $attributes['name'],
-            'phone'   => $attributes['phone'],
-            'address' => $attributes['address'] ?? null,
+            'name'    => $supplier_dto->name,
+            'phone'   => $supplier_dto->phone ?? null,
+            'address' => $supplier_dto->address ?? null,
         ]);
-        if (isset($attributes['jurnal'])) {
-            $supplier->jurnal = $attributes['jurnal'];
-            $supplier->save();
-        }
         $this->forgetTags('supplier');
         return static::$supplier_model = $supplier;
     }
 
-    public function storeSupplier(): array
-    {
-        return $this->transaction(function () {
-            return $this->showSupplier($this->prepareStoreSupplier());
+    public function storeSupplier(?SupplierData $supplier_dto = null): array{
+        return $this->transaction(function() use ($supplier_dto){
+            return $this->showSupplier($this->prepareStoreSupplier($supplier_dto ?? $this->requestDTO(SupplierData::class)));
         });
     }
 
-    public function prepareViewSupplierList(mixed $attributes = null): Collection
-    {
-        $attributes ??= request()->all();
+    public function prepareViewSupplierList(mixed $attributes = null): Collection{
         return static::$supplier_model = $this->cacheWhen(!$this->isSearch(), $this->__cache['index'], function () {
             return $this->supplier()->get();
         });
     }
 
-    public function viewSupplierList(): array
-    {
-        return $this->transforming($this->__resources['view'], function () {
+    public function viewSupplierList(): array{
+        return $this->viewEntityResource(function(){
             return $this->prepareViewSupplierList();
         });
     }
 
-    public function removeById(mixed $id = null): bool
+    public function prepareDeleteSupplier(? array $attributes = null): bool
     {
-        $id ??= request()->id;
+        $attributes ??= \request()->all();
+        if (!isset($attributes['id'])) throw new \Exception('No id provided', 422);
 
-        return $this->transaction(function () use ($id) {
-            $deleted = $this->supplier()->find($id)->delete();
-            $this->forgetTags('supplier');
-            return $deleted;
+        $model = $this->supplier()->findOrFail($attributes['id']);
+        $result = $model->delete();
+        $this->forgetTags('supplier');
+        return $result;
+    }
+
+    public function deleteSupplier(): bool{
+        return $this->transaction(function(){
+            return $this->prepareDeleteSupplier();
         });
     }
 
-    public function supplier(mixed $conditionals = null): Builder
-    {
+    public function supplier(mixed $conditionals = null): Builder{
         $this->booting();
 
-        return $this->SupplierModel()->conditionals($conditionals)->withParameters()->orderBy('name', 'asc');
+        return $this->SupplierModel()->conditionals($this->mergeCondition($conditionals ?? []))->withParameters()->orderBy('name', 'asc');
     }
 }

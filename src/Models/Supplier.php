@@ -25,14 +25,14 @@ class Supplier extends BaseModel
         'name' => 'string',
     ];
 
-    public function toViewApi()
+    public function getViewResource()
     {
-        return new ViewSupplier($this);
+        return ViewSupplier::class;
     }
 
-    public function toShowApi()
+    public function getShowResource()
     {
-        return new ShowSupplier($this);
+        return ShowSupplier::class;
     }
 
     public function procurement()

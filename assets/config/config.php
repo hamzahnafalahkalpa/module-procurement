@@ -7,10 +7,16 @@ return [
     'commands' => [
         Commands\InstallMakeCommand::class,
     ],
+    'libs' => [
+        'model' => 'Models',
+        'contract' => 'Contracts',
+        'schema' => 'Schemas'
+    ],
+    'app' => [
+        'contracts' => []
+    ],
     'database' => [
         'models' => [
-            'Procurement' => ModuleProcurement\Procurement::class,
-            'Supplier' => ModuleProcurement\Supplier::class,
         ],
     ],
     'warehouse' => null, //add your warehouse model here
