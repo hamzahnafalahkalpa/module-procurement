@@ -45,10 +45,7 @@
   "minimum-stability": "dev",
   "prefer-stable": false,
   "require": {
-    "php": "^8.2",
     "hanafalah/module-item": "1.x",
-    "illuminate/database": "^11",
-    "illuminate/support": "*",
     "hanafalah/laravel-support": "1.x",
     "hanafalah/module-transaction": "1.x"
   },
