@@ -42,12 +42,12 @@
       "@lint"
     ]
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "prefer-stable": false,
   "require": {
-    "hanafalah/module-item": "1.x",
-    "hanafalah/laravel-support": "1.x",
-    "hanafalah/module-transaction": "1.x"
+    "hanafalah/module-item": "1.x-dev as 1.0",
+    "hanafalah/laravel-support": "1.x-dev as 1.0",
+    "hanafalah/module-transaction": "1.x-dev as 1.0"
   },
   "require-dev": {
     "laravel/pint": "^1.13",
