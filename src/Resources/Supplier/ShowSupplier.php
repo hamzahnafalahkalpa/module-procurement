@@ -14,7 +14,6 @@ class ShowSupplier extends ViewSupplier
     public function toArray(\Illuminate\Http\Request $request): array
     {
         $arr = [
-            'address' => $this->address,
             'procurements' => $this->relationValidation('procurements', function () {
                 $procurements = $this->procurements;
 

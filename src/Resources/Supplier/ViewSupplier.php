@@ -18,6 +18,7 @@ class ViewSupplier extends ApiResource
             'id' => $this->id,
             'name' => $this->name,
             'phone' => $this->phone,
+            'address' => $this->address,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
