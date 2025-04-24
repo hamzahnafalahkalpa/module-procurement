@@ -3,7 +3,6 @@
 namespace Hanafalah\ModuleProcurement\Resources\Procurement;
 
 use Hanafalah\LaravelSupport\Resources\ApiResource;
-use Hanafalah\ModuleTransaction\Resources\Transaction\ViewTransaction;
 
 class ViewProcurement extends ApiResource
 {
@@ -15,28 +14,16 @@ class ViewProcurement extends ApiResource
     public function toArray(\Illuminate\Http\Request $request): array
     {
         $arr = [
-            'id' => $this->id,
-            'funding_id' => $this->funding_id,
-            'supplier_id' => $this->supplier_id,
-            'author' => $this->relationValidation('author', function () {
-                return $this->author->getViewResource();
-            }),
-            'warehouse' => $this->relationValidation('warehouse', function () {
-                return $this->warehouse->getViewResource();
-            }),
+            'id'               => $this->id,
             'procurement_code' => $this->procurement_code,
-            'transaction' => $this->relationValidation('transaction', function () {
-                return $this->transaction->getViewResource();
-            }),
-            'funding' => $this->relationValidation('funding', function () {
-                return $this->funding->getViewResource();
-            }),
-            'supplier' => $this->relationValidation('supplier', function () {
-                return $this->supplier->getViewResource();
-            }),
-            'reported_at' => $this->reported_at,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'author'           => $this->prop_author,
+            'warehouse'        => $this->prop_warehouse,
+            'reported_at'      => $this->reported_at,
+            'created_at'       => $this->created_at,
+            'updated_at'       => $this->updated_at,
+            'transaction'      => $this->relationValidation('transaction', function () {
+                return $this->transaction->toViewApi();
+            })
         ];
 
 

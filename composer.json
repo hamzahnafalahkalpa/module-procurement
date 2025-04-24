@@ -5,11 +5,6 @@
       "Hanafalah\\ModuleProcurement\\": "src/"
     }
   },
-  "autoload-dev": {
-    "psr-4": {
-      "Tests\\": "tests/"
-    }
-  },
   "authors": [
     {
       "name": "hamzah",
@@ -23,36 +18,10 @@
       ]
     }
   },
-  "config": {
-    "sort-packages": true,
-    "allow-plugins": {
-      "pestphp/pest-plugin": true,
-      "php-http/discovery": true
-    }
-  },
-  "scripts": {
-    "test": "./vendor/bin/pest",
-    "test-coverage": "vendor/bin/pest --coverage-html coverage",
-    "lint": [
-      "@php ./vendor/bin/phpstan analyse src tests"
-    ],
-    "pint": "./vendor/bin/pint",
-    "pint-lint": [
-      "@pint",
-      "@lint"
-    ]
-  },
-  "minimum-stability": "stable",
-  "prefer-stable": false,
   "require": {
     "hanafalah/module-item": "1.x-dev as 1.0",
     "hanafalah/laravel-support": "1.x-dev as 1.0",
-    "hanafalah/module-transaction": "1.x-dev as 1.0"
-  },
-  "require-dev": {
-    "laravel/pint": "^1.13",
-    "orchestra/testbench": "^9",
-    "pestphp/pest": "^3.6",
-    "phpstan/phpstan": "^2.0"
+    "hanafalah/module-transaction": "1.x-dev as 1.0",
+    "hanafalah/module-funding": "1.x-dev as 1.0"
   }
 }

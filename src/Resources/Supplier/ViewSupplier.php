@@ -13,20 +13,14 @@ class ViewSupplier extends ApiResource
      */
     public function toArray(\Illuminate\Http\Request $request): array
     {
-        $props = $this->getOriginal()['props'] ?? [];
         $arr = [
-            'id' => $this->id,
-            'name' => $this->name,
-            'phone' => $this->phone,
-            'address' => $this->address,
+            'id'         => $this->id,
+            'name'       => $this->name,
+            'phone'      => $this->phone,
+            'address'    => $this->address,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
-        foreach ($props as $key => $prop) {
-            $arr[$key] = $prop;
-        }
-
-
         return $arr;
     }
 }
