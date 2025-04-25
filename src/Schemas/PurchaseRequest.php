@@ -37,9 +37,9 @@ class PurchaseRequest extends BaseModuleProcurement implements ContractsPurchase
                         'estimate_used_at' => $purchase_request_dto->estimate_used_at
                     ]);
         $purchase_request->load('procurement');
-        $procurement = $purchase_request->procurement;
-        $procurement_dto = &$purchase_request_dto->procurement;
-        $procurement_dto->id = $procurement->getKey();
+        $procurement                     = $purchase_request->procurement;
+        $procurement_dto                 = &$purchase_request_dto->procurement;
+        $procurement_dto->id             = $procurement->getKey();
         $procurement_dto->reference_type = $procurement->reference_type;
         $procurement_dto->reference_id   = $procurement->reference_id;
         $procurement_dto->status       ??= $procurement->status;
