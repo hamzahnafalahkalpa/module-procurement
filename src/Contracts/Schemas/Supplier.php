@@ -18,10 +18,10 @@ use Hanafalah\ModuleProcurement\Contracts\Data\SupplierData;
  * @method array viewSupplierList()
  * @method LengthAwarePaginator prepareViewSupplierPaginate(PaginateData $paginate_dto)
  * @method array viewSupplierPaginate(?PaginateData $paginate_dto = null)
+ * @method array storeSupplier(?SupplierData $supplier_dto = null);
+ * @method Builder supplier(mixed $conditionals = null);
  */
 interface Supplier extends DataManagement
 {
     public function prepareStoreSupplier(SupplierData $supplier_dto): Model;
-    public function storeSupplier(?SupplierData $supplier_dto = null): array;
-    public function supplier(mixed $conditionals = null): Builder;
 }

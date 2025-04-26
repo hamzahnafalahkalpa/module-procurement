@@ -19,11 +19,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method array viewPurchasingList()
  * @method LengthAwarePaginator prepareViewPurchasingPaginate(PaginateData $paginate_dto)
  * @method array viewPurchasingPaginate(?PaginateData $paginate_dto = null)
+ * @method array storePurchasing(?PurchasingData $purchasing_dto = null)
+ * @method Builder function purchasing(mixed $conditionals = null)
  */
 
 interface Purchasing extends DataManagement
 {
     public function prepareStorePurchasing(PurchasingData $purchasing_dto): Model;
-    public function storePurchasing(?PurchasingData $purchasing_dto = null): array;
-    public function purchasing(mixed $conditionals = null): Builder;
 }
