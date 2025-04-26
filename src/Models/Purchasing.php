@@ -3,7 +3,6 @@
 namespace Hanafalah\ModuleProcurement\Models;
 
 use Hanafalah\LaravelHasProps\Concerns\HasProps;
-use Hanafalah\LaravelSupport\Concerns\Support\HasActivity;
 use Hanafalah\LaravelSupport\Models\BaseModel;
 use Hanafalah\ModuleProcurement\Concerns\Procurement\HasProcurement;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,35 +14,29 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
 class Purchasing extends BaseModel
 {
-    use HasUlids, HasProps, SoftDeletes, HasProcurement, HasActivity;
+    use HasUlids, HasProps, SoftDeletes, HasProcurement;
     
     public $incrementing  = false;
     protected $keyType    = 'string';
     protected $primaryKey = 'id';
     public $list = [
-        'id', 'name', 'total_cogs', 'total_tax',
-        'supplier_id', 'funding_id', 'props'
+        'id',
+        'name',
+        'props',
     ];
 
     protected $casts = [
-        'name'           => 'string',
-        'funding_name'   => 'string',
-        'supplier_name'  => 'string'
+        'name' => 'string'
     ];
 
-    protected static function booted(): void{
-        parent::booted();
-        static::creating(function ($query) {
-            $query->purchasing_code ??= static::hasEncoding('PURCHASING');
-        });
-    }
-
     public function viewUsingRelation(): array{
-        return ['procurement'];
+        return [];
     }
 
     public function showUsingRelation(): array{
-        return ['procurement'];
+        return [
+            'purchasings'
+        ];
     }
 
     public function getViewResource(){
@@ -55,7 +48,5 @@ class Purchasing extends BaseModel
     }
 
     
-    public function supplier(){return $this->belongsToModel('Supplier');}
-    public function funding(){return $this->belongsToModel('Funding');}
-    
+    public function purchasings(){return $this->hasManyModel('Purchasing');}
 }

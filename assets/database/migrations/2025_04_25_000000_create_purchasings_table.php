@@ -1,7 +1,5 @@
 <?php
 
-use Hanafalah\ModuleFunding\Models\Funding\Funding;
-use Hanafalah\ModuleProcurement\Models\Supplier;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -30,20 +28,8 @@ return new class extends Migration
         $table_name = $this->__table->getTable();
         if (!$this->isTableExists()) {
             Schema::create($table_name, function (Blueprint $table) {
-                $funding  = app(config('database.models.Funding', Funding::class));
-                $supplier = app(config('database.models.Supplier', Supplier::class));
-
                 $table->ulid('id')->primary();
                 $table->string('name', 255)->nullable(false);
-                $table->unsignedBigInteger('total_cogs')->nullable();
-                $table->unsignedBigInteger('total_tax')->nullable();
-
-                $table->foreignIdFor($funding::class)->nullable()->index()
-                      ->constrained()->restrictOnDelete()->cascadeOnUpdate();
-
-                $table->foreignIdFor($supplier::class)->nullable()->index()
-                      ->constrained()->restrictOnDelete()->cascadeOnUpdate();
-                      
                 $table->json('props')->nullable();
                 $table->timestamps();
                 $table->softDeletes();

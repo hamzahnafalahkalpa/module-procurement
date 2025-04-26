@@ -1,10 +1,10 @@
 <?php
 
-namespace Hanafalah\ModuleProcurement\Resources\PurchasingSummary;
+namespace Hanafalah\ModuleProcurement\Resources\PurchaseOrder;
 
 use Hanafalah\LaravelSupport\Resources\ApiResource;
 
-class ViewPurchasing extends ApiResource
+class ViewPurchaseOrder extends ApiResource
 {
   /**
    * Transform the resource into an array.

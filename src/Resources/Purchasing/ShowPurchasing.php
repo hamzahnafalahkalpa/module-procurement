@@ -1,6 +1,6 @@
 <?php
 
-namespace Hanafalah\ModuleProcurement\Resources\Purchasing;
+namespace Hanafalah\ModuleProcurement\Resources\PurchasingSummary;
 
 class ShowPurchasing extends ViewPurchasing
 {

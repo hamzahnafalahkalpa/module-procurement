@@ -13,30 +13,30 @@ use Hanafalah\ModuleProcurement\Contracts\Data\PurchasingData;
 class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
 {
     protected string $__entity = 'Purchasing';
-    public static $purchasing_model;
+    public static $purchasing_summary_model;
 
     protected array $__cache = [
         'index' => [
-            'name'     => 'purchasing',
-            'tags'     => ['purchasing', 'purchasing-index'],
+            'name'     => 'purchasing_summary',
+            'tags'     => ['purchasing_summary', 'purchasing_summary-index'],
             'duration' => 24 * 60
         ]
     ];
 
-    public function prepareStorePurchasing(PurchasingData $purchasing_dto): Model{
-        $purchasing = $this->PurchasingModel()->updateOrCreate([
-                        'id' => $purchasing_dto->id ?? null
+    public function prepareStorePurchasing(PurchasingData $purchasing_summary_dto): Model{
+        $purchasing_summary = $this->PurchasingModel()->updateOrCreate([
+                        'id' => $purchasing_summary_dto->id ?? null
                     ], [
-                        'name' => $purchasing_dto->name
+                        'name' => $purchasing_summary_dto->name
                     ]);
-        $this->fillingProps($purchasing,$purchasing_dto->props);
-        $purchasing->save();
-        return static::$purchasing_model = $purchasing;
+        $this->fillingProps($purchasing_summary,$purchasing_summary_dto->props);
+        $purchasing_summary->save();
+        return static::$purchasing_summary_model = $purchasing_summary;
     }
 
-    public function storePurchasing(?PurchasingData $purchasing_dto = null): array{
-        return $this->transaction(function() use ($purchasing_dto){
-            return $this->showPurchasing($this->prepareStorePurchasing($purchasing_dto ?? $this->requestDTO(PurchasingData::class)));
+    public function storePurchasing(?PurchasingData $purchasing_summary_dto = null): array{
+        return $this->transaction(function() use ($purchasing_summary_dto){
+            return $this->showPurchasing($this->prepareStorePurchasing($purchasing_summary_dto ?? $this->requestDTO(PurchasingData::class)));
         });
     }
 
@@ -46,6 +46,4 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
                     ->conditionals($this->mergeCondition($conditionals ?? []))
                     ->orderBy('name', 'asc');
     }
-
-    public function purchasingHasRequests(){return $this->belongsToManyModel();}
 }

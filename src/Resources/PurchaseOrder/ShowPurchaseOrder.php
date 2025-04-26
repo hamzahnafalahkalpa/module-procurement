@@ -1,10 +1,8 @@
 <?php
 
-namespace Hanafalah\ModuleProcurement\Resources\PurchasingSummary;
+namespace Hanafalah\ModuleProcurement\Resources\PurchaseOrder;
 
-use Hanafalah\LaravelSupport\Resources\ApiResource;
-
-class ViewPurchasing extends ApiResource
+class ShowPurchaseOrder extends ViewPurchaseOrder
 {
   /**
    * Transform the resource into an array.
@@ -14,7 +12,8 @@ class ViewPurchasing extends ApiResource
    */
   public function toArray(\Illuminate\Http\Request $request): array
   {
-    $arr = parent::toArray($request);
+    $arr = [];
+    $arr = $this->mergeArray(parent::toArray($request),$arr);
     return $arr;
   }
 }
