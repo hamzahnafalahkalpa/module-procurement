@@ -13,17 +13,17 @@ use Illuminate\Database\Eloquent\Model;
  * @method bool deletePurchaseRequest()
  * @method bool prepareDeletePurchaseRequest(? array $attributes = null)
  * @method mixed getPurchaseRequest()
+ * @method array storePurchaseRequest(?PurchaseRequestData $purchase_request_dto = null)
  * @method ?Model prepareShowPurchaseRequest(?Model $model = null, ?array $attributes = null)
  * @method array showPurchaseRequest(?Model $model = null)
  * @method Collection prepareViewPurchaseRequestList()
  * @method array viewPurchaseRequestList()
  * @method LengthAwarePaginator prepareViewPurchaseRequestPaginate(PaginateData $paginate_dto)
  * @method array viewPurchaseRequestPaginate(?PaginateData $paginate_dto = null)
+ * @method Builder purchaseRequest(mixed $conditionals = null)
  */
 
 interface PurchaseRequest extends DataManagement
 {
     public function prepareStorePurchaseRequest(PurchaseRequestData $purchase_request_dto): Model;
-    public function storePurchaseRequest(?PurchaseRequestData $purchase_request_dto = null): array;
-    public function purchaseRequest(mixed $conditionals = null): Builder;
 }

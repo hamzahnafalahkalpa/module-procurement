@@ -2,7 +2,6 @@
 
 namespace Hanafalah\ModuleProcurement\Schemas;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Hanafalah\ModuleProcurement\{
     Supports\BaseModuleProcurement
@@ -23,10 +22,6 @@ class PurchaseRequest extends BaseModuleProcurement implements ContractsPurchase
         ]
     ];
 
-    public function prepareStore(array $data){
-        return $this->prepareStorePurchaseRequest($this->requestDTO(PurchaseRequestData::class,$data));
-    }
-
     public function prepareStorePurchaseRequest(PurchaseRequestData $purchase_request_dto): Model{
         $purchase_request = $this->PurchaseRequestModel()->updateOrCreate([
                         'id' => $purchase_request_dto->id ?? null
@@ -43,22 +38,10 @@ class PurchaseRequest extends BaseModuleProcurement implements ContractsPurchase
         $procurement_dto->reference_type = $procurement->reference_type;
         $procurement_dto->reference_id   = $procurement->reference_id;
         $procurement_dto->status       ??= $procurement->status;
+
         $this->schemaContract('procurement')->prepareStoreProcurement($purchase_request_dto->procurement);
         $this->fillingProps($purchase_request,$purchase_request_dto->props);
         $purchase_request->save();
         return static::$purchase_request_model = $purchase_request;
-    }
-
-    public function storePurchaseRequest(?PurchaseRequestData $purchase_request_dto = null): array{
-        return $this->transaction(function() use ($purchase_request_dto){
-            return $this->showPurchaseRequest($this->prepareStorePurchaseRequest($purchase_request_dto ?? $this->requestDTO(PurchaseRequestData::class)));
-        });
-    }
-
-    public function purchaseRequest(mixed $conditionals = null): Builder{
-        $this->booting();
-        return $this->PurchaseRequestModel()->withParameters()
-                    ->conditionals($this->mergeCondition($conditionals ?? []))
-                    ->orderBy('name', 'asc');
     }
 }

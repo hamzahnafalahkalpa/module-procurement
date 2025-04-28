@@ -20,15 +20,13 @@ class Procurement extends PackageManagement implements ContractsProcurement
     protected mixed $__order_by_created_at = 'desc'; //asc, desc, false
 
     public function prepareStoreProcurement(ProcurementData $procurement_dto): Model{
-        if (!isset($procurement_dto->warehouse_id)) throw new \Exception('No warehouse id provided', 422);
-
-        if (isset($procurement_dto->author_id)) {
-            $procurement_dto->author_type ??= config('module-procurement.author');
+        if (isset($procurement_dto->warehouse_id)){
+            $procurement_dto->warehouse_type ??= config('module-procurement.warehouse');
+        }else{
+            throw new \Exception('No warehouse id provided', 422);
         }
-
-        $procurement_dto->warehouse_type ??= config('module-procurement.warehouse');
-
-        $procurement = $this->{$this->__entity . 'Model'}()->updateOrCreate([
+        if (isset($procurement_dto->author_id)) $procurement_dto->author_type ??= config('module-procurement.author');
+        $procurement = $this->ProcurementModel()->updateOrCreate([
             'id' => $procurement_dto->id ?? null
         ], [
             'author_id'      => $procurement_dto->author_id ?? null,
@@ -36,7 +34,6 @@ class Procurement extends PackageManagement implements ContractsProcurement
             'warehouse_id'   => $procurement_dto->warehouse_id,
             'warehouse_type' => $procurement_dto->warehouse_type
         ]);
-
         $this->fillingProps($procurement,$procurement_dto->props);
         $this->forgetTags('procurement');
 
@@ -50,11 +47,11 @@ class Procurement extends PackageManagement implements ContractsProcurement
                 $card_stock_dto->transaction_id            = $transaction_id;
                 $card_stock_dto->reference_id              = $procurement->getKey();
                 $card_stock_dto->reference_type            = $procurement->getMorphClass();
-                $stock_movement_dto = &$card_stock_dto->stock_movement;
-                $stock_movement_dto->direction = Direction::IN->value;
-                $stock_movement_dto->funding_id ??= $procurement->funding_id ?? null;
-                $stock_movement_dto->war ??= $procurement->funding_id ?? null;
-                $stock_movement_dto->funding_id ??= $procurement->funding_id ?? null;
+                $stock_movement_dto                        = &$card_stock_dto->stock_movement;
+                $stock_movement_dto->direction           ??= Direction::IN->value;
+                $stock_movement_dto->funding_id          ??= $procurement->funding_id ?? null;
+                $stock_movement_dto->war                 ??= $procurement->funding_id ?? null;
+                $stock_movement_dto->funding_id          ??= $procurement->funding_id ?? null;
                 $card_stock_dto->props['warehouse_id']     = $procurement_dto->warehouse_id;
                 $card_stock_dto->props['warehouse_type']   = $procurement_dto->warehouse_type;
                 $card_stock_model             = $this->prepareStoreProcurementItems($card_stock_dto);

@@ -3,9 +3,8 @@
 namespace Hanafalah\ModuleProcurement\Data;
 
 use Hanafalah\LaravelSupport\Supports\Data;
-use Hanafalah\ModuleItem\Data\CardStockData;
+use Hanafalah\ModuleProcurement\Contracts\Data\ProcurementData;
 use Hanafalah\ModuleProcurement\Contracts\Data\PurchaseOrderData as DataPurchaseOrderData;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapName;
 
@@ -27,14 +26,13 @@ class PurchaseOrderData extends Data implements DataPurchaseOrderData
     #[MapName('funding_id')]
     public mixed $funding_id;
 
+    #[MapInputName('procurement')]
+    #[MapName('procurement')]
+    public ?ProcurementData $procurement = null;
+
     #[MapInputName('tax')]
     #[MapName('tax')]
     public ?float $tax = 0;
-
-    #[MapInputName('card_stocks')]
-    #[MapName('card_stocks')]
-    #[DataCollectionOf(CardStockData::class)]
-    public array $card_stocks;
 
     #[MapInputName('props')]
     #[MapName('props')]

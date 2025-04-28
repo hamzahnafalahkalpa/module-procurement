@@ -12,7 +12,8 @@ class ShowPurchaseOrder extends ViewPurchaseOrder
    */
   public function toArray(\Illuminate\Http\Request $request): array
   {
-    $arr = [];
+    $arr = [
+    ];
     $arr = $this->mergeArray(parent::toArray($request),$arr);
     return $arr;
   }

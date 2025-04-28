@@ -14,7 +14,17 @@ class ViewPurchaseOrder extends ApiResource
    */
   public function toArray(\Illuminate\Http\Request $request): array
   {
-    $arr = parent::toArray($request);
+    $arr = [
+      'id'            => $this->id,
+      'total_cogs'    => $this->total_cogs,
+      'total_tax'     => $this->total_tax,
+      'supplier'      => $this->prop_supplier,
+      'funding'       => $this->prop_funding,
+      'procurement' => $this->relationValidation('procurement',function(){
+        return $this->procurement->toShowApi();
+      }),
+      'purchasing'    => $this->prop_purchasing
+    ];
     return $arr;
   }
 }

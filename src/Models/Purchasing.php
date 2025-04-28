@@ -30,12 +30,17 @@ class Purchasing extends BaseModel
     ];
 
     public function viewUsingRelation(): array{
-        return [];
+        return ['procurement'];
     }
 
     public function showUsingRelation(): array{
         return [
-            'purchasings'
+            'procurement',
+            'purchaseOrders' => function($query){
+                $query->with([
+                    'procurement.cardStocks.stockMovement'
+                ]);
+            }
         ];
     }
 
@@ -48,5 +53,6 @@ class Purchasing extends BaseModel
     }
 
     
-    public function purchasings(){return $this->hasManyModel('Purchasing');}
+    public function purchaseRequests(){return $this->hasManyModel('PurchaseRequest');}
+    public function purchaseOrders(){return $this->hasManyModel('PurchaseOrder');}
 }

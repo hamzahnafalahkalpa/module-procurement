@@ -16,8 +16,14 @@ class ShowPurchasing extends ViewPurchasing
       'procurement' => $this->relationValidation('procurement',function(){
         return $this->procurement->toShowApi();
       }),
-      'tax' => $this->tax,
-      'total_tax' => $this->total_tax,
+      'purchase_requests' => $this->prop_purchase_requests,
+      'purchase_orders'   => $this->relationValidation('purchaseOrders',function(){
+        return $this->purchaseOrders->transform(function($purchaseOrder){
+          return $purchaseOrder->toShowApi();
+        });
+      }),
+      'tax'               => $this->tax,
+      'total_tax'         => $this->total_tax
     ];
     $arr = $this->mergeArray(parent::toArray($request),$arr);
     return $arr;

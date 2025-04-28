@@ -13,7 +13,6 @@ class ShowProcurement extends ViewProcurement
     {
         $arr = [
             'card_stocks' => $this->relationValidation('cardStocks', function () {
-
                 return $this->cardStocks->transform(function ($cardStock) {
                     return $cardStock->toViewApi();
                 });

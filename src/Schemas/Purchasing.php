@@ -30,8 +30,8 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
                         'name' => $purchasing_dto->name,
                         'note' => $purchasing_dto->note
                     ]);
-        $this->fillingProps($purchasing,$purchasing_dto->props);
         if (isset($purchasing_dto->purchase_request_ids) && count($purchasing_dto->purchase_request_ids)){
+            $prop_purchasings = [];
             foreach ($purchasing_dto->purchase_request_ids as $purchase_request_id) {
                 $purchase_request_model = $this->PurchaseRequestModel()->findOrFail($purchase_request_id);
                 $purchase_request_model->purchasing_id = $purchase_request_model->getKey();
@@ -40,15 +40,29 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
                     'name' => $purchasing->name
                 ];
                 $purchase_request_model->save();
-            }
-        }
 
+                $prop_purchasings[] = [
+                    'id'               => $purchase_request_model->getKey(),
+                    'name'             => $purchase_request_model->name,
+                    'estimate_used_at' => $purchase_request_model->estimate_used_at
+                ];
+            }
+            $purchasing_dto->props['prop_purchase_requests'] = $prop_purchasings;
+        }else{
+            $purchasing_dto->props['prop_purchase_requests'] = [];
+        }
         if (isset($purchasing_dto->purchase_orders) && count($purchasing_dto->purchase_orders)){
-            foreach ($purchasing_dto->purchase_orders as $order){
-                $order->tax = $purchasing_dto->tax;
-                $this->schemaContract('purchase_order')->prepareStorePurchaseOrder($order);
+            foreach ($purchasing_dto->purchase_orders as $order_dto){
+                $order_dto->purchasing_id = $purchasing->getKey();
+                $order_dto->tax           = $purchasing_dto->tax;
+                $order_dto->props['prop_purchasing'] = [
+                    'id'   => $purchasing->getKey(),
+                    'name' => $purchasing->name
+                ];
+                $this->schemaContract('purchase_order')->prepareStorePurchaseOrder($order_dto);
             }
         }
+        $this->fillingProps($purchasing,$purchasing_dto->props);
         $purchasing->save();
         return static::$purchasing_model = $purchasing;
     }
