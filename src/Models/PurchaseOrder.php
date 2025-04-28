@@ -22,7 +22,8 @@ class PurchaseOrder extends BaseModel
     protected $primaryKey = 'id';
     public $list = [
         'id', 'total_cogs', 'total_tax',
-        'supplier_id', 'funding_id', 'purchasing_id', 'props'
+        'supplier_id', 'funding_id', 'purchasing_id', 
+        'props'
     ];
 
     protected $casts = [
@@ -33,7 +34,7 @@ class PurchaseOrder extends BaseModel
     protected static function booted(): void{
         parent::booted();
         static::creating(function ($query) {
-            $query->purchasing_code ??= static::hasEncoding('PURCHASING');
+            $query->purchase_order_code ??= static::hasEncoding('PURCHASE_ORDER');
         });
     }
 
@@ -57,4 +58,6 @@ class PurchaseOrder extends BaseModel
     public function supplier(){return $this->belongsToModel('Supplier');}
     public function funding(){return $this->belongsToModel('Funding');}
     public function purchasing(){return $this->belongsToModel('Purchasing');}
+    public function receiveOrder(){return $this->hasOneModel('ReceiveOrder');}
+    public function receiveOrders(){return $this->hasManyModel('ReceiveOrder');}
 }

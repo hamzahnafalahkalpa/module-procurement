@@ -33,15 +33,7 @@ class PurchaseOrder extends BaseModuleProcurement implements ContractsPurchaseOr
                         'tax'           => $purchase_order_dto->tax
                     ]);
         $this->fillingProps($purchase_order,$purchase_order_dto->props);
-        $purchase_order->load('procurement');
-        $procurement                 = $purchase_order->procurement;
-        $procurement_dto                 = &$purchase_order_dto->procurement;
-        $procurement_dto->id             = $procurement->getKey();
-        $procurement_dto->reference_type = $procurement->reference_type;
-        $procurement_dto->reference_id   = $procurement->reference_id;
-        $procurement_dto->status       ??= $procurement->status;
-        $this->schemaContract('procurement')->prepareStoreProcurement($procurement_dto);
-
+        $this->initializeProcurementDTO($purchase_order,$purchase_order_dto);
         $purchase_order->save();
         return static::$purchase_order_model = $purchase_order;
     }

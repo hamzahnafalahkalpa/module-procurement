@@ -31,15 +31,7 @@ class PurchaseRequest extends BaseModuleProcurement implements ContractsPurchase
                         'approver_id'      => $purchase_request_dto->approver_id,
                         'estimate_used_at' => $purchase_request_dto->estimate_used_at
                     ]);
-        $purchase_request->load('procurement');
-        $procurement                     = $purchase_request->procurement;
-        $procurement_dto                 = &$purchase_request_dto->procurement;
-        $procurement_dto->id             = $procurement->getKey();
-        $procurement_dto->reference_type = $procurement->reference_type;
-        $procurement_dto->reference_id   = $procurement->reference_id;
-        $procurement_dto->status       ??= $procurement->status;
-
-        $this->schemaContract('procurement')->prepareStoreProcurement($purchase_request_dto->procurement);
+        $this->initializeProcurementDTO($purchase_request,$purchase_request_dto);
         $this->fillingProps($purchase_request,$purchase_request_dto->props);
         $purchase_request->save();
         return static::$purchase_request_model = $purchase_request;

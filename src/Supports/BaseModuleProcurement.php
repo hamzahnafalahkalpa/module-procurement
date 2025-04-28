@@ -4,6 +4,7 @@ namespace Hanafalah\ModuleProcurement\Supports;
 
 use Hanafalah\LaravelSupport\Contracts\Supports\DataManagement;
 use Hanafalah\LaravelSupport\Supports\PackageManagement;
+use Illuminate\Database\Eloquent\Model;
 
 class BaseModuleProcurement extends PackageManagement implements DataManagement
 {
@@ -20,5 +21,16 @@ class BaseModuleProcurement extends PackageManagement implements DataManagement
     public function __construct()
     {
         $this->setConfig('module-procurement', $this->__module_procurement_config);
+    }
+
+    protected function initializeProcurementDTO(Model &$model, mixed &$dto){
+        $model->load('procurement');
+        $procurement                     = $model->procurement;
+        $procurement_dto                 = &$dto->procurement;
+        $procurement_dto->id             = $procurement->getKey();
+        $procurement_dto->reference_type = $procurement->reference_type;
+        $procurement_dto->reference_id   = $procurement->reference_id;
+        $procurement_dto->status       ??= $procurement->status;
+        $this->schemaContract('procurement')->prepareStoreProcurement($procurement_dto);
     }
 }

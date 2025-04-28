@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Hanafalah\ModuleProcurement\{
     Supports\BaseModuleProcurement
 };
+use Hanafalah\ModuleProcurement\Contracts\Data\PurchaseRequestData;
 use Hanafalah\ModuleProcurement\Contracts\Schemas\Purchasing as ContractsPurchasing;
 use Hanafalah\ModuleProcurement\Contracts\Data\PurchasingData;
 
@@ -30,27 +31,14 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
                         'name' => $purchasing_dto->name,
                         'note' => $purchasing_dto->note
                     ]);
-        if (isset($purchasing_dto->purchase_request_ids) && count($purchasing_dto->purchase_request_ids)){
-            $prop_purchasings = [];
-            foreach ($purchasing_dto->purchase_request_ids as $purchase_request_id) {
-                $purchase_request_model = $this->PurchaseRequestModel()->findOrFail($purchase_request_id);
-                $purchase_request_model->purchasing_id = $purchase_request_model->getKey();
-                $purchase_request_model->prop_purchasing = [
-                    'id'   => $purchasing->getKey(),
-                    'name' => $purchasing->name
-                ];
-                $purchase_request_model->save();
+        $this->initializeProcurementDTO($purchasing,$purchasing_dto);
+        $purchasing->load('procurement');
+        $procurement = $purchasing->procurement;
+        $purchasing_dto->id ??= $purchasing->getKey();
 
-                $prop_purchasings[] = [
-                    'id'               => $purchase_request_model->getKey(),
-                    'name'             => $purchase_request_model->name,
-                    'estimate_used_at' => $purchase_request_model->estimate_used_at
-                ];
-            }
-            $purchasing_dto->props['prop_purchase_requests'] = $prop_purchasings;
-        }else{
-            $purchasing_dto->props['prop_purchase_requests'] = [];
-        }
+        $purchasing_dto->props['prop_purchase_requests'] = [];
+        $this->updateUsingPurchaseRequestIds($procurement,$purchasing_dto)
+             ->updateUsingPurchaseOrders($procurement,$purchasing_dto);
         if (isset($purchasing_dto->purchase_orders) && count($purchasing_dto->purchase_orders)){
             foreach ($purchasing_dto->purchase_orders as $order_dto){
                 $order_dto->purchasing_id = $purchasing->getKey();
@@ -65,5 +53,51 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
         $this->fillingProps($purchasing,$purchasing_dto->props);
         $purchasing->save();
         return static::$purchasing_model = $purchasing;
+    }
+
+    protected function updateUsingPurchaseOrders(PurchasingData &$purchasing_dto,$procurement): self{
+        if (isset($purchasing_dto->purchase_requests) && count($purchasing_dto->purchase_requests)){
+            $prop_purchasings = [];
+            foreach ($purchasing_dto->purchase_requests as $purchase_request_dto) {
+                $purchase_request_model = $this->updatePurchaseRequest($purchase_request_dto->id,$procurement,$purchasing_dto);
+
+                $prop_purchasings[] = [
+                    'id'               => $purchase_request_model->getKey(),
+                    'name'             => $purchase_request_model->name,
+                    'estimate_used_at' => $purchase_request_model->estimate_used_at
+                ];
+            }
+            $purchasing_dto->props['prop_purchase_requests'] = $prop_purchasings;
+        }
+        return $this;
+    }
+
+    protected function updateUsingPurchaseRequestIds(PurchasingData &$purchasing_dto,$procurement): self{
+        if (isset($purchasing_dto->purchase_request_ids) && count($purchasing_dto->purchase_request_ids)){
+            $prop_purchasings = [];
+            foreach ($purchasing_dto->purchase_request_ids as $purchase_request_id) {
+                $purchase_request_model = $this->updatePurchaseRequest($purchase_request_id,$procurement,$purchasing_dto);
+                $prop_purchasings[] = [
+                    'id'               => $purchase_request_model->getKey(),
+                    'name'             => $purchase_request_model->name,
+                    'estimate_used_at' => $purchase_request_model->estimate_used_at
+                ];
+            }
+            $purchasing_dto->props['prop_purchase_requests'] = $prop_purchasings;
+        }
+        return $this;
+    }
+
+    protected function updatePurchaseRequest(mixed $id, $procurement, $purchasing_dto): Model{
+        $purchase_request_model = $this->PurchaseRequestModel()->findOrFail($id);
+        $purchase_request_model->purchasing_id = $purchase_request_model->getKey();
+        $purchase_request_model->approver_type = $procurement->author_type;
+        $purchase_request_model->approver_id   = $procurement->author_id;
+        $purchase_request_model->prop_purchasing = [
+            'id'   => $purchasing_dto->id,
+            'name' => $purchasing_dto->name
+        ];
+        $purchase_request_model->save();
+        return $purchase_request_model;
     }
 }

@@ -29,6 +29,13 @@ class Purchasing extends BaseModel
         'name' => 'string'
     ];
 
+    protected static function booted(): void{
+        parent::booted();
+        static::creating(function ($query) {
+            $query->purchasing_code ??= static::hasEncoding('PURCHASING_CODE');
+        });
+    }
+
     public function viewUsingRelation(): array{
         return ['procurement'];
     }

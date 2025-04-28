@@ -5,7 +5,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Hanafalah\ModuleProcurement\Models\{
     PurchaseRequest,
-    Purchasing
+    Purchasing,
+    ReceiveOrder
 };
 
 return new class extends Migration
@@ -29,7 +30,7 @@ return new class extends Migration
         $table_name = $this->__table->getTable();
         if (!$this->isTableExists()) {
             Schema::create($table_name, function (Blueprint $table) {
-                $purchasing = app(config('database.models.Purchasing', Purchasing::class));
+                $purchasing    = app(config('database.models.Purchasing', Purchasing::class));
 
                 $table->ulid('id')->primary();
                 $table->string('name', 255)->nullable(false);
@@ -38,6 +39,7 @@ return new class extends Migration
                 $table->date('estimate_used_at')->nullable();
                 $table->foreignIdFor($purchasing, 'purchasing_id')->nullable()
                       ->constrained()->cascadeOnUpdate()->nullOnDelete();
+
                 $table->json('props')->nullable();
                 $table->timestamps();
                 $table->softDeletes();

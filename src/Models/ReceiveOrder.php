@@ -21,11 +21,12 @@ class ReceiveOrder extends BaseModel
     protected $keyType    = 'string';
     protected $primaryKey = 'id';
     public $list = [
-        'id', 'name', 'props'
+        'id', 'name', 'received_at', 'purchasing_id' , 'purchase_order_id', 'props'
     ];
 
     protected $casts = [
-        'name' => 'string'
+        'name' => 'string',
+        'received_at' => 'immutable_date'
     ];
 
     protected static function booted(): void{
@@ -50,4 +51,7 @@ class ReceiveOrder extends BaseModel
     public function getShowResource(){
         return ShowReceiveOrder::class;
     }
+
+    public function purchasing(){return $this->belongsToModel('Purchasing');}
+    public function purchaseOrder(){return $this->belongsToModel('PurchaseOrder');}
 }

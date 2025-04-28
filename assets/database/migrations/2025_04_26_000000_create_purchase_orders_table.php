@@ -31,9 +31,9 @@ return new class extends Migration
         $table_name = $this->__table->getTable();
         if (!$this->isTableExists()) {
             Schema::create($table_name, function (Blueprint $table) {
-                $funding    = app(config('database.models.Funding', Funding::class));
-                $supplier   = app(config('database.models.Supplier', Supplier::class));
-                $purchasing = app(config('database.models.Purchasing', Purchasing::class));
+                $funding       = app(config('database.models.Funding', Funding::class));
+                $supplier      = app(config('database.models.Supplier', Supplier::class));
+                $purchasing    = app(config('database.models.Purchasing', Purchasing::class));
 
                 $table->ulid('id')->primary();
                 $table->unsignedBigInteger('total_cogs')->nullable();
