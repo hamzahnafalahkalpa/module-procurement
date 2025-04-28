@@ -21,7 +21,7 @@ class PurchaseRequest extends BaseModel
     protected $keyType    = 'string';
     protected $primaryKey = 'id';
     public $list = [
-        'id', 'name', 'approver_type', 'approver_id', 
+        'id', 'name', 'approver_type', 'approver_id', 'purchasing_id',
         'estimate_used_at', 'props'
     ];
 
@@ -54,4 +54,5 @@ class PurchaseRequest extends BaseModel
     }
 
     public function approver(){return $this->belongsToModel('approver');}
+    public function purchasing(){return $this->belongsToModel('purchasing');}
 }

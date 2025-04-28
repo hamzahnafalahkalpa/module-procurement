@@ -12,6 +12,7 @@ use Hanafalah\ModuleProcurement\Contracts\Data\ProcurementData;
  * @method bool deleteProcurement()
  * @method bool prepareDeleteProcurement(? array $attributes = null)
  * @method mixed getProcurement()
+ * @method array storeProcurement(? ProcurementData $procurement_dto = null)
  * @method ?Model prepareShowProcurement(?Model $model = null, ?array $attributes = null)
  * @method array showProcurement(?Model $model = null)
  * @method Collection prepareViewProcurementList()
@@ -23,7 +24,6 @@ interface Procurement extends DataManagement
 {
     public function prepareStoreProcurement(ProcurementData $procurement_dto): Model;
     public function prepareStoreProcurementItems(mixed $card_stock_dto): Model;
-    public function storeProcurement(? ProcurementData $procurement_dto = null): array;
     public function prepareMainReportProcurement(Model $procurement): Model;
     public function prepareReportProcurement(?array $attributes = null): Model;
     public function reportProcurement(): array;

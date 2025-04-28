@@ -13,17 +13,17 @@ use Illuminate\Database\Eloquent\Model;
  * @method bool deletePurchaseOrder()
  * @method bool prepareDeletePurchaseOrder(? array $attributes = null)
  * @method mixed getPurchaseOrder()
+ * @method array storePurchaseOrder(?PurchaseOrderData $purchasing_summary_dto = null)
  * @method ?Model prepareShowPurchaseOrder(?Model $model = null, ?array $attributes = null)
  * @method array showPurchaseOrder(?Model $model = null)
  * @method Collection prepareViewPurchaseOrderList()
  * @method array viewPurchaseOrderList()
  * @method LengthAwarePaginator prepareViewPurchaseOrderPaginate(PaginateData $paginate_dto)
  * @method array viewPurchaseOrderPaginate(?PaginateData $paginate_dto = null)
+ * @method Builder purchaseOrder(mixed $conditionals = null)
  */
 
 interface PurchaseOrder extends DataManagement
 {
     public function prepareStorePurchaseOrder(PurchaseOrderData $purchasing_summary_dto): Model;
-    public function storePurchaseOrder(?PurchaseOrderData $purchasing_summary_dto = null): array;
-    public function purchaseOrder(mixed $conditionals = null): Builder;
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Hanafalah\ModuleProcurement\Resources\PurchasingSummary;
+namespace Hanafalah\ModuleProcurement\Resources\Purchasing;
 
 class ShowPurchasing extends ViewPurchasing
 {
@@ -12,7 +12,13 @@ class ShowPurchasing extends ViewPurchasing
    */
   public function toArray(\Illuminate\Http\Request $request): array
   {
-    $arr = [];
+    $arr = [
+      'procurement' => $this->relationValidation('procurement',function(){
+        return $this->procurement->toShowApi();
+      }),
+      'tax' => $this->tax,
+      'total_tax' => $this->total_tax,
+    ];
     $arr = $this->mergeArray(parent::toArray($request),$arr);
     return $arr;
   }

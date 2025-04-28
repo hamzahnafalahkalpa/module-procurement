@@ -2,7 +2,6 @@
 
 namespace Hanafalah\ModuleProcurement\Schemas;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Hanafalah\ModuleProcurement\{
     Supports\BaseModuleProcurement
@@ -14,6 +13,7 @@ class PurchaseOrder extends BaseModuleProcurement implements ContractsPurchaseOr
 {
     protected string $__entity = 'PurchaseOrder';
     public static $purchase_order_model;
+    protected mixed $__order_by_created_at = 'desc'; //asc, desc, false
 
     protected array $__cache = [
         'index' => [
@@ -27,23 +27,20 @@ class PurchaseOrder extends BaseModuleProcurement implements ContractsPurchaseOr
         $purchase_order = $this->PurchaseOrderModel()->updateOrCreate([
                         'id' => $purchase_order_dto->id ?? null
                     ], [
-                        'name' => $purchase_order_dto->name
+                        'funding_id'    => $purchase_order_dto->funding_id,
+                        'supplier_id'   => $purchase_order_dto->supplier_id,
+                        'purchasing_id' => $purchase_order_dto->purchasing_id,
+                        'tax'           => $purchase_order_dto->tax
                     ]);
         $this->fillingProps($purchase_order,$purchase_order_dto->props);
+
+        if (isset($purchase_order_dto->card_stocks) && count($purchase_order_dto->card_stocks)){
+            foreach ($purchase_order_dto->card_stocks as $card_stock) {
+                
+            }
+        }
+
         $purchase_order->save();
         return static::$purchase_order_model = $purchase_order;
-    }
-
-    public function storePurchaseOrder(?PurchaseOrderData $purchase_order_dto = null): array{
-        return $this->transaction(function() use ($purchase_order_dto){
-            return $this->showPurchaseOrder($this->prepareStorePurchaseOrder($purchase_order_dto ?? $this->requestDTO(PurchaseOrderData::class)));
-        });
-    }
-
-    public function purchaseOrder(mixed $conditionals = null): Builder{
-        $this->booting();
-        return $this->PurchaseOrderModel()->withParameters()
-                    ->conditionals($this->mergeCondition($conditionals ?? []))
-                    ->orderBy('name', 'asc');
     }
 }

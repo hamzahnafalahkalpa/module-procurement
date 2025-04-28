@@ -11,6 +11,7 @@ class Supplier extends PackageManagement implements ContractsSupplier
 {
     protected string $__entity = 'Supplier';
     public static $supplier_model;
+    protected mixed $__order_by_created_at = false; //asc, desc, false
 
     protected array $__cache = [
         'index' => [

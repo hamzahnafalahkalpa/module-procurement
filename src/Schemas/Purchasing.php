@@ -13,6 +13,7 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
 {
     protected string $__entity = 'Purchasing';
     public static $purchasing_model;
+    protected mixed $__order_by_created_at = 'desc'; //asc, desc, false
 
     protected array $__cache = [
         'index' => [
@@ -26,23 +27,29 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
         $purchasing = $this->PurchasingModel()->updateOrCreate([
                         'id' => $purchasing_dto->id ?? null
                     ], [
-                        'name' => $purchasing_dto->name
+                        'name' => $purchasing_dto->name,
+                        'note' => $purchasing_dto->note
                     ]);
         $this->fillingProps($purchasing,$purchasing_dto->props);
+        if (isset($purchasing_dto->purchase_request_ids) && count($purchasing_dto->purchase_request_ids)){
+            foreach ($purchasing_dto->purchase_request_ids as $purchase_request_id) {
+                $purchase_request_model = $this->PurchaseRequestModel()->findOrFail($purchase_request_id);
+                $purchase_request_model->purchasing_id = $purchase_request_model->getKey();
+                $purchase_request_model->prop_purchasing = [
+                    'id'   => $purchasing->getKey(),
+                    'name' => $purchasing->name
+                ];
+                $purchase_request_model->save();
+            }
+        }
+
+        if (isset($purchasing_dto->purchase_orders) && count($purchasing_dto->purchase_orders)){
+            foreach ($purchasing_dto->purchase_orders as $order){
+                $order->tax = $purchasing_dto->tax;
+                $this->schemaContract('purchase_order')->prepareStorePurchaseOrder($order);
+            }
+        }
         $purchasing->save();
         return static::$purchasing_model = $purchasing;
     }
-
-    // public function storePurchasing(?PurchasingData $purchasing_dto = null): array{
-    //     return $this->transaction(function() use ($purchasing_dto){
-    //         return $this->showPurchasing($this->prepareStorePurchasing($purchasing_dto ?? $this->requestDTO(PurchasingData::class)));
-    //     });
-    // }
-
-    // public function purchasing(mixed $conditionals = null): Builder{
-    //     $this->booting();
-    //     return $this->PurchasingModel()->withParameters()
-    //                 ->conditionals($this->mergeCondition($conditionals ?? []))
-    //                 ->orderBy('name', 'asc');
-    // }
 }

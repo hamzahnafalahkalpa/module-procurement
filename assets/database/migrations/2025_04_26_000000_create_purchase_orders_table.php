@@ -36,7 +36,6 @@ return new class extends Migration
                 $purchasing = app(config('database.models.Purchasing', Purchasing::class));
 
                 $table->ulid('id')->primary();
-                $table->string('name', 255)->nullable(false);
                 $table->unsignedBigInteger('total_cogs')->nullable();
                 $table->unsignedBigInteger('total_tax')->nullable();
 

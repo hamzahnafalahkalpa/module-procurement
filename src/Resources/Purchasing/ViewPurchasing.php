@@ -1,6 +1,6 @@
 <?php
 
-namespace Hanafalah\ModuleProcurement\Resources\PurchasingSummary;
+namespace Hanafalah\ModuleProcurement\Resources\Purchasing;
 
 use Hanafalah\LaravelSupport\Resources\ApiResource;
 
@@ -14,7 +14,14 @@ class ViewPurchasing extends ApiResource
    */
   public function toArray(\Illuminate\Http\Request $request): array
   {
-    $arr = parent::toArray($request);
+    $arr = [
+      'id'          => $this->id,
+      'name'        => $this->name,
+      'note'        => $this->note,
+      'procurement'           => $this->relationValidation('procurement',function(){
+        return $this->procurement->toViewApi();
+      })
+    ];
     return $arr;
   }
 }

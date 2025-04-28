@@ -17,6 +17,7 @@ class Procurement extends PackageManagement implements ContractsProcurement
     protected string $__entity = 'Procurement';
     public static $procurement_model;
     public static $procurement_item_model;
+    protected mixed $__order_by_created_at = 'desc'; //asc, desc, false
 
     public function prepareStoreProcurement(ProcurementData $procurement_dto): Model{
         if (!isset($procurement_dto->warehouse_id)) throw new \Exception('No warehouse id provided', 422);
@@ -52,8 +53,8 @@ class Procurement extends PackageManagement implements ContractsProcurement
                 $stock_movement_dto = &$card_stock_dto->stock_movement;
                 $stock_movement_dto->direction = Direction::IN->value;
                 $stock_movement_dto->funding_id ??= $procurement->funding_id ?? null;
-                $card_stock_dto->props['direction']        = Direction::IN->value;
-                $card_stock_dto->props['funding_id']     ??= $procurement->funding_id ?? null;
+                $stock_movement_dto->war ??= $procurement->funding_id ?? null;
+                $stock_movement_dto->funding_id ??= $procurement->funding_id ?? null;
                 $card_stock_dto->props['warehouse_id']     = $procurement_dto->warehouse_id;
                 $card_stock_dto->props['warehouse_type']   = $procurement_dto->warehouse_type;
                 $card_stock_model             = $this->prepareStoreProcurementItems($card_stock_dto);
@@ -89,12 +90,6 @@ class Procurement extends PackageManagement implements ContractsProcurement
         }
         $procurement_item->save();
         return static::$procurement_item_model = $procurement_item;
-    }
-
-    public function storeProcurement(?ProcurementData $procurement_dto = null): array{
-        return $this->transaction(function() use ($procurement_dto){
-            return $this->showProcurement($this->prepareStoreProcurement($procurement_dto ?? $this->requestDTO(ProcurementData::class)));
-        });
     }
 
     public function prepareMainReportProcurement(Model $procurement): Model{

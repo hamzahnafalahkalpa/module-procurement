@@ -21,12 +21,11 @@ class PurchaseOrder extends BaseModel
     protected $keyType    = 'string';
     protected $primaryKey = 'id';
     public $list = [
-        'id', 'name', 'total_cogs', 'total_tax',
+        'id', 'total_cogs', 'total_tax',
         'supplier_id', 'funding_id', 'purchasing_id', 'props'
     ];
 
     protected $casts = [
-        'name'           => 'string',
         'funding_name'   => 'string',
         'supplier_name'  => 'string'
     ];
