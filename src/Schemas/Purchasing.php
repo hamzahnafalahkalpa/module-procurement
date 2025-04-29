@@ -36,8 +36,8 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
         $purchasing_dto->id ??= $purchasing->getKey();
 
         $purchasing_dto->props['prop_purchase_requests'] = [];
-        $this->updateUsingPurchaseRequestIds($procurement,$purchasing_dto)
-             ->updateUsingPurchaseOrders($procurement,$purchasing_dto);
+        $this->updateUsingPurchaseRequestIds($purchasing_dto, $procurement)
+             ->updateUsingPurchaseOrders($purchasing_dto, $procurement);
         if (isset($purchasing_dto->purchase_orders) && count($purchasing_dto->purchase_orders)){
             foreach ($purchasing_dto->purchase_orders as $order_dto){
                 $order_dto->purchasing_id = $purchasing->getKey();
@@ -71,7 +71,7 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
         return $this;
     }
 
-    protected function updateUsingPurchaseRequestIds(PurchasingData &$purchasing_dto,$procurement): self{
+    protected function updateUsingPurchaseRequestIds(PurchasingData &$purchasing_dto, $procurement): self{
         if (isset($purchasing_dto->purchase_request_ids) && count($purchasing_dto->purchase_request_ids)){
             $prop_purchasings = [];
             foreach ($purchasing_dto->purchase_request_ids as $purchase_request_id) {
@@ -89,7 +89,7 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
 
     protected function updatePurchaseRequest(mixed $id, $procurement, $purchasing_dto): Model{
         $purchase_request_model = $this->PurchaseRequestModel()->findOrFail($id);
-        $purchase_request_model->purchasing_id = $purchase_request_model->getKey();
+        $purchase_request_model->purchasing_id = $purchasing_dto->id;
         $purchase_request_model->approver_type = $procurement->author_type;
         $purchase_request_model->approver_id   = $procurement->author_id;
         $purchase_request_model->prop_purchasing = [
