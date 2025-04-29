@@ -26,8 +26,16 @@ class PurchaseRequest extends BaseModel
     ];
 
     protected $casts = [
-        'name' => 'string'
+        'name' => 'string',
+        'approver_name' => 'string'
     ];
+
+    public function getPropsQuery(): array
+    {
+        return [
+            'approver_name' => 'props->prop_approver->name'
+        ];
+    }
 
     protected static function booted(): void{
         parent::booted();
@@ -42,7 +50,7 @@ class PurchaseRequest extends BaseModel
     }
 
     public function showUsingRelation(): array{
-        return ['procurement.cardStocks.stockMovement'];
+        return ['procurement.cardStocks'];
     }
 
     public function getViewResource(){

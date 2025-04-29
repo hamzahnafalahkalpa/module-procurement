@@ -28,7 +28,7 @@ class PurchasingHasRequest extends BaseModel
     public function getPropsQuery(): array{
         return [
             'purchase_request_name' => 'props->prop_purchase_request->name',
-            'purchasing_name'    => 'props->prop_purchasing->name'
+            'purchasing_name'       => 'props->prop_purchasing->name'
         ];
     }
 
