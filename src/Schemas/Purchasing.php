@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Hanafalah\ModuleProcurement\{
     Supports\BaseModuleProcurement
 };
-use Hanafalah\ModuleProcurement\Contracts\Data\PurchaseRequestData;
 use Hanafalah\ModuleProcurement\Contracts\Schemas\Purchasing as ContractsPurchasing;
 use Hanafalah\ModuleProcurement\Contracts\Data\PurchasingData;
 
