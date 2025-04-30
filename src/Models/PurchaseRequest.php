@@ -50,7 +50,7 @@ class PurchaseRequest extends BaseModel
     }
 
     public function showUsingRelation(): array{
-        return ['procurement.cardStocks'];
+        return ['procurement.cardStocks.stockMovement'];
     }
 
     public function getViewResource(){
