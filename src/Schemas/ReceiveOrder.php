@@ -23,14 +23,19 @@ class ReceiveOrder extends BaseModuleProcurement implements ContractsReceiveOrde
     ];
 
     public function prepareStoreReceiveOrder(ReceiveOrderData $receive_order_dto): Model{
-        $purchase_request = $this->PurchaseRequestModel()->updateOrCreate([
+        $receive_order = $this->ReceiveOrderModel()->updateOrCreate([
             'id'   => $receive_order_dto->id ?? null
         ], [
-            'name' => $receive_order_dto->name,
+            'name'               => $receive_order_dto->name,
+            "purchasing_id"      => $receive_order_dto->purchasing_id,
+            "purchase_order_id"  => $receive_order_dto->purchase_order_id,
+            "receipt_code"       => $receive_order_dto->receipt_code,
+            "received_at"        => $receive_order_dto->received_at,
+            "sender_name"        => $receive_order_dto->sender_name
         ]);
-        $this->initializeProcurementDTO($purchase_request,$receive_order_dto);
-        $this->fillingProps($purchase_request,$receive_order_dto->props);
-        $purchase_request->save();
-        return static::$receive_order_model = $purchase_request;
+        $this->initializeProcurementDTO($receive_order,$receive_order_dto);
+        $this->fillingProps($receive_order,$receive_order_dto->props);
+        $receive_order->save();
+        return static::$receive_order_model = $receive_order;
     }
 }

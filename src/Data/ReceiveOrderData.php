@@ -18,10 +18,22 @@ class ReceiveOrderData extends Data implements DataReceiveOrderData
     #[MapName('name')]
     public string $name;
 
+    #[MapInputName('procurement')]
+    #[MapName('procurement')]
+    public ?ProcurementData $procurement = null;
+
     #[MapInputName('received_at')]
     #[MapName('received_at')]
     #[DateFormat('Y-m-d')]
     public ?string $received_at;
+
+    #[MapInputName('sender_name')]
+    #[MapName('sender_name')]
+    public ?string $sender_name = null;
+
+    #[MapInputName('receipt_code')]
+    #[MapName('receipt_code')]
+    public ?string $receipt_code = null;
 
     #[MapInputName('purchasing_id')]
     #[MapName('purchasing_id')]

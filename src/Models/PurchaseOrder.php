@@ -43,7 +43,7 @@ class PurchaseOrder extends BaseModel
     }
 
     public function showUsingRelation(): array{
-        return ['procurement','receiveOrder.procurement'];
+        return ['procurement.cardStocks','receiveOrder.procurement'];
     }
 
     public function getViewResource(){

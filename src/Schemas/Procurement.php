@@ -71,7 +71,7 @@ class Procurement extends PackageManagement implements ContractsProcurement
 
     public function prepareStoreProcurementItems(mixed $card_stock_dto): Model{
         if (!isset($card_stock_dto->transaction_id)) {
-            if (!isset(static::$procurement_model)) {
+            if (isset(static::$procurement_model)) {
                 $procurement = static::$procurement_model;
             } else {
                 $id = $card_stock_dto->reference_id ?? null;
@@ -81,14 +81,14 @@ class Procurement extends PackageManagement implements ContractsProcurement
             $card_stock_dto->transaction_id = $procurement->transaction->getKey();
         }
         $card_stock_dto->props['is_procurement'] = true;
-        $procurement_item = $this->schemaContract('card_stock')->prepareStoreCardStock($card_stock_dto);
+        $card_stock = $this->schemaContract('card_stock')->prepareStoreCardStock($card_stock_dto);
 
-        $procurement_item->tax = $card_stock_dto->props['tax'] ?? 0;
-        if (isset($procurement_item->total_cogs)) {
-            $procurement_item->total_tax = $procurement_item->total_cogs * ($procurement_item->tax / 100);
-        }
-        $procurement_item->save();
-        return static::$procurement_item_model = $procurement_item;
+        // $procurement_item->tax = $card_stock_dto->props['tax'] ?? 0;
+        // if (isset($procurement_item->total_cogs)) {
+        //     $procurement_item->total_tax = $procurement_item->total_cogs * ($procurement_item->tax / 100);
+        // }
+        // $procurement_item->save();
+        return static::$procurement_item_model = $card_stock;
     }
 
     public function prepareMainReportProcurement(Model $procurement): Model{

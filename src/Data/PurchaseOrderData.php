@@ -67,6 +67,7 @@ class PurchaseOrderData extends Data implements DataPurchaseOrderData
             $purchasing = self::new()->PurchasingModel()->findOrFail($data->props['prop_purchasing']['id']);
             $data->props['prop_purchasing']['name'] = $purchasing->name;
         }
+
         return $data;
     }
 }

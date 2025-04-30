@@ -12,7 +12,11 @@ class ShowReceiveOrder extends ViewReceiveOrder
    */
   public function toArray(\Illuminate\Http\Request $request): array
   {
-    $arr = [];
+    $arr = [
+      'procurement' => $this->relationValidation('procurement',function(){
+        return $this->procurement->toShowApi();
+      }),
+    ];
     $arr = $this->mergeArray(parent::toArray($request),$arr);
     return $arr;
   }
