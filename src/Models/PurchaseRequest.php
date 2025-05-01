@@ -50,7 +50,11 @@ class PurchaseRequest extends BaseModel
     }
 
     public function showUsingRelation(): array{
-        return ['procurement.cardStocks.stockMovement'];
+        return ['procurement.cardStocks' => function($query){
+            $query->with([
+                'item', 'stockMovement'
+            ]);
+        }];
     }
 
     public function getViewResource(){
