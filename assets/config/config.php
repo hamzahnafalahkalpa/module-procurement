@@ -1,12 +1,9 @@
 <?php
 
 use Hanafalah\ModuleProcurement\Commands;
-use Hanafalah\ModuleProcurement\Models as ModuleProcurement;
 
 return [
-    'commands' => [
-        Commands\InstallMakeCommand::class,
-    ],
+    'namespace' => 'Hanafalah\\ModuleProcurement',
     'libs' => [
         'model' => 'Models',
         'contract' => 'Contracts',
@@ -22,6 +19,9 @@ return [
     'database' => [
         'models' => [
         ],
+    ],
+    'commands' => [
+        Commands\InstallMakeCommand::class,
     ],
     'warehouse' => null, //add your warehouse model here
     'author' => null, //add your employee model here
