@@ -34,12 +34,11 @@ class Procurement extends PackageManagement implements ContractsProcurement
             'warehouse_id'   => $procurement_dto->warehouse_id,
             'warehouse_type' => $procurement_dto->warehouse_type
         ]);
-        $this->fillingProps($procurement,$procurement_dto->props);
-        $this->forgetTags('procurement');
 
-        static::$procurement_model = &$procurement;
-        $transaction               = $procurement->transaction;
-        $procurement->total_cogs   = 0;
+        // static::$procurement_model = &$procurement;
+        $transaction                     = $procurement->transaction;
+        $is_calculate_total_cogs         = !isset($procurement_dto->total_cogs);
+        $procurement_dto->total_cogs   ??= 0;
         if (isset($procurement_dto->card_stocks) && count($procurement_dto->card_stocks) > 0) {
             $transaction_id = $transaction->getKey();
             $keep           = [];
@@ -48,38 +47,50 @@ class Procurement extends PackageManagement implements ContractsProcurement
                 $card_stock_dto->reference_id              = $procurement->getKey();
                 $card_stock_dto->reference_type            = $procurement->getMorphClass();
                 if (isset($card_stock_dto->stock_movement)){
-                    $stock_movement_dto                        = &$card_stock_dto->stock_movement;
-                    $stock_movement_dto->direction           ??= Direction::IN->value;
-                    $stock_movement_dto->funding_id          ??= $procurement->funding_id ?? null;
-                    $stock_movement_dto->war                 ??= $procurement->funding_id ?? null;
-                    $stock_movement_dto->funding_id          ??= $procurement->funding_id ?? null;
+                    $stock_movement_dto                    = &$card_stock_dto->stock_movement;
+                    $stock_movement_dto->direction       ??= Direction::IN->value;
+                    $stock_movement_dto->funding_id      ??= $procurement->funding_id ?? null;
+                    $stock_movement_dto->war             ??= $procurement->funding_id ?? null;
+                    $stock_movement_dto->funding_id      ??= $procurement->funding_id ?? null;
                 }
-                $card_stock_dto->props['warehouse_id']     = $procurement_dto->warehouse_id;
-                $card_stock_dto->props['warehouse_type']   = $procurement_dto->warehouse_type;
-                $card_stock_model                          = $this->prepareStoreProcurementItems($card_stock_dto);
-                $keep[]                                    = $card_stock_model->getKey();
-                $procurement->total_cogs                  += $card_stock_model->total_cogs;
-                if (is_array($card_stock_model->total_tax)) {
-                    $procurement->total_tax ??= [
-                        'total' => 0
-                    ];
-
-                    foreach ($card_stock_model->total_tax as $key => $tax) {
-                        $tax_sum = $tax * $card_stock_model->qty;
-                        $procurement->total_tax['total'] += $tax_sum;
-                        $procurement->total_tax[$key]   ??= 0;
-                        $procurement->total_tax[$key]    += $tax_sum;
-                    }
-                }else{
-                    $procurement->total_tax  += $card_stock_model->total_tax;
-                }
+                $card_stock_dto->props->props['warehouse_id']     = $procurement_dto->warehouse_id;
+                $card_stock_dto->props->props['warehouse_type']   = $procurement_dto->warehouse_type;
+                $card_stock_model = $this->prepareStoreProcurementItems($card_stock_dto);
+                $keep[]           = $card_stock_model->getKey();
+                if ($is_calculate_total_cogs) $procurement_dto->total_cogs += $card_stock_model->total_cogs;
+                // if (isset($card_stock_model->tax)){
+                //     if (is_array($card_stock_model->total_tax)) {
+                //         $procurement->total_tax ??= [
+                //             'total' => 0
+                //         ];
+    
+                //         foreach ($card_stock_model->total_tax as $key => $tax) {
+                //             $tax_sum = $tax * $card_stock_model->qty;
+                //             $procurement->total_tax['total'] += $tax_sum;
+                //             $procurement->total_tax[$key]   ??= 0;
+                //             $procurement->total_tax[$key]    += $tax_sum;
+                //         }
+                //     }else{
+                //         $procurement->total_tax  += $card_stock_model->total_tax;
+                //     }
+                // }
             }
             $this->CardStockModel()->where('transaction_id', $transaction->getKey())
-                 ->whereNotIn('id', $keep)->delete();
+            ->whereNotIn('id', $keep)->delete();
         } else {
             $this->CardStockModel()->where('transaction_id', $transaction->getKey())->delete();
         }
+        if (isset($procurement_dto->props->total_tax)){
+            $proc_props = &$procurement_dto->props;
+            $proc_props->total_tax->total ??= 0;
+            $proc_props->total_tax->ppn   ??= 0;
+            $proc_props->total_tax->ppn    += $procurement_dto->total_cogs * ($procurement_dto->props->tax->ppn / 100);
+            $proc_props->total_tax->total  += $proc_props->total_tax->ppn;
+        }
+        $procurement->total_cogs = $procurement_dto->total_cogs + $procurement_dto->props->total_tax?->total ?? 0;
+        $this->fillingProps($procurement,$procurement_dto->props);
         $procurement->save();
+        $this->forgetTags('procurement');
         return static::$procurement_model = $procurement;
     }
 
@@ -94,9 +105,8 @@ class Procurement extends PackageManagement implements ContractsProcurement
             }
             $card_stock_dto->transaction_id = $procurement->transaction->getKey();
         }
-        $card_stock_dto->props['is_procurement'] = true;
+        $card_stock_dto->props->props['is_procurement'] = true;
         $card_stock = $this->schemaContract('card_stock')->prepareStoreCardStock($card_stock_dto);
-
         // $procurement_item->tax = $card_stock_dto->props['tax'] ?? 0;
         // if (isset($procurement_item->total_cogs)) {
         //     $procurement_item->total_tax = $procurement_item->total_cogs * ($procurement_item->tax / 100);

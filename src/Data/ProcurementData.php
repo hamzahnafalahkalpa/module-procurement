@@ -5,6 +5,7 @@ namespace Hanafalah\ModuleProcurement\Data;
 use Hanafalah\LaravelSupport\Supports\Data;
 use Hanafalah\ModuleItem\Data\CardStockData;
 use Hanafalah\ModuleProcurement\Contracts\Data\ProcurementData as DataProcurementData;
+use Hanafalah\ModuleProcurement\Contracts\Data\ProcurementPropsData;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapName;
@@ -36,7 +37,7 @@ class ProcurementData extends Data implements DataProcurementData{
 
     #[MapName('total_cogs')] 
     #[MapInputName('total_cogs')] 
-    public ?int $total_cogs = 0;
+    public ?float $total_cogs = null;
 
     #[MapName('warehouse_type')] 
     #[MapInputName('warehouse_type')] 
@@ -61,48 +62,42 @@ class ProcurementData extends Data implements DataProcurementData{
 
     #[MapName('props')] 
     #[MapInputName('props')] 
-    public ?array $props = null;
+    public ?ProcurementPropsData $props = null;
 
     public static function after(ProcurementData $data): ProcurementData{
         $new = static::new();
-        $data->props['prop_reference'] = [
+        $props = &$data->props->props;
+        $props['prop_reference'] = [
             'id'   => $data->reference_id ?? null,
             'type' => $data->reference_type ?? null,
             'name' => $data->name ?? null
         ];
 
-        if (!isset($data->props['prop_reference']['name']) && isset($data->reference_id)){
+        if (!isset($props['prop_reference']['name']) && isset($data->reference_id)){
             $reference = $new->{$data->reference_type.'Model'}()->findOrFail($data->reference_id);
-            $data->props['prop_reference']['name'] = $reference->name;
+            $props['prop_reference']['name'] = $reference->name;
         }
 
-        $data->props['prop_warehouse'] = [
+        $props['prop_warehouse'] = [
             'id'   => $data->warehouse_id ?? null,
             'name' => null
         ];
 
-        if (!isset($data->props['prop_warehouse']['name']) && isset($data->warehouse_id)){
+        if (!isset($props['prop_warehouse']['name']) && isset($data->warehouse_id)){
             $warehouse = $new->{$data->warehouse_type.'Model'}()->findOrFail($data->warehouse_id);
-            $data->props['prop_warehouse']['name'] = $warehouse->name;
+            $props['prop_warehouse']['name'] = $warehouse->name;
         }
 
-        $data->props['prop_author'] = [
+        $props['prop_author'] = [
             'id'   => $data->author_id ?? null,
             'name' => null
         ];
 
-        if (!isset($data->props['prop_author']['name']) && isset($data->author_id)){
+        if (!isset($props['prop_author']['name']) && isset($data->author_id)){
             $author = $new->{$data->author_type.'Model'}()->findOrFail($data->author_id);
-            $data->props['prop_author']['name'] = $author->name;
+            $props['prop_author']['name'] = $author->name;
         }
 
-        $data->props['total_cogs'] ??= 0;
-        $data->props['total_tax']  ??= 0;
-        $data->props['total_taxs'] ??= [
-            'total' => 0,
-            'ppn'   => 0,
-            'pph'   => 0
-        ];
         return $data;
     }
 }

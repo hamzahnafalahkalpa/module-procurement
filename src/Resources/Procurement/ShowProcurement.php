@@ -12,6 +12,7 @@ class ShowProcurement extends ViewProcurement
     public function toArray(\Illuminate\Http\Request $request): array
     {
         $arr = [
+            'tax' => $this->tax,
             'card_stocks' => $this->relationValidation('cardStocks', function () {
                 return $this->cardStocks->transform(function ($cardStock) {
                     return $cardStock->toShowApi();

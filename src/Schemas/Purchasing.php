@@ -35,26 +35,29 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
         $procurement = $purchasing->procurement;
         $purchasing_dto->id ??= $purchasing->getKey();
 
-        $props = &$purchasing_dto->props->props;
-        $props = [];
         $this->updateUsingPurchaseRequestIds($purchasing_dto, $procurement)
              ->updateUsingPurchaseOrders($purchasing_dto, $procurement);
         if (isset($purchasing_dto->purchase_orders) && count($purchasing_dto->purchase_orders)){
-            $total_tax  = 0;
-            $total_cogs = 0;
+            $purchasing_total_tax = &$purchasing_dto->procurement->props->total_tax;
             foreach ($purchasing_dto->purchase_orders as $order_dto){
-                $order_dto->purchasing_id = $purchasing->getKey();
-                $order_dto->tax           = $props['tax'];
-                $order_dto->props['prop_purchasing'] = [
+                $order_dto->purchasing_id                 = $purchasing->getKey();
+                $order_dto->procurement->props->tax       = clone $purchasing_dto->procurement->props->tax;
+                $order_dto->procurement->props->total_tax = clone $purchasing_dto->procurement->props->total_tax;
+                $order_dto->props->props['prop_purchasing'] = [
                     'id'   => $purchasing->getKey(),
                     'name' => $purchasing->name
                 ];
-                $this->schemaContract('purchase_order')->prepareStorePurchaseOrder($order_dto);
-                $total_tax  += $order_dto->tax;
-                $total_cogs += $order_dto->cogs;
+                $po = $this->schemaContract('purchase_order')->prepareStorePurchaseOrder($order_dto);
+                $procurement = $po->procurement;
+                $purchasing_total_tax->total += $procurement->total_tax['total'];
+                $purchasing_total_tax->pph   += $procurement->total_tax['pph'];
+                $purchasing_total_tax->ppn   += $procurement->total_tax['ppn'];
+                // $total_cogs += $order_dto->cogs;
             }
         }
         $this->fillingProps($purchasing,$purchasing_dto->props);
+        $this->fillingProps($purchasing->procurement,$purchasing_dto->procurement->props);
+        $purchasing->procurement->save();
         $purchasing->save();
         return static::$purchasing_model = $purchasing;
     }

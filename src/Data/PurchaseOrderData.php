@@ -19,10 +19,6 @@ class PurchaseOrderData extends Data implements DataPurchaseOrderData
     #[MapName('purchasing_id')]
     public mixed $purchasing_id = null;
 
-    #[MapInputName('supplier_type')]
-    #[MapName('supplier_type')]
-    public string $supplier_type;
-
     #[MapInputName('supplier_id')]
     #[MapName('supplier_id')]
     public mixed $supplier_id;
@@ -47,8 +43,8 @@ class PurchaseOrderData extends Data implements DataPurchaseOrderData
             'name' => null
         ];
 
-        if (isset($props['prop_supplier']['id'],$data->supplier_type) && !isset($props['prop_supplier']['name'])){
-            $supplier = self::new()->{$data->supplier_type.'Model'}()->findOrFail($props['prop_supplier']['id']);
+        if (isset($props['prop_supplier']['id']) && !isset($props['prop_supplier']['name'])){
+            $supplier = self::new()->SupplierModel()->findOrFail($props['prop_supplier']['id']);
             $props['prop_supplier']['name'] = $supplier->name;
         }
 

@@ -2,4 +2,4 @@
 
 namespace Hanafalah\ModuleProcurement\Contracts\Data;
 
-interface TaxData{}
+interface ProcurementPropsData{}

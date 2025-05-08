@@ -32,5 +32,6 @@ class BaseModuleProcurement extends PackageManagement implements DataManagement
         $procurement_dto->reference_id   = $procurement->reference_id;
         $procurement_dto->status       ??= $procurement->status;
         $this->schemaContract('procurement')->prepareStoreProcurement($procurement_dto);
+        $model->load('procurement');
     }
 }

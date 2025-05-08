@@ -28,12 +28,11 @@ class PurchaseOrder extends BaseModuleProcurement implements ContractsPurchaseOr
                         'id' => $purchase_order_dto->id ?? null
                     ], [
                         'funding_id'    => $purchase_order_dto->funding_id,
-                        'supplier_type' => $purchase_order_dto->supplier_type,
                         'supplier_id'   => $purchase_order_dto->supplier_id,
                         'purchasing_id' => $purchase_order_dto->purchasing_id
                     ]);
-        $this->fillingProps($purchase_order,$purchase_order_dto->props);
         $this->initializeProcurementDTO($purchase_order,$purchase_order_dto);
+        $this->fillingProps($purchase_order,$purchase_order_dto->props);
         $purchase_order->save();
         return static::$purchase_order_model = $purchase_order;
     }
