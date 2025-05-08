@@ -35,18 +35,23 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
         $procurement = $purchasing->procurement;
         $purchasing_dto->id ??= $purchasing->getKey();
 
-        $purchasing_dto->props['prop_purchase_requests'] = [];
+        $props = &$purchasing_dto->props->props;
+        $props = [];
         $this->updateUsingPurchaseRequestIds($purchasing_dto, $procurement)
              ->updateUsingPurchaseOrders($purchasing_dto, $procurement);
         if (isset($purchasing_dto->purchase_orders) && count($purchasing_dto->purchase_orders)){
+            $total_tax  = 0;
+            $total_cogs = 0;
             foreach ($purchasing_dto->purchase_orders as $order_dto){
                 $order_dto->purchasing_id = $purchasing->getKey();
-                $order_dto->tax           = $purchasing_dto->tax;
+                $order_dto->tax           = $props['tax'];
                 $order_dto->props['prop_purchasing'] = [
                     'id'   => $purchasing->getKey(),
                     'name' => $purchasing->name
                 ];
                 $this->schemaContract('purchase_order')->prepareStorePurchaseOrder($order_dto);
+                $total_tax  += $order_dto->tax;
+                $total_cogs += $order_dto->cogs;
             }
         }
         $this->fillingProps($purchasing,$purchasing_dto->props);
@@ -66,7 +71,7 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
                     'estimate_used_at' => $purchase_request_model->estimate_used_at
                 ];
             }
-            $purchasing_dto->props['prop_purchase_requests'] = $prop_purchasings;
+            $purchasing_dto->props->props['prop_purchase_requests'] = $prop_purchasings;
         }
         return $this;
     }
@@ -82,7 +87,7 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
                     'estimate_used_at' => $purchase_request_model->estimate_used_at
                 ];
             }
-            $purchasing_dto->props['prop_purchase_requests'] = $prop_purchasings;
+            $purchasing_dto->props->props['prop_purchase_requests'] = $prop_purchasings;
         }
         return $this;
     }

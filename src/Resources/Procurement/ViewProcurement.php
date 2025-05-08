@@ -21,12 +21,12 @@ class ViewProcurement extends ApiResource
             'reported_at'      => $this->reported_at,
             'created_at'       => $this->created_at,
             'updated_at'       => $this->updated_at,
+            'total_cogs'       => $this->total_cogs,
+            'total_tax'        => $this->total_tax,
             'transaction'      => $this->relationValidation('transaction', function () {
                 return $this->transaction->toViewApi();
             })
         ];
-
-
         return $arr;
     }
 }

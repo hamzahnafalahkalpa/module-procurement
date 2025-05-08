@@ -18,6 +18,8 @@ class ViewPurchaseOrder extends ApiResource
       'id'            => $this->id,
       'total_cogs'    => $this->total_cogs,
       'total_tax'     => $this->total_tax,
+      'tax'           => $this->tax,
+      'supplier_id'   => $this->supplier_id,
       'supplier'      => $this->prop_supplier,
       'funding'       => $this->prop_funding,
       'procurement' => $this->relationValidation('procurement',function(){

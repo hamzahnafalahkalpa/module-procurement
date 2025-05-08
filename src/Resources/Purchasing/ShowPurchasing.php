@@ -23,7 +23,8 @@ class ShowPurchasing extends ViewPurchasing
         });
       }),
       'tax'               => $this->tax,
-      'total_tax'         => $this->total_tax
+      'total_tax'         => $this->total_tax,
+      'total_cogs'        => $this->total_cogs
     ];
     $arr = $this->mergeArray(parent::toArray($request),$arr);
     return $arr;

@@ -5,6 +5,7 @@ namespace Hanafalah\ModuleProcurement\Data;
 use Hanafalah\LaravelSupport\Supports\Data;
 use Hanafalah\ModuleProcurement\Contracts\Data\ProcurementData;
 use Hanafalah\ModuleProcurement\Contracts\Data\PurchaseOrderData as DataPurchaseOrderData;
+use Hanafalah\ModuleProcurement\Contracts\Data\PurchaseOrderPropsData;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapName;
 
@@ -18,6 +19,10 @@ class PurchaseOrderData extends Data implements DataPurchaseOrderData
     #[MapName('purchasing_id')]
     public mixed $purchasing_id = null;
 
+    #[MapInputName('supplier_type')]
+    #[MapName('supplier_type')]
+    public string $supplier_type;
+
     #[MapInputName('supplier_id')]
     #[MapName('supplier_id')]
     public mixed $supplier_id;
@@ -30,42 +35,40 @@ class PurchaseOrderData extends Data implements DataPurchaseOrderData
     #[MapName('procurement')]
     public ?ProcurementData $procurement = null;
 
-    #[MapInputName('tax')]
-    #[MapName('tax')]
-    public ?float $tax = 0;
-
     #[MapInputName('props')]
     #[MapName('props')]
-    public ?array $props = null;
+    public ?PurchaseOrderPropsData $props = null;
 
     public static function after(PurchaseOrderData $data): PurchaseOrderData{
-        $data->props['prop_supplier'] = [
+        $props = &$data->props->props;
+
+        $props['prop_supplier'] = [
             'id' => $data->supplier_id ?? null,
             'name' => null
         ];
 
-        if (isset($data->props['prop_supplier']['id']) && !isset($data->props['prop_supplier']['name'])){
-            $supplier = self::new()->SupplierModel()->findOrFail($data->props['prop_supplier']['id']);
-            $data->props['prop_supplier']['name'] = $supplier->name;
+        if (isset($props['prop_supplier']['id'],$data->supplier_type) && !isset($props['prop_supplier']['name'])){
+            $supplier = self::new()->{$data->supplier_type.'Model'}()->findOrFail($props['prop_supplier']['id']);
+            $props['prop_supplier']['name'] = $supplier->name;
         }
 
-        $data->props['prop_funding'] = [
+        $props['prop_funding'] = [
             'id' => $data->funding_id ?? null,
             'name' => null
         ];
-        if (isset($data->props['prop_funding']['id']) && !isset($data->props['prop_funding']['name'])){
-            $funding = self::new()->FundingModel()->findOrFail($data->props['prop_funding']['id']);
-            $data->props['prop_funding']['name'] = $funding->name;
+        if (isset($props['prop_funding']['id']) && !isset($props['prop_funding']['name'])){
+            $funding = self::new()->FundingModel()->findOrFail($props['prop_funding']['id']);
+            $props['prop_funding']['name'] = $funding->name;
         }
 
-        $data->props['prop_purchasing'] = [
+        $props['prop_purchasing'] = [
             'id' => $data->purchasing_id ?? null,
             'name' => null
         ];
 
-        if (isset($data->props['prop_purchasing']['id']) && !isset($data->props['prop_purchasing']['name'])){
-            $purchasing = self::new()->PurchasingModel()->findOrFail($data->props['prop_purchasing']['id']);
-            $data->props['prop_purchasing']['name'] = $purchasing->name;
+        if (isset($props['prop_purchasing']['id']) && !isset($props['prop_purchasing']['name'])){
+            $purchasing = self::new()->PurchasingModel()->findOrFail($props['prop_purchasing']['id']);
+            $props['prop_purchasing']['name'] = $purchasing->name;
         }
 
         return $data;

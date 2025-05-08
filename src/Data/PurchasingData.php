@@ -31,10 +31,6 @@ class PurchasingData extends Data implements DataPurchasingData
     #[MapName('procurement')]
     public ?ProcurementData $procurement = null;
 
-    #[MapInputName('tax')]
-    #[MapName('tax')]
-    public ?float $tax = 0;
-
     #[MapInputName('purchase_orders')]
     #[MapName('purchase_orders')]
     #[DataCollectionOf(PurchaseOrderData::class)]
@@ -42,5 +38,5 @@ class PurchasingData extends Data implements DataPurchasingData
 
     #[MapInputName('props')]
     #[MapName('props')]
-    public ?array $props = null;
+    public ?PurchaseOrderPropsData $props = null;
 }

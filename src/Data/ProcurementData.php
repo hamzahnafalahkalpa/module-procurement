@@ -96,6 +96,13 @@ class ProcurementData extends Data implements DataProcurementData{
             $data->props['prop_author']['name'] = $author->name;
         }
 
+        $data->props['total_cogs'] ??= 0;
+        $data->props['total_tax']  ??= 0;
+        $data->props['total_taxs'] ??= [
+            'total' => 0,
+            'ppn'   => 0,
+            'pph'   => 0
+        ];
         return $data;
     }
 }
