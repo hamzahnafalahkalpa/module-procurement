@@ -65,7 +65,7 @@ class ProcurementData extends Data implements DataProcurementData{
     public ?ProcurementPropsData $props = null;
 
     public static function after(ProcurementData $data): ProcurementData{
-        $new = static::new();
+        $new   = static::new();
         $props = &$data->props->props;
         $props['prop_reference'] = [
             'id'   => $data->reference_id ?? null,

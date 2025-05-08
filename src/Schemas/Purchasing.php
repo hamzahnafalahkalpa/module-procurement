@@ -32,13 +32,14 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
                     ]);
         $this->initializeProcurementDTO($purchasing,$purchasing_dto);
         $purchasing->load('procurement');
-        $procurement = $purchasing->procurement;
+        $procurement = &$purchasing->procurement;
         $purchasing_dto->id ??= $purchasing->getKey();
 
         $this->updateUsingPurchaseRequestIds($purchasing_dto, $procurement)
              ->updateUsingPurchaseOrders($purchasing_dto, $procurement);
         if (isset($purchasing_dto->purchase_orders) && count($purchasing_dto->purchase_orders)){
-            $purchasing_total_tax = &$purchasing_dto->procurement->props->total_tax;
+            $procurment_dto       = &$purchasing_dto->procurement;
+            $purchasing_total_tax = &$procurment_dto->props->total_tax;
             foreach ($purchasing_dto->purchase_orders as $order_dto){
                 $order_dto->purchasing_id                 = $purchasing->getKey();
                 $order_dto->procurement->props->tax       = clone $purchasing_dto->procurement->props->tax;
@@ -48,10 +49,11 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
                     'name' => $purchasing->name
                 ];
                 $po = $this->schemaContract('purchase_order')->prepareStorePurchaseOrder($order_dto);
-                $procurement = $po->procurement;
-                $purchasing_total_tax->total += $procurement->total_tax['total'];
-                $purchasing_total_tax->pph   += $procurement->total_tax['pph'];
-                $purchasing_total_tax->ppn   += $procurement->total_tax['ppn'];
+                $po_procurement = $po->procurement;
+                $purchasing_total_tax->total += $po_procurement->total_tax['total'];
+                $purchasing_total_tax->pph   += $po_procurement->total_tax['pph'];
+                $purchasing_total_tax->ppn   += $po_procurement->total_tax['ppn'];
+                $procurement->total_cogs     += $po_procurement->total_tax['total'];
                 // $total_cogs += $order_dto->cogs;
             }
         }
