@@ -2,6 +2,8 @@
 
 namespace Hanafalah\ModuleProcurement\Resources\WorkOrder;
 
+use Hanafalah\ModuleProcurement\Resources\PurchaseOrder\ShowPurchaseOrder;
+
 class ShowWorkOrder extends ViewWorkOrder
 {
   /**
@@ -12,8 +14,15 @@ class ShowWorkOrder extends ViewWorkOrder
    */
   public function toArray(\Illuminate\Http\Request $request): array
   {
-    $arr = [];
-    $arr = $this->mergeArray(parent::toArray($request),$arr);
+    $arr = [
+      'purchase_orders' => $this->relationValidation('purchaseOrders',function(){
+        return $this->purchaseOrders->transform(function($purchaseOrder){
+          return $purchaseOrder->toShowApi();
+        });
+      })
+    ];
+    $show = $this->resolveNow(new ShowPurchaseOrder($this));
+    $arr  = $this->mergeArray(parent::toArray($request),$show,$arr);
     return $arr;
   }
 }

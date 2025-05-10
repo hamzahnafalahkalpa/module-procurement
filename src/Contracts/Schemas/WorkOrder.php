@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method Builder workOrder(mixed $conditionals = null);
  */
 
-interface WorkOrder extends DataManagement
+interface WorkOrder extends PurchaseOrder
 {
     public function prepareStoreWorkOrder(WorkOrderData $work_order_dto): Model;
 }

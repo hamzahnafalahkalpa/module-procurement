@@ -13,6 +13,8 @@ use Hanafalah\ModuleProcurement\Resources\PurchaseOrder\{
 };
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
+use Illuminate\Support\Str;
+
 class PurchaseOrder extends BaseModel
 {
     use HasUlids, HasProps, SoftDeletes, HasProcurement, HasActivity;
@@ -21,11 +23,11 @@ class PurchaseOrder extends BaseModel
     protected $keyType    = 'string';
     protected $primaryKey = 'id';
     public $list = [
-        'id', 'supplier_id', 'funding_id', 'purchasing_id', 
-        'props'
+        'id', 'parent_id', 'name', 'supplier_type', 'supplier_id', 'funding_id', 'flag', 'purchasing_id', 'props'
     ];
 
     protected $casts = [
+        'name'           => 'string',
         'funding_name'   => 'string',
         'supplier_name'  => 'string'
     ];
@@ -33,12 +35,14 @@ class PurchaseOrder extends BaseModel
     protected static function booted(): void{
         parent::booted();
         static::creating(function ($query) {
-            $query->purchase_order_code ??= static::hasEncoding('PURCHASE_ORDER');
+            $morph = $query->getMorphClass();
+            $query->{Str::snake($morph).'_code'} = static::hasEncoding(Str::upper(Str::snake($morph)));
+            $query->flag ??= $morph;
         });
     }
 
     public function viewUsingRelation(): array{
-        return ['procurement','receiveOrder.procurement'];
+        return ['procurement'];
     }
 
     public function showUsingRelation(): array{
@@ -53,8 +57,7 @@ class PurchaseOrder extends BaseModel
         return ShowPurchaseOrder::class;
     }
 
-    
-    public function supplier(){return $this->belongsToModel('Supplier');}
+    public function supplier(){return $this->morphTo('Supplier');}
     public function funding(){return $this->belongsToModel('Funding');}
     public function purchasing(){return $this->belongsToModel('Purchasing');}
     public function receiveOrder(){return $this->hasOneModel('ReceiveOrder');}

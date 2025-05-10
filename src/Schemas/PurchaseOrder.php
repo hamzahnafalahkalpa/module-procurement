@@ -24,10 +24,12 @@ class PurchaseOrder extends BaseModuleProcurement implements ContractsPurchaseOr
     ];
 
     public function prepareStorePurchaseOrder(PurchaseOrderData $purchase_order_dto): Model{
-        $purchase_order = $this->PurchaseOrderModel()->updateOrCreate([
+        $purchase_order = $this->usingEntity()->updateOrCreate([
                         'id' => $purchase_order_dto->id ?? null
                     ], [
+                        'parent_id'     => $purchase_order_dto->parent_id ?? null,
                         'funding_id'    => $purchase_order_dto->funding_id,
+                        'supplier_type' => $purchase_order_dto->supplier_type,
                         'supplier_id'   => $purchase_order_dto->supplier_id,
                         'purchasing_id' => $purchase_order_dto->purchasing_id
                     ]);

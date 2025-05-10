@@ -35,8 +35,8 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
         $procurement = &$purchasing->procurement;
         $purchasing_dto->id ??= $purchasing->getKey();
 
-        $this->updateUsingPurchaseRequestIds($purchasing_dto, $procurement)
-             ->updateUsingPurchaseOrders($purchasing_dto, $procurement);
+        $this->updateUsingPurchaseRequests($purchasing_dto, $purchasing_dto->purchase_request_ids ?? [], $procurement)
+             ->updateUsingPurchaseRequests($purchasing_dto, $purchasing_dto->purchase_requests ?? [], $procurement);
         if (isset($purchasing_dto->purchase_orders) && count($purchasing_dto->purchase_orders)){
             $procurment_dto       = &$purchasing_dto->procurement;
             $purchasing_total_tax = &$procurment_dto->props->total_tax;
@@ -64,35 +64,18 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
         return static::$purchasing_model = $purchasing;
     }
 
-    protected function updateUsingPurchaseOrders(PurchasingData &$purchasing_dto,$procurement): self{
-        if (isset($purchasing_dto->purchase_requests) && count($purchasing_dto->purchase_requests)){
-            $prop_purchasings = [];
-            foreach ($purchasing_dto->purchase_requests as $purchase_request_dto) {
-                $purchase_request_model = $this->updatePurchaseRequest($purchase_request_dto->id,$procurement,$purchasing_dto);
-
-                $prop_purchasings[] = [
+    protected function updateUsingPurchaseRequests(PurchasingData &$purchasing_dto, $requests, $procurement): self{
+        if (isset($requests) && count($requests)){
+            $prop_requests = [];
+            foreach ($requests as $request) {                
+                $purchase_request_model = $this->updatePurchaseRequest(is_object($request) ? $request->id : $request, $procurement, $purchasing_dto);
+                $prop_requests[] = [
                     'id'               => $purchase_request_model->getKey(),
                     'name'             => $purchase_request_model->name,
                     'estimate_used_at' => $purchase_request_model->estimate_used_at
                 ];
             }
-            $purchasing_dto->props->props['prop_purchase_requests'] = $prop_purchasings;
-        }
-        return $this;
-    }
-
-    protected function updateUsingPurchaseRequestIds(PurchasingData &$purchasing_dto, $procurement): self{
-        if (isset($purchasing_dto->purchase_request_ids) && count($purchasing_dto->purchase_request_ids)){
-            $prop_purchasings = [];
-            foreach ($purchasing_dto->purchase_request_ids as $purchase_request_id) {
-                $purchase_request_model = $this->updatePurchaseRequest($purchase_request_id,$procurement,$purchasing_dto);
-                $prop_purchasings[] = [
-                    'id'               => $purchase_request_model->getKey(),
-                    'name'             => $purchase_request_model->name,
-                    'estimate_used_at' => $purchase_request_model->estimate_used_at
-                ];
-            }
-            $purchasing_dto->props->props['prop_purchase_requests'] = $prop_purchasings;
+            $purchasing_dto->props->props['prop_purchase_requests'] = $prop_requests;
         }
         return $this;
     }

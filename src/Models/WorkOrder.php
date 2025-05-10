@@ -7,32 +7,16 @@ use Hanafalah\ModuleProcurement\Resources\WorkOrder\{
     ShowWorkOrder
 };
 
-class WorkOrder extends Purchasing
+class WorkOrder extends PurchaseOrder
 {
-    public $list = [
-        'id', 'name', 'total_cogs', 'total_tax',
-        'supplier_id', 'funding_id',
-        'props'
-    ];
-
-    protected $casts = [
-        'funding_name'   => 'string',
-        'supplier_name'  => 'string'
-    ];
-
-    protected static function booted(): void{
-        parent::booted();
-        static::creating(function ($query) {
-            $query->purchase_order_code ??= static::hasEncoding('PURCHASE_ORDER');
-        });
-    }
-
-    public function viewUsingRelation(): array{
-        return ['procurement','receiveOrder.procurement'];
-    }
+    protected $table = 'purchase_orders';
 
     public function showUsingRelation(): array{
-        return ['procurement.cardStocks.stockMovement','receiveOrder.procurement'];
+        return [
+            'procurement', 'purchaseOrders' => function($query){
+                $query->with(['procurement.cardStocks.stockMovement']);
+            }
+        ];
     }
 
     public function getViewResource(){
@@ -43,10 +27,5 @@ class WorkOrder extends Purchasing
         return ShowWorkOrder::class;
     }
 
-    
-    public function supplier(){return $this->belongsToModel('Supplier');}
-    public function funding(){return $this->belongsToModel('Funding');}
-    public function purchasing(){return $this->belongsToModel('Purchasing');}
-    public function receiveOrder(){return $this->hasOneModel('ReceiveOrder');}
-    public function receiveOrders(){return $this->hasManyModel('ReceiveOrder');}
+    public function purchaseOrders(){return $this->hasManyModel('PurchaseOrder','parent_id');}
 }

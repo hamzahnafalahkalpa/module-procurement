@@ -23,7 +23,6 @@ use Hanafalah\ModuleProcurement\Contracts\Data\ProcurementData;
 interface Procurement extends DataManagement
 {
     public function prepareStoreProcurement(ProcurementData $procurement_dto): Model;
-    public function prepareStoreProcurementItems(mixed $card_stock_dto): Model;
     public function prepareMainReportProcurement(Model $procurement): Model;
     public function prepareReportProcurement(?array $attributes = null): Model;
     public function reportProcurement(): array;

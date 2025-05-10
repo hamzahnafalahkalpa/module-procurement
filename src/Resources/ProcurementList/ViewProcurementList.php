@@ -1,10 +1,10 @@
 <?php
 
-namespace Hanafalah\ModuleProcurement\Resources\WorkOrder;
+namespace Hanafalah\ModuleProcurement\Resources\ProcurementList;
 
-use Hanafalah\ModuleProcurement\Resources\PurchaseOrder\ViewPurchaseOrder;
+use Hanafalah\LaravelSupport\Resources\ApiResource;
 
-class ViewWorkOrder extends ViewPurchaseOrder
+class ViewProcurementList extends ApiResource
 {
   /**
    * Transform the resource into an array.
@@ -14,8 +14,7 @@ class ViewWorkOrder extends ViewPurchaseOrder
    */
   public function toArray(\Illuminate\Http\Request $request): array
   {
-    $arr = [];
-    $arr = $this->mergeArray(parent::toArray($request),$arr);
+    $arr = parent::toArray($request);
     return $arr;
   }
 }

@@ -60,6 +60,11 @@ class ProcurementData extends Data implements DataProcurementData{
     #[DataCollectionOf(CardStockData::class)]
     public ?array $card_stocks = [];
 
+    #[MapName('procurement_services')] 
+    #[MapInputName('procurement_services')] 
+    #[DataCollectionOf(CardStockData::class)]
+    public ?array $procurement_services = [];
+
     #[MapName('props')] 
     #[MapInputName('props')] 
     public ?ProcurementPropsData $props = null;

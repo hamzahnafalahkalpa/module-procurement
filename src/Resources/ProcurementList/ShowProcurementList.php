@@ -1,10 +1,8 @@
 <?php
 
-namespace Hanafalah\ModuleProcurement\Resources\WorkOrder;
+namespace Hanafalah\ModuleProcurement\Resources\ProcurementList;
 
-use Hanafalah\ModuleProcurement\Resources\PurchaseOrder\ViewPurchaseOrder;
-
-class ViewWorkOrder extends ViewPurchaseOrder
+class ShowProcurementList extends ViewProcurementList
 {
   /**
    * Transform the resource into an array.

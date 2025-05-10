@@ -1,7 +1,6 @@
 <?php
 
 use Hanafalah\ModuleFunding\Models\Funding\Funding;
-use Hanafalah\ModuleProcurement\Models\Supplier;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -32,25 +31,35 @@ return new class extends Migration
         if (!$this->isTableExists()) {
             Schema::create($table_name, function (Blueprint $table) {
                 $funding       = app(config('database.models.Funding', Funding::class));
-                $supplier      = app(config('database.models.Supplier', Supplier::class));
                 $purchasing    = app(config('database.models.Purchasing', Purchasing::class));
 
                 $table->ulid('id')->primary();
-                $table->unsignedBigInteger('total_cogs')->nullable();
-                $table->unsignedBigInteger('total_tax')->nullable();
+                $table->string('name')->nullable();
 
                 $table->foreignIdFor($funding::class)->nullable()->index()
                       ->constrained()->restrictOnDelete()->cascadeOnUpdate();
 
-                $table->foreignIdFor($supplier::class)->nullable()->index()
-                      ->constrained()->restrictOnDelete()->cascadeOnUpdate();
+                $table->string('supplier_type',10)->nullable();
+                $table->string('supplier_id',36)->nullable();
 
                 $table->foreignIdFor($purchasing::class)->nullable()->index()
                       ->constrained()->restrictOnDelete()->cascadeOnUpdate();
+
+                $table->string('flag',100)->nullable();
                       
                 $table->json('props')->nullable();
                 $table->timestamps();
                 $table->softDeletes();
+
+                $table->index(['supplier_type', 'supplier_id'], 'supplier_ref');
+            });
+
+            
+            Schema::table($table_name, function (Blueprint $table) use ($table_name) {
+                $table->foreignIdFor($this->__table, 'parent_id')
+                    ->nullable()->after('id')
+                    ->index()->constrained($table_name)
+                    ->cascadeOnUpdate()->restrictOnDelete();
             });
         }
     }

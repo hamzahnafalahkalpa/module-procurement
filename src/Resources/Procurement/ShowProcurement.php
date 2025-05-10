@@ -17,7 +17,9 @@ class ShowProcurement extends ViewProcurement
                 return $this->cardStocks->transform(function ($cardStock) {
                     return $cardStock->toShowApi();
                 });
-            })
+            }),
+            'rab_work_lists' => $this->prop_rab_work_lists ?? []
+            // 'procurement_lists' => $this->procurement_lists
         ];
         $arr = $this->mergeArray(parent::toArray($request), $arr);
         return $arr;

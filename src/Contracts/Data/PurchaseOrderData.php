@@ -2,4 +2,6 @@
 
 namespace Hanafalah\ModuleProcurement\Contracts\Data;
 
-interface PurchaseOrderData {}
+use Spatie\LaravelData\Contracts\BaseData;
+
+interface PurchaseOrderData extends BaseData {}

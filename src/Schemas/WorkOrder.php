@@ -2,15 +2,11 @@
 
 namespace Hanafalah\ModuleProcurement\Schemas;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Hanafalah\ModuleProcurement\{
-    Supports\BaseModuleProcurement
-};
 use Hanafalah\ModuleProcurement\Contracts\Schemas\WorkOrder as ContractsWorkOrder;
 use Hanafalah\ModuleProcurement\Contracts\Data\WorkOrderData;
 
-class WorkOrder extends BaseModuleProcurement implements ContractsWorkOrder
+class WorkOrder extends PurchaseOrder implements ContractsWorkOrder
 {
     protected string $__entity = 'WorkOrder';
     public static $work_order_model;
@@ -24,12 +20,30 @@ class WorkOrder extends BaseModuleProcurement implements ContractsWorkOrder
     ];
 
     public function prepareStoreWorkOrder(WorkOrderData $work_order_dto): Model{
-        $work_order = $this->usingEntity()->updateOrCreate([
-                        'id' => $work_order_dto->id ?? null
-                    ], [
-                        'name' => $work_order_dto->name
-                    ]);
+        $work_order = $this->prepareStorePurchaseOrder($work_order_dto);
+        $this->initializeProcurementDTO($work_order,$work_order_dto);
+        $work_order->load('procurement');
+        $procurement = &$work_order->procurement;
+        $work_order_dto->id ??= $work_order->getKey();
+
+        if (isset($work_order_dto->purchase_orders) && count($work_order_dto->purchase_orders)){
+            $procurment_dto       = &$work_order_dto->procurement;
+            $purchasing_total_tax = &$procurment_dto->props->total_tax;
+            foreach ($work_order_dto->purchase_orders as $order_dto){
+                $order_dto->parent_id                     = $work_order->getKey();
+                $order_dto->procurement->props->tax       = clone $work_order_dto->procurement->props->tax;
+                $order_dto->procurement->props->total_tax = clone $work_order_dto->procurement->props->total_tax;
+                $po = $this->schemaContract('purchase_order')->prepareStorePurchaseOrder($order_dto);
+                $po_procurement = $po->procurement;
+                $purchasing_total_tax->total += $po_procurement->total_tax['total'];
+                $purchasing_total_tax->pph   += $po_procurement->total_tax['pph'];
+                $purchasing_total_tax->ppn   += $po_procurement->total_tax['ppn'];
+                $procurement->total_cogs     += $po_procurement->total_tax['total'];
+            }
+        }
+
         $this->fillingProps($work_order,$work_order_dto->props);
+        $this->fillingProps($work_order->procurement,$work_order_dto->procurement->props);
         $work_order->save();
         return static::$work_order_model = $work_order;
     }
