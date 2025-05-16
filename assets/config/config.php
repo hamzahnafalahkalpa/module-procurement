@@ -29,5 +29,6 @@ return [
     ],
     'warehouse' => null, //add your warehouse model here
     'author'    => null, //add your employee model here
+    'approval'  => null,
     'selling_price_update_method' => 'Average' //'Minimum','Average'
 ];
