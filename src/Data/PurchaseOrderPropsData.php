@@ -14,9 +14,9 @@ class PurchaseOrderPropsData extends Data implements DataPurchaseOrderPropsData
     #[MapName('tax')]
     public ?TaxData $tax = null;
 
-    #[MapInputName('approval')]
-    #[MapName('approval')]
-    public ?ApprovalData $approval = null;
+    // #[MapInputName('approval')]
+    // #[MapName('approval')]
+    // public ?ApprovalData $approval = null;
 
     #[MapInputName('props')]
     #[MapName('props')]

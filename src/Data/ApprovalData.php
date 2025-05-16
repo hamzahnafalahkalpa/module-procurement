@@ -10,7 +10,7 @@ use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapName;
 
-class ProcurementData extends Data implements DataProcurementData{
+class ApprovalData extends Data implements DataProcurementData{
     #[MapName('id')] 
     #[MapInputName('id')] 
     public mixed $id = null;
