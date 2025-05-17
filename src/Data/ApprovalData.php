@@ -18,13 +18,19 @@ class ApprovalData extends Data implements DataProcurementData{
         $new   = static::new();
         $model_name = config('module-procurement.approval');
         foreach ($props as $key => $prop) {
-            $name = Str::replace('_id','',$key);
-            $model = $new->{$model_name.'Model'}()->findOrFail($prop);
-
-            $props['prop_'.$name] = [
-                'id'   => $prop,
-                'name' => $model->name ?? null
-            ];
+            if (Str::endsWith($key, '_id')){
+                $name = Str::replace('_id','',$key);
+                if (!isset($props[$name])){
+                    if (isset($prop)) $model = $new->{$model_name.'Model'}()->findOrFail($prop);
+                    
+                    $props[$name] = [
+                        'id'     => $prop,
+                        'status' => null,
+                        'name'   => $model->name ?? null,
+                        'at'     => $model->at ?? null
+                    ];
+                }
+            }
         }
         return $data;
     }

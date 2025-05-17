@@ -8,6 +8,7 @@ use Hanafalah\ModuleProcurement\{
 };
 use Hanafalah\ModuleProcurement\Contracts\Schemas\Purchasing as ContractsPurchasing;
 use Hanafalah\ModuleProcurement\Contracts\Data\PurchasingData;
+use Hanafalah\ModuleProcurement\Contracts\Data\PurchasingUpdateData;
 
 class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
 {
@@ -91,5 +92,13 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
         ];
         $purchase_request_model->save();
         return $purchase_request_model;
+    }
+
+    public function prepareUpdatePurchasing(PurchasingUpdateData $purchasing_dto): Model
+    {
+        $model = $this->usingEntity()->findOrFail($purchasing_dto->id);
+        $model->approval = $purchasing_dto->approval->props;
+        $model->save();
+        return static::$purchasing_model = $model;
     }
 }
