@@ -9,6 +9,14 @@ use Spatie\LaravelData\Attributes\MapName;
 use Illuminate\Support\Str;
 
 class ApprovalData extends Data implements DataProcurementData{
+    #[MapName('note')] 
+    #[MapInputName('note')] 
+    public ?string $note = null;
+
+    #[MapName('status')] 
+    #[MapInputName('status')] 
+    public ?string $status = null;
+
     #[MapName('props')] 
     #[MapInputName('props')] 
     public ?array $props = null;

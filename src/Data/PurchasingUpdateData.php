@@ -20,4 +20,9 @@ class PurchasingUpdateData extends Data implements DataPurchasingUpdateData
     #[MapInputName('approval')]
     #[MapName('approval')]
     public ?ApprovalData $approval = null;
+
+    #[MapInputName('props')]
+    #[MapName('props')]
+    public ?array $props = null;
+
 }

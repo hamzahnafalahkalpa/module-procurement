@@ -97,7 +97,13 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
     public function prepareUpdatePurchasing(PurchasingUpdateData $purchasing_dto): Model
     {
         $model = $this->usingEntity()->findOrFail($purchasing_dto->id);
-        $model->approval = $purchasing_dto->approval->props;
+        $model->approval = $purchasing_dto->approval;
+        if (isset($purchasing_dto->props['status'])){
+            $procurement = $model->procurement;
+            $procurement->status = $purchasing_dto->props['status'];
+            $procurement->save();
+        }
+        $this->fillingProps($model,$purchasing_dto->props);
         $model->save();
         return static::$purchasing_model = $model;
     }
