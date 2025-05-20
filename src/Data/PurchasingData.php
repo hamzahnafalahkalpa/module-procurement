@@ -38,5 +38,5 @@ class PurchasingData extends Data implements DataPurchasingData
 
     #[MapInputName('props')]
     #[MapName('props')]
-    public ?PurchaseOrderPropsData $props = null;
+    public ?PurchasingPropsData $props = null;
 }
