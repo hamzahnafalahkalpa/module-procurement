@@ -20,13 +20,13 @@ class ViewProcurement extends ApiResource
             'warehouse'        => $this->prop_warehouse,
             'reported_at'      => $this->reported_at,
             'status'           => $this->status,
-            'created_at'       => $this->created_at,
-            'updated_at'       => $this->updated_at,
             'total_cogs'       => $this->total_cogs,
             'total_tax'        => $this->total_tax,
             'transaction'      => $this->relationValidation('transaction', function () {
                 return $this->transaction->toViewApi();
-            })
+            }),
+            'created_at'       => $this->created_at,
+            'updated_at'       => $this->updated_at,
         ];
         return $arr;
     }
