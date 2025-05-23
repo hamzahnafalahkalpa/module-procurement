@@ -34,6 +34,7 @@ class ReceiveOrder extends BaseModuleProcurement implements ContractsReceiveOrde
             "sender_name"        => $receive_order_dto->sender_name
         ]);
         $this->initializeProcurementDTO($receive_order,$receive_order_dto);
+        $receive_order_dto->props['received_file'] = $receive_order->setupFile($receive_order_dto->received_file);
         $this->fillingProps($receive_order,$receive_order_dto->props);
         $receive_order->save();
         return static::$receive_order_model = $receive_order;

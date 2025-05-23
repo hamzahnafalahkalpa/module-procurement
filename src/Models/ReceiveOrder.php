@@ -4,6 +4,7 @@ namespace Hanafalah\ModuleProcurement\Models;
 
 use Hanafalah\LaravelHasProps\Concerns\HasProps;
 use Hanafalah\LaravelSupport\Concerns\Support\HasActivity;
+use Hanafalah\LaravelSupport\Concerns\Support\HasFileUpload;
 use Hanafalah\LaravelSupport\Models\BaseModel;
 use Hanafalah\ModuleProcurement\Concerns\Procurement\HasProcurement;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,7 +16,8 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
 class ReceiveOrder extends BaseModel
 {
-    use HasUlids, HasProps, SoftDeletes, HasProcurement, HasActivity;
+    use HasUlids, HasProps, SoftDeletes, HasProcurement, HasActivity,
+        HasFileUpload;
     
     public $incrementing  = false;
     protected $keyType    = 'string';
@@ -34,6 +36,10 @@ class ReceiveOrder extends BaseModel
         static::creating(function ($query) {
             $query->receive_order_code ??= static::hasEncoding('RECEIVE_ORDER');
         });
+    }
+
+    protected function getFileNameAttribute(): string|callable{
+        return 'received_file';
     }
 
     public function viewUsingRelation(): array{

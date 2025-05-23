@@ -4,6 +4,7 @@ namespace Hanafalah\ModuleProcurement\Data;
 
 use Hanafalah\LaravelSupport\Supports\Data;
 use Hanafalah\ModuleProcurement\Contracts\Data\ReceiveOrderData as DataReceiveOrderData;
+use Illuminate\Http\UploadedFile;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Attributes\Validation\DateFormat;
@@ -38,6 +39,10 @@ class ReceiveOrderData extends Data implements DataReceiveOrderData
     #[MapInputName('purchasing_id')]
     #[MapName('purchasing_id')]
     public mixed $purchasing_id;
+
+    #[MapInputName('received_file')]
+    #[MapName('received_file')]
+    public string|UploadedFile|null $received_file = null;
 
     #[MapInputName('purchase_order_id')]
     #[MapName('purchase_order_id')]
