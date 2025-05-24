@@ -29,7 +29,8 @@ class PurchaseOrder extends BaseModel
     protected $casts = [
         'name'           => 'string',
         'funding_name'   => 'string',
-        'supplier_name'  => 'string'
+        'supplier_name'  => 'string',
+        'purchasing_id'  => 'string'
     ];
 
     protected static function booted(): void{
