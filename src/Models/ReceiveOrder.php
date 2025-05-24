@@ -47,7 +47,9 @@ class ReceiveOrder extends BaseModel
     }
 
     public function showUsingRelation(): array{
-        return ['procurement.cardStocks.stockMovement','purchaseOrder'];
+        return ['procurement.cardStocks' => function($query){
+            $query->with(['item','stockMovement']);
+        },'purchaseOrder'];
     }
 
     public function getViewResource(){

@@ -102,6 +102,7 @@ class Procurement extends PackageManagement implements ContractsProcurement
                 $card_stock_dto->transaction_id            = $transaction_id;
                 $card_stock_dto->reference_id              = $procurement->getKey();
                 $card_stock_dto->reference_type            = $procurement->getMorphClass();
+                $card_stock_dto->props->props['prop_reference']['name'] ??= $procurement->name;
                 if (isset($card_stock_dto->stock_movement)){
                     $stock_movement_dto                    = &$card_stock_dto->stock_movement;
                     $stock_movement_dto->direction       ??= Direction::IN->value;
