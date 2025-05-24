@@ -18,6 +18,7 @@ class ViewReceiveOrder extends ApiResource
       
       'id'                => $this->id, 
       'name'              => $this->name, 
+      'receive_order_code' => $this->receive_order_code,
       'receipt_code'      => $this->receipt_code,
       'received_at'       => $this->received_at,
       'sender_name'       => $this->sender_name,

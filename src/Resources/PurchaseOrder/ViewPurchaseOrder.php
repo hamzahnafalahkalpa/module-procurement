@@ -17,6 +17,7 @@ class ViewPurchaseOrder extends ApiResource
     $arr = [
       'id'            => $this->id,
       'tax'           => $this->tax,
+      'purchase_order_code' => $this->purchase_order_code,
       'supplier_id'   => $this->supplier_id,
       'supplier'      => $this->prop_supplier,
       'funding'       => $this->prop_funding,

@@ -14,7 +14,9 @@ class ViewWorkOrder extends ViewPurchaseOrder
    */
   public function toArray(\Illuminate\Http\Request $request): array
   {
-    $arr = [];
+    $arr = [
+      'work_order_code' => $this->work_order_code
+    ];
     $arr = $this->mergeArray(parent::toArray($request),$arr);
     return $arr;
   }

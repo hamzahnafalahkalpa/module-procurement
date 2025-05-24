@@ -16,6 +16,7 @@ class ViewPurchasing extends ApiResource
   {
     $arr = [
       'id'          => $this->id,
+      'purchasing_code' => $this->purchasing_code,
       'name'        => $this->name,
       'note'        => $this->note,
       'approval'    => $this->approval,
