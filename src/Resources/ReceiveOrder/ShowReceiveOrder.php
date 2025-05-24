@@ -16,6 +16,9 @@ class ShowReceiveOrder extends ViewReceiveOrder
       'procurement' => $this->relationValidation('procurement',function(){
         return $this->procurement->toShowApi();
       }),
+      'purchase_order' => $this->relationValidation('purchaseOrder',function(){
+        return $this->purchaseOrder->toShowApi();
+      })
     ];
     $arr = $this->mergeArray(parent::toArray($request),$arr);
     return $arr;
