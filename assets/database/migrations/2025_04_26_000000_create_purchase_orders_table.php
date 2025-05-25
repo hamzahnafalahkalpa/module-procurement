@@ -39,7 +39,7 @@ return new class extends Migration
                 $table->foreignIdFor($funding::class)->nullable()->index()
                       ->constrained()->restrictOnDelete()->cascadeOnUpdate();
 
-                $table->string('supplier_type',10)->nullable();
+                $table->string('supplier_type',50)->nullable();
                 $table->string('supplier_id',36)->nullable();
 
                 $table->foreignIdFor($purchasing::class)->nullable()->index()

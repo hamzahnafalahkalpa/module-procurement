@@ -29,9 +29,9 @@ class WorkOrderData extends DataPurchaseOrderData implements DataWorkOrderData
         if (isset($data->supplier_id) && $data->supplier_type == 'SubContractor' && !isset($props['prop_sub_contractor']['name'])){
             $sub_contractor = self::new()->SubContractorModel()->findOrFail($data->supplier_id);
             $props['prop_sub_contractor']['id']   = $sub_contractor->name;
+            $props['prop_sub_contractor']['flag'] = 'SubContractor';
             $props['prop_sub_contractor']['name'] = $sub_contractor->name;
         }
-
         return $data;
     }
 }

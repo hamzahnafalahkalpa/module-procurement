@@ -21,6 +21,7 @@ class ViewPurchaseOrder extends ApiResource
       'supplier_id'   => $this->supplier_id,
       'supplier'      => $this->prop_supplier,
       'funding'       => $this->prop_funding,
+      'flag'          => $this->flag,
       'procurement' => $this->relationValidation('procurement',function(){
         return $this->procurement->toViewApi();
       }),
