@@ -88,7 +88,6 @@ class Procurement extends PackageManagement implements ContractsProcurement
             $this->ProcurementServiceModel()->where('procurement_id', $procurement->getKey())
                  ->whereNotIn('id', $keep)->delete();
         } else {
-            // $this->ProcurementServiceModel()->where('procurement_id', $procurement->getKey())->delete();
         }
     }
 
