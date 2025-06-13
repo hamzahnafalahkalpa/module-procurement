@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @see \Hanafalah\ModuleProcurement\Schemas\PurchaseOrder
+ * @method mixed export(string $type)
  * @method self conditionals(mixed $conditionals)
  * @method bool deletePurchaseOrder()
  * @method bool prepareDeletePurchaseOrder(? array $attributes = null)

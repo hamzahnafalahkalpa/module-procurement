@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BaseModuleProcurement extends PackageManagement implements DataManagement
 {
-    /** @var array */
+    protected $__config_name = 'module-procurement';
     protected $__module_procurement_config = [];
 
     /**
