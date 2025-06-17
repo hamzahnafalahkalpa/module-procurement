@@ -2,30 +2,22 @@
 
 namespace Hanafalah\ModuleProcurement\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Hanafalah\LaravelHasProps\Concerns\HasProps;
-use Hanafalah\LaravelSupport\Models\BaseModel;
+use Hanafalah\ModuleOrganization\Models\Organization;
 use Hanafalah\ModuleProcurement\Resources\Supplier\ShowSupplier;
 use Hanafalah\ModuleProcurement\Resources\Supplier\ViewSupplier;
 
-class Supplier extends BaseModel
+class Supplier extends Organization
 {
-    use HasProps, SoftDeletes;
+    protected $table = 'organizations';
 
-    protected $list = [
-        'id', 'name', 'phone', 'description', 'address', 'props'
-    ];
-
-    protected $casts = [
-        'name' => 'string',
-    ];
-
-    public function viewUsingRelation(): array {
-        return [];
-    }
-
-    public function showUsingRelation(): array {
-        return [];
+    protected static function booted(): void{
+        parent::booted();
+        static::addGlobalScope('flag',function($query){
+            $query->flagIn('Supplier');
+        });
+        static::creating(function ($query) {
+            $query->flag = 'Supplier';
+        });
     }
 
     public function getViewResource(){

@@ -2,9 +2,9 @@
 
 namespace Hanafalah\ModuleProcurement\Resources\Supplier;
 
-use Hanafalah\LaravelSupport\Resources\ApiResource;
+use Hanafalah\ModuleOrganization\Resources\Organization\ViewOrganization;
 
-class ViewSupplier extends ApiResource
+class ViewSupplier extends ViewOrganization
 {
     /**
      * Transform the resource into an array.

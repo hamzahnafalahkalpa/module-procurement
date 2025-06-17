@@ -2,4 +2,6 @@
 
 namespace Hanafalah\ModuleProcurement\Contracts\Data;
 
-interface SupplierData{}
+use Hanafalah\ModuleOrganization\Contracts\Data\OrganizationData;
+
+interface SupplierData extends OrganizationData{}
