@@ -11,13 +11,16 @@ use Hanafalah\ModuleProcurement\Resources\PurchaseOrder\{
     ViewPurchaseOrder,
     ShowPurchaseOrder
 };
+use Hanafalah\ModuleTransaction\Concerns\HasJournalEntry;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
 use Illuminate\Support\Str;
 
 class PurchaseOrder extends BaseModel
 {
-    use HasUlids, HasProps, SoftDeletes, HasProcurement, HasActivity;
+    use HasUlids, HasProps, SoftDeletes, 
+        HasProcurement, HasActivity;
+        // HasJournalEntry;
     
     public $incrementing  = false;
     protected $keyType    = 'string';

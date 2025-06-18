@@ -7,7 +7,7 @@
   },
   "authors": [
     {
-      "name": "hamzah",
+      "name": "hamzah nur al falah",
       "email": "hamzahnafalah@gmail.com"
     }
   ],
@@ -23,6 +23,7 @@
     "hanafalah/module-item": "1.x-dev as 1.0",
     "hanafalah/laravel-support": "1.x-dev as 1.0",
     "hanafalah/module-transaction": "1.x-dev as 1.0",
-    "hanafalah/module-funding": "1.x-dev as 1.0"
+    "hanafalah/module-funding": "1.x-dev as 1.0",
+    "hanafalah/module-payment": "1.x-dev as 1.0"
   }
 }
