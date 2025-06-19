@@ -10,6 +10,7 @@ use Hanafalah\ModuleProcurement\Contracts\Data\SupplierData;
 
 /**
  * @see \Hanafalah\ModuleProcurement\Schemas\Supplier
+ * @method self setParamLogic(string $logic, bool $search_value = false, ?array $optionals = [])
  * @method self conditionals(mixed $conditionals)
  * @method mixed export(string $type)
  * @method bool deleteSupplier()

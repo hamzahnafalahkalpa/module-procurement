@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @see \Hanafalah\ModuleProcurement\Schemas\ReceiveOrder
+ * @method self setParamLogic(string $logic, bool $search_value = false, ?array $optionals = [])
  * @method self conditionals(mixed $conditionals)
  * @method bool deleteReceiveOrder()
  * @method bool prepareDeleteReceiveOrder(? array $attributes = null)
