@@ -2,6 +2,7 @@
 
 namespace Hanafalah\ModuleProcurement\Data;
 
+use Carbon\Carbon;
 use Hanafalah\LaravelSupport\Supports\Data;
 use Hanafalah\ModuleProcurement\Contracts\Data\PurchasingPropsData;
 use Hanafalah\ModuleProcurement\Contracts\Data\PurchasingUpdateData as DataPurchasingUpdateData;
@@ -17,6 +18,10 @@ class PurchasingUpdateData extends Data implements DataPurchasingUpdateData
     #[MapInputName('type')]
     #[MapName('type')]
     public string $type;
+
+    #[MapInputName('reported_at')]
+    #[MapName('reported_at')]
+    public ?Carbon $reported_at = null;
 
     #[MapInputName('props')]
     #[MapName('props')]

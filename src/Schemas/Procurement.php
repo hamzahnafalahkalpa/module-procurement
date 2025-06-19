@@ -32,10 +32,10 @@ class Procurement extends PackageManagement implements ContractsProcurement
             'author_id'      => $procurement_dto->author_id ?? null,
             'author_type'    => $procurement_dto->author_type ?? null,
             'warehouse_id'   => $procurement_dto->warehouse_id,
-            'warehouse_type' => $procurement_dto->warehouse_type
+            'warehouse_type' => $procurement_dto->warehouse_type,
+            'name'           => $procurement_dto->name
         ]);
 
-        // static::$procurement_model = &$procurement;
         $procurement_dto->total_cogs   ??= 0;
         $procurement->load("transaction");
         $this->prepareStoreCardStock($procurement_dto, $procurement);
@@ -52,7 +52,6 @@ class Procurement extends PackageManagement implements ContractsProcurement
         $procurement->total_cogs = $procurement_dto->total_cogs + $procurement_dto->props->total_tax?->total ?? 0;
         $this->fillingProps($procurement,$procurement_dto->props);
         $procurement->save();
-        $this->forgetTags('procurement');
         return static::$procurement_model = $procurement;
     }
 

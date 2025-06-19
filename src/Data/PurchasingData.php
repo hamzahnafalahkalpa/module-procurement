@@ -39,4 +39,8 @@ class PurchasingData extends Data implements DataPurchasingData
     #[MapInputName('props')]
     #[MapName('props')]
     public ?PurchasingPropsData $props = null;
+
+    public static function before(array &$attributes){
+        $attributes['procurement']['name'] = $attributes['name'];
+    }
 }

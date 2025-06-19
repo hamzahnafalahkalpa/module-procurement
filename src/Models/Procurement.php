@@ -31,7 +31,6 @@ class Procurement extends BaseModel
         'reported_at'    => 'date',
         'author_name'    => 'string',
         'warehouse_name' => 'string',
-        'journal_reported_at'
     ];
 
     public function getPropsQuery(): array
@@ -50,10 +49,6 @@ class Procurement extends BaseModel
             }
             if (!isset($query->status)) $query->status = Enums\Procurement\Status::DRAFT->value;
         });
-    }
-
-    public function isReported():bool{
-        return $this->reference_type == 'PurchaseOrder' && $this->isDirty('reported_at') && isset($this->reported_at);
     }
 
     public function viewUsingRelation(): array{
