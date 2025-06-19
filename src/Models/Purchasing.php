@@ -46,7 +46,7 @@ class Purchasing extends BaseModel
             'purchaseOrders' => function($query){
                 $query->with([
                     'procurement.cardStocks' => function($query){
-                        $query->with(['item', 'stockMovement']);
+                        $query->with(['item.reference', 'stockMovement']);
                     }
                 ]);
             }

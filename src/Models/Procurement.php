@@ -7,13 +7,14 @@ use Hanafalah\LaravelSupport\Concerns\Support\HasActivity;
 use Hanafalah\LaravelSupport\Models\BaseModel;
 use Hanafalah\ModuleProcurement\Enums;
 use Hanafalah\ModuleProcurement\Resources\Procurement\{ShowProcurement, ViewProcurement};
-use Hanafalah\ModuleTransaction\Concerns\HasTransaction;
+use Hanafalah\ModuleTransaction\Concerns\HasJournalEntry;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Procurement extends BaseModel
 {
-    use HasUlids, HasProps, SoftDeletes, HasTransaction, HasActivity;
+    use HasUlids, HasProps, SoftDeletes, HasActivity,
+        HasJournalEntry;
 
     public $incrementing  = false;
     protected $primaryKey = 'id';
@@ -29,7 +30,8 @@ class Procurement extends BaseModel
     protected $casts = [
         'reported_at'    => 'date',
         'author_name'    => 'string',
-        'warehouse_name' => 'string'
+        'warehouse_name' => 'string',
+        'journal_reported_at'
     ];
 
     public function getPropsQuery(): array
@@ -48,6 +50,10 @@ class Procurement extends BaseModel
             }
             if (!isset($query->status)) $query->status = Enums\Procurement\Status::DRAFT->value;
         });
+    }
+
+    public function isReported():bool{
+        return $this->reference_type == 'PurchaseOrder' && $this->isDirty('reported_at') && isset($this->reported_at);
     }
 
     public function viewUsingRelation(): array{
