@@ -26,21 +26,20 @@ class ApprovalData extends Data implements DataApprovalData{
         $new   = static::new();
         $model_name = config('module-procurement.approval');
         if (isset($model_name)){
-            foreach ($props as $key => $prop) {
-                if (Str::endsWith($key, '_id')){
+            $new_approver = $props['approver'];
+            foreach ($props['approver'] as $key => $prop) {
+                if (!is_array($prop) && Str::endsWith($key, '_id') && isset($prop)){
                     $name = Str::replace('_id','',$key);
-                    if (!isset($props[$name])){
-                        if (isset($prop)) $model = $new->{$model_name.'Model'}()->findOrFail($prop);
-                        
-                        $props[$name] = [
-                            'id'     => $prop,
-                            'status' => null,
-                            'name'   => $model->name ?? null,
-                            'at'     => $model->at ?? null
-                        ];
-                    }
+                    $model = $new->{$model_name.'Model'}()->findOrFail($prop);
+                    $new_approver[$name] = [
+                        'id'     => $prop,
+                        'status' => null,
+                        'name'   => $model->name ?? null,
+                        'at'     => $model->at ?? null
+                    ];
                 }
             }
+            $props['approver'] = $new_approver;
         }
         return $data;
     }
