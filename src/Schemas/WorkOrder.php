@@ -5,6 +5,7 @@ namespace Hanafalah\ModuleProcurement\Schemas;
 use Illuminate\Database\Eloquent\Model;
 use Hanafalah\ModuleProcurement\Contracts\Schemas\WorkOrder as ContractsWorkOrder;
 use Hanafalah\ModuleProcurement\Contracts\Data\WorkOrderData;
+use Hanafalah\ModuleProcurement\Contracts\Data\WorkOrderUpdateData;
 
 class WorkOrder extends PurchaseOrder implements ContractsWorkOrder
 {
@@ -54,5 +55,10 @@ class WorkOrder extends PurchaseOrder implements ContractsWorkOrder
         $this->fillingProps($work_order->procurement,$work_order_dto->procurement->props);
         $work_order->save();
         return static::$work_order_model = $work_order;
+    }
+
+    public function prepareUpdatePurchasing(WorkOrderUpdateData $purchasing_dto): Model{
+        $model = $this->prepareUpdatePurchaseOrder($purchasing_dto);
+        return static::$work_order_model = $model;
     }
 }
