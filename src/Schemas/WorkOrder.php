@@ -50,15 +50,31 @@ class WorkOrder extends PurchaseOrder implements ContractsWorkOrder
                 $procurement->total_cogs     += $po_procurement->total_tax['total'];
             }
         }
-
         $this->fillingProps($work_order,$work_order_dto->props);
         $this->fillingProps($work_order->procurement,$work_order_dto->procurement->props);
         $work_order->save();
+        $work_order->procurement->save();
         return static::$work_order_model = $work_order;
     }
 
-    public function prepareUpdatePurchasing(WorkOrderUpdateData $purchasing_dto): Model{
-        $model = $this->prepareUpdatePurchaseOrder($purchasing_dto);
+    public function prepareUpdateWorkOrder(WorkOrderUpdateData $work_order_dto): Model{
+        $model       = $this->usingEntity()->with('purchaseOrders')->findOrFail($work_order_dto->id);
+        $approver    = &$work_order_dto->props->approval->props['approver'];
+        $approver    = array_merge($model->approval['approver'],$approver);
+        $procurement = $model->procurement;
+        if (isset($work_order_dto->reported_at)){
+            $procurement->reported_at  = $work_order_dto->reported_at;
+            foreach ($model->purchaseOrders as $purchaseOrder) {
+                $po_procurement              = $purchaseOrder->procurement;
+                $po_procurement->reported_at = $work_order_dto->reported_at;
+                $transaction = $purchaseOrder->procurement->transaction;
+                $transaction->journal_reported_at = $work_order_dto->reported_at;
+                $transaction->save();
+            }
+        }
+        $procurement->save();
+        $this->fillingProps($model,$work_order_dto->props);
+        $model->save();
         return static::$work_order_model = $model;
     }
 }

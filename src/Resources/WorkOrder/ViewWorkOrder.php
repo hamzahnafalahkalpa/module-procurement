@@ -15,7 +15,8 @@ class ViewWorkOrder extends ViewPurchaseOrder
   public function toArray(\Illuminate\Http\Request $request): array
   {
     $arr = [
-      'work_order_code' => $this->work_order_code
+      'work_order_code' => $this->work_order_code,
+      'approval' => $this->approval
     ];
     $arr = $this->mergeArray(parent::toArray($request),$arr);
     return $arr;
