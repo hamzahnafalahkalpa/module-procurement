@@ -20,6 +20,7 @@ class ViewProcurement extends ApiResource
             'warehouse'        => $this->prop_warehouse,
             'reported_at'      => $this->reported_at,
             'status'           => $this->status,
+            'before_tax'       => $this->total_cogs ?? 0 - $this->total_tax->total ?? 0,
             'total_cogs'       => $this->total_cogs,
             'total_tax'        => $this->total_tax,
             'transaction'      => $this->relationValidation('transaction', function () {

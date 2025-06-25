@@ -26,7 +26,8 @@ class PurchaseOrder extends BaseModel
     public $list = [
         'id', 'parent_id', 'name', 'supplier_type', 
         'supplier_id', 'funding_id', 'flag', 
-        'purchasing_id', 'received_address', 'props'
+        'purchasing_id', 'received_address', 
+        'phone', 'props'
     ];
 
     protected $casts = [
