@@ -35,6 +35,10 @@ class PurchaseOrderData extends Data implements DataPurchaseOrderData
     #[MapName('funding_id')]
     public mixed $funding_id;
 
+    #[MapInputName('received_address')]
+    #[MapName('received_address')]
+    public ?string $received_address = null;
+
     #[MapInputName('procurement')]
     #[MapName('procurement')]
     public ?ProcurementData $procurement = null;
@@ -44,29 +48,16 @@ class PurchaseOrderData extends Data implements DataPurchaseOrderData
     public ?PurchaseOrderPropsData $props = null;
 
     public static function after(mixed $data): mixed{
+        $new = static::new();
         $props = &$data->props->props;
 
-        $props['prop_supplier'] = [
-            'id'   => null,
-            'flag' => null,
-            'name' => null
-        ];
-
-        if (isset($data->supplier_id) && $data->supplier_type == 'Supplier' && !isset($props['prop_supplier']['name'])){
-            $supplier = self::new()->SupplierModel()->findOrFail($data->supplier_id);
-            $props['prop_supplier']['id'] = $supplier->name;
-            $props['prop_supplier']['flag'] = $supplier->name;
-            $props['prop_supplier']['name'] = $supplier->name;
-        }
-
-        $props['prop_funding'] = [
-            'id' => $data->funding_id ?? null,
-            'name' => null
-        ];
-        if (isset($props['prop_funding']['id']) && !isset($props['prop_funding']['name'])){
-            $funding = self::new()->FundingModel()->findOrFail($props['prop_funding']['id']);
-            $props['prop_funding']['name'] = $funding->name;
-        }
+        $supplier = $new->SupplierModel();
+        if (isset($data->supplier_id) && $data->supplier_type == 'Supplier') $supplier = $supplier->findOrFail($data->supplier_id);
+        $props['prop_supplier'] = $supplier->toViewApi()->only(['id','flag','name']);
+        
+        $funding = $new->SupplierModel();
+        if (isset($props['prop_funding']['id']) && !isset($props['prop_funding']['name'])) $funding = $funding->findOrFail($data->supplier_id);
+        $props['prop_funding'] = $funding->toViewApi()->only(['id','name']);
 
         $props['prop_purchasing'] = [
             'id' => $data->purchasing_id ?? null,

@@ -46,6 +46,7 @@ return new class extends Migration
                       ->constrained()->restrictOnDelete()->cascadeOnUpdate();
 
                 $table->string('flag',100)->nullable();
+                $table->text('received_address')->nullable();
                       
                 $table->json('props')->nullable();
                 $table->timestamps();
