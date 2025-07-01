@@ -23,7 +23,7 @@ class ViewReceiveOrder extends ApiResource
       'received_at'       => $this->received_at,
       'sender_name'       => $this->sender_name,
       'procurement'       => $this->relationValidation('procurement',function(){
-        return $this->procurement->toViewApi();
+        return $this->procurement->toViewApi()->resolve();
       }),
       'purchasing_id'     => $this->purchasing_id, 
       'purchase_order_id' => $this->purchase_order_id, 

@@ -72,37 +72,27 @@ class ProcurementData extends Data implements DataProcurementData{
     public static function after(ProcurementData $data): ProcurementData{
         $new   = static::new();
         $props = &$data->props->props;
-        $props['prop_reference'] = [
-            'id'   => $data->reference_id ?? null,
-            'type' => $data->reference_type ?? null,
-            'name' => $data->name ?? null
-        ];
 
-        if (!isset($props['prop_reference']['name']) && isset($data->reference_id)){
-            $reference = $new->{$data->reference_type.'Model'}()->findOrFail($data->reference_id);
-            $props['prop_reference']['name'] = $reference->name;
+        if (isset($data->reference_type)){
+            $reference = $new->{$data->reference_type.'Model'}();
+            if (isset($data->reference_id)) $reference = $reference->findOrFail($data->reference_id);
+            $props['prop_reference'] = $reference->toViewApi()->resolve();
         }
 
-        $props['prop_warehouse'] = [
-            'id'   => $data->warehouse_id ?? null,
-            'name' => null
-        ];
+        $data->warehouse_type ??= config('module-procurement.warehouse');
 
-        if (!isset($props['prop_warehouse']['name']) && isset($data->warehouse_id)){
-            $warehouse = $new->{$data->warehouse_type.'Model'}()->findOrFail($data->warehouse_id);
-            $props['prop_warehouse']['name'] = $warehouse->name;
+        if (isset($data->reference_type)){
+            $warehouse = $new->{$data->warehouse_type.'Model'}();
+            if (isset($data->warehouse_id)) $warehouse = $warehouse->findOrFail($data->warehouse_id);
+            $props['prop_warehouse'] = $warehouse->toViewApi()->resolve();
         }
 
-        $props['prop_author'] = [
-            'id'   => $data->author_id ?? null,
-            'name' => null
-        ];
-
-        if (!isset($props['prop_author']['name']) && isset($data->author_id)){
-            $author = $new->{$data->author_type.'Model'}()->findOrFail($data->author_id);
-            $props['prop_author']['name'] = $author->name;
+        $data->author_type ??= config('module-procurement.author');
+        if (isset($data->author_type)){
+            $author = $new->{$data->author_type.'Model'}();
+            if (isset($data->author_id)) $author = $author->findOrFail($data->author_id);
+            $props['prop_author'] = $author->toViewApi()->resolve();
         }
-
         return $data;
     }
 }

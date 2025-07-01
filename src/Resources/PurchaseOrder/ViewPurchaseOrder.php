@@ -26,11 +26,11 @@ class ViewPurchaseOrder extends ApiResource
       'phone'               => $this->phone,
       'flag'                => $this->flag,
       'procurement'         => $this->relationValidation('procurement',function(){
-        return $this->procurement->toViewApi();
+        return $this->procurement->toViewApi()->resolve();
       }),
       'purchasing'    => $this->prop_purchasing,
       'receive_order' => $this->relationValidation('receiveOrder',function(){
-        return $this->receiveOrder->toViewApi();
+        return $this->receiveOrder->toViewApi()->resolve();
       })
     ];
     return $arr;

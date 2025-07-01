@@ -23,7 +23,7 @@ class ViewPurchaseRequest extends ApiResource
         'created_at'            => $this->created_at,
         'updated_at'            => $this->updated_at,
         'procurement'           => $this->relationValidation('procurement',function(){
-            return $this->procurement->toViewApi();
+            return $this->procurement->toViewApi()->resolve();
         })
     ];
     return $arr;

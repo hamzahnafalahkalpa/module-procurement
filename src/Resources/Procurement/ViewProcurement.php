@@ -24,7 +24,7 @@ class ViewProcurement extends ApiResource
             'total_cogs'       => $this->total_cogs,
             'total_tax'        => $this->total_tax,
             'transaction'      => $this->relationValidation('transaction', function () {
-                return $this->transaction->toViewApi();
+                return $this->transaction->toViewApi()->resolve();
             }),
             'created_at'       => $this->created_at,
             'updated_at'       => $this->updated_at,

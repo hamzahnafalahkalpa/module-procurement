@@ -16,7 +16,7 @@ class ShowProcurement extends ViewProcurement
             'note'  => $this->note,
             'card_stocks' => $this->relationValidation('cardStocks', function () {
                 return $this->cardStocks->transform(function ($cardStock) {
-                    return $cardStock->toShowApi();
+                    return $cardStock->toViewApi()->resolve();
                 });
             }),
             'rab_work_lists' => $this->prop_rab_work_lists ?? []

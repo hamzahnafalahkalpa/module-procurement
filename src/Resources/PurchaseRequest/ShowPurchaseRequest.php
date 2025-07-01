@@ -14,7 +14,7 @@ class ShowPurchaseRequest extends ViewPurchaseRequest
   {
     $arr = [
       'procurement'           => $this->relationValidation('procurement',function(){
-        return $this->procurement->toShowApi();
+        return $this->procurement->toShowApi()->resolve();
       })
     ];
     $arr = $this->mergeArray(parent::toArray($request),$arr);

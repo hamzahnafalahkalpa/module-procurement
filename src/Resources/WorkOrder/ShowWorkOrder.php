@@ -17,7 +17,7 @@ class ShowWorkOrder extends ViewWorkOrder
     $arr = [
       'purchase_orders' => $this->relationValidation('purchaseOrders',function(){
         return $this->purchaseOrders->transform(function($purchaseOrder){
-          return $purchaseOrder->toShowApi();
+          return $purchaseOrder->toShowApi()->resolve();
         });
       })
     ];

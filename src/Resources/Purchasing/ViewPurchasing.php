@@ -21,7 +21,7 @@ class ViewPurchasing extends ApiResource
       'note'        => $this->note,
       'approval'    => $this->approval,
       'procurement' => $this->relationValidation('procurement',function(){
-        return $this->procurement->toViewApi();
+        return $this->procurement->toViewApi()->resolve();
       })
     ];
     return $arr;
