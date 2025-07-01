@@ -22,7 +22,7 @@ class Procurement extends BaseModel
     
     protected $list = [
         'id', 'name', 'reference_type', 'reference_id', 
-        'author_type', 'author_id', 
+        'author_type', 'author_id', 'purchase_label_id',
         'warehouse_type', 'warehouse_id', 'total_cogs',
         'reported_at', 'status', 'props'
     ];
@@ -31,6 +31,7 @@ class Procurement extends BaseModel
         'reported_at'    => 'date',
         'author_name'    => 'string',
         'warehouse_name' => 'string',
+        'purchase_label_id' => 'string'
     ];
 
     public function getPropsQuery(): array
@@ -80,4 +81,5 @@ class Procurement extends BaseModel
     public function warehouse(){return $this->morphTo();}
     public function cardStock(){return $this->morphOneModel('CardStock','reference');}
     public function cardStocks(){return $this->morphManyModel('CardStock','reference');}
+    public function purchaseLabel(){return $this->belongsToModel('PurchaseLabel');}
 }

@@ -19,6 +19,10 @@ class ProcurementData extends Data implements DataProcurementData{
     #[MapInputName('name')] 
     public ?string $name = null;
 
+    #[MapName('purchase_label_id')] 
+    #[MapInputName('purchase_label_id')] 
+    public mixed $purchase_label_id = null;
+
     #[MapName('reference_type')] 
     #[MapInputName('reference_type')] 
     public ?string $reference_type = null;
@@ -81,7 +85,7 @@ class ProcurementData extends Data implements DataProcurementData{
 
         $data->warehouse_type ??= config('module-procurement.warehouse');
 
-        if (isset($data->reference_type)){
+        if (isset($data->warehouse_type)){
             $warehouse = $new->{$data->warehouse_type.'Model'}();
             if (isset($data->warehouse_id)) $warehouse = $warehouse->findOrFail($data->warehouse_id);
             $props['prop_warehouse'] = $warehouse->toViewApi()->resolve();
@@ -93,6 +97,10 @@ class ProcurementData extends Data implements DataProcurementData{
             if (isset($data->author_id)) $author = $author->findOrFail($data->author_id);
             $props['prop_author'] = $author->toViewApi()->resolve();
         }
+        $purchase_label = $new->PurchaseLabelModel();
+        if (isset($data->purchase_label_id)) $purchase_label = $purchase_label->findOrFail($data->purchase_label_id);
+        $props['prop_purchase_label'] = $purchase_label->toViewApi()->resolve();
+
         return $data;
     }
 }

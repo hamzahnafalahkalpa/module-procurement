@@ -51,23 +51,17 @@ class PurchaseOrderData extends Data implements DataPurchaseOrderData
         $new = static::new();
         $props = &$data->props->props;
 
-        $supplier = $new->SupplierModel();
-        if (isset($data->supplier_id) && $data->supplier_type == 'Supplier') $supplier = $supplier->findOrFail($data->supplier_id);
-        $props['prop_supplier'] = $supplier->toViewApi()->only(['id','flag','name']);
+        $supplier = $new->{$data->supplier_type.'Model'}();
+        if (isset($data->supplier_id)) $supplier = $supplier->findOrFail($data->supplier_id);
+        $props['prop_supplier'] = $supplier->toViewApi()->resolve();
         
-        $funding = $new->SupplierModel();
-        if (isset($props['prop_funding']['id']) && !isset($props['prop_funding']['name'])) $funding = $funding->findOrFail($data->supplier_id);
-        $props['prop_funding'] = $funding->toViewApi()->only(['id','name']);
+        $funding = $new->FundingModel();
+        if (isset($data->funding_id)) $funding = $funding->findOrFail($data->funding_id);
+        $props['prop_funding'] = $funding->toViewApi()->resolve();
 
-        $props['prop_purchasing'] = [
-            'id' => $data->purchasing_id ?? null,
-            'name' => null
-        ];
-
-        if (isset($props['prop_purchasing']['id']) && !isset($props['prop_purchasing']['name'])){
-            $purchasing = self::new()->PurchasingModel()->findOrFail($props['prop_purchasing']['id']);
-            $props['prop_purchasing']['name'] = $purchasing->name;
-        }
+        $purchasing = $new->PurchasingModel();
+        if (isset($data->purchasing_id)) $purchasing = $purchasing->findOrFail($data->purchasing_id);
+        $props['prop_purchasing'] = $purchasing->toViewApi()->resolve();
 
         return $data;
     }

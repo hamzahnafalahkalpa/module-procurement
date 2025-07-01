@@ -14,20 +14,20 @@ class ViewProcurement extends ApiResource
     public function toArray(\Illuminate\Http\Request $request): array
     {
         $arr = [
-            'id'               => $this->id,
-            'procurement_code' => $this->procurement_code,
-            'author'           => $this->prop_author,
-            'warehouse'        => $this->prop_warehouse,
-            'reported_at'      => $this->reported_at,
-            'status'           => $this->status,
-            'before_tax'       => $this->total_cogs ?? 0 - $this->total_tax->total ?? 0,
-            'total_cogs'       => $this->total_cogs,
-            'total_tax'        => $this->total_tax,
-            'transaction'      => $this->relationValidation('transaction', function () {
-                return $this->transaction->toViewApi()->resolve();
-            }),
-            'created_at'       => $this->created_at,
-            'updated_at'       => $this->updated_at,
+            'id'                => $this->id,
+            'procurement_code'  => $this->procurement_code,
+            'author'            => $this->prop_author,
+            'warehouse'         => $this->prop_warehouse,
+            'reported_at'       => $this->reported_at,
+            'status'            => $this->status,
+            'before_tax'        => $this->total_cogs ?? 0 - $this->total_tax->total ?? 0,
+            'total_cogs'        => $this->total_cogs,
+            'total_tax'         => $this->total_tax,
+            'transaction'       => $this->prop_transaction,
+            'purchase_label_id' => $this->purchase_label_id,
+            'purchase_label'    => $this->prop_purchase_label,
+            'created_at'        => $this->created_at,
+            'updated_at'        => $this->updated_at,
         ];
         return $arr;
     }

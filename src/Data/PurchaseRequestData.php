@@ -19,6 +19,10 @@ class PurchaseRequestData extends Data implements DataPurchaseRequestData
     #[MapInputName('name')]
     #[MapName('name')]
     public string $name;
+    
+    #[MapInputName('purchase_label_id')]
+    #[MapName('purchase_label_id')]
+    public mixed $purchase_label_id = null;
 
     #[MapInputName('procurement')]
     #[MapName('procurement')]
@@ -43,6 +47,8 @@ class PurchaseRequestData extends Data implements DataPurchaseRequestData
     public ?array $props = null;
 
     public static function after(PurchaseRequestData $data): PurchaseRequestData{
+        $new = static::new();
+
         $data->props['prop_approver'] = [
             'id'   => $data->approver_id ?? null,
             'name' => null
@@ -52,6 +58,7 @@ class PurchaseRequestData extends Data implements DataPurchaseRequestData
             $reference = self::new()->{$data->approver_type.'Model'}()->findOrFail($data->props['prop_approver']['id']);
             $data->props['prop_approver']['name'] = $reference->name;
         }
+        
         return $data;
     }
 }

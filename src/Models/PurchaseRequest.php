@@ -8,8 +8,7 @@ use Hanafalah\LaravelSupport\Models\BaseModel;
 use Hanafalah\ModuleProcurement\Concerns\Procurement\HasProcurement;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Hanafalah\ModuleProcurement\Resources\PurchaseRequest\{
-    ViewPurchaseRequest,
-    ShowPurchaseRequest
+    ViewPurchaseRequest, ShowPurchaseRequest
 };
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
@@ -21,19 +20,21 @@ class PurchaseRequest extends BaseModel
     protected $keyType    = 'string';
     protected $primaryKey = 'id';
     public $list = [
-        'id', 'name', 'approver_type', 'approver_id', 'purchasing_id',
-        'estimate_used_at', 'props'
+        'id', 'name', 'approver_type', 'approver_id',
+        'purchasing_id', 'estimate_used_at', 'props'
     ];
 
     protected $casts = [
         'name' => 'string',
-        'approver_name' => 'string'
+        'approver_name' => 'string',
+        'purchase_label_id' => 'string'
     ];
 
     public function getPropsQuery(): array
     {
         return [
-            'approver_name' => 'props->prop_approver->name'
+            'approver_name' => 'props->prop_approver->name',
+            'purchase_label_id' => 'props->prop_procurement->purchase_label_id'
         ];
     }
 
@@ -65,6 +66,6 @@ class PurchaseRequest extends BaseModel
         return ShowPurchaseRequest::class;
     }
 
-    public function approver(){return $this->belongsToModel('approver');}
-    public function purchasing(){return $this->belongsToModel('purchasing');}
+    public function approver(){return $this->morphTo();}
+    public function purchasing(){return $this->belongsToModel('Purchasing');}
 }

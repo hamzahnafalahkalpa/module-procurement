@@ -32,10 +32,9 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
                         'note' => $purchasing_dto->note
                     ]);
         $this->initializeProcurementDTO($purchasing,$purchasing_dto);
-        $purchasing->load('procurement');
+        $purchasing_dto->props->props['prop_procurement'] = $purchasing->procurement->toViewApi()->resolve();
         $procurement = &$purchasing->procurement;
         $purchasing_dto->id ??= $purchasing->getKey();
-
         $this->updateUsingPurchaseRequests($purchasing_dto, $purchasing_dto->purchase_request_ids ?? [], $procurement)
              ->updateUsingPurchaseRequests($purchasing_dto, $purchasing_dto->purchase_requests ?? [], $procurement);
         if (isset($purchasing_dto->purchase_orders) && count($purchasing_dto->purchase_orders)){

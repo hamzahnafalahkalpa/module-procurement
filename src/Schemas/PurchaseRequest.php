@@ -32,6 +32,8 @@ class PurchaseRequest extends BaseModuleProcurement implements ContractsPurchase
                         'estimate_used_at' => $purchase_request_dto->estimate_used_at
                     ]);
         $this->initializeProcurementDTO($purchase_request,$purchase_request_dto);
+        $purchase_request_dto->props['prop_procurement'] = $purchase_request->procurement->toViewApi()->resolve();
+
         $this->fillingProps($purchase_request,$purchase_request_dto->props);
         $purchase_request->save();
         return static::$purchase_request_model = $purchase_request;

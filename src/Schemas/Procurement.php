@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 use Hanafalah\LaravelSupport\Supports\PackageManagement;
 use Hanafalah\ModuleProcurement\Contracts\Data\ProcurementData;
 use Hanafalah\ModuleProcurement\Enums\Procurement\Status;
-use Hanafalah\ModuleWarehouse\Enums\MainMovement\Direction;
 
 class Procurement extends PackageManagement implements ContractsProcurement
 {
@@ -20,19 +19,14 @@ class Procurement extends PackageManagement implements ContractsProcurement
     protected mixed $__order_by_created_at = 'desc'; //asc, desc, false
 
     public function prepareStoreProcurement(ProcurementData $procurement_dto): Model{
-        if (isset($procurement_dto->warehouse_id)){
-            $procurement_dto->warehouse_type ??= config('module-procurement.warehouse');
-        }else{
-            throw new \Exception('No warehouse id provided', 422);
-        }
-        if (isset($procurement_dto->author_id)) $procurement_dto->author_type ??= config('module-procurement.author');
-        $procurement = $this->ProcurementModel()->updateOrCreate([
+        $procurement = $this->usingEntity()->updateOrCreate([
             'id' => $procurement_dto->id ?? null
         ], [
             'author_id'      => $procurement_dto->author_id ?? null,
             'author_type'    => $procurement_dto->author_type ?? null,
             'warehouse_id'   => $procurement_dto->warehouse_id,
             'warehouse_type' => $procurement_dto->warehouse_type,
+            'purchase_label_id' => $procurement_dto->purchase_label_id,
             'name'           => $procurement_dto->name
         ]);
 
@@ -118,7 +112,6 @@ class Procurement extends PackageManagement implements ContractsProcurement
                 $card_stock->save();
             }
         }
-
         return $procurement;
     }
 
