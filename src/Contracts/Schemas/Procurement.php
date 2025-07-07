@@ -4,24 +4,27 @@ namespace Hanafalah\ModuleProcurement\Contracts\Schemas;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Hanafalah\LaravelSupport\Contracts\Supports\DataManagement;
+use Hanafalah\ModuleProcurement\Contracts\Data\ProcurementData;
 
+/**
+ * @see \Hanafalah\ModuleProcurement\Schemas\Procurement
+ * @method bool deleteProcurement()
+ * @method bool prepareDeleteProcurement(? array $attributes = null)
+ * @method mixed getProcurement()
+ * @method array storeProcurement(? ProcurementData $procurement_dto = null)
+ * @method ?Model prepareShowProcurement(?Model $model = null, ?array $attributes = null)
+ * @method array showProcurement(?Model $model = null)
+ * @method Collection prepareViewProcurementList()
+ * @method array viewProcurementList()
+ * @method LengthAwarePaginator prepareViewProcurementPaginate(PaginateData $paginate_dto)
+ * @method array viewProcurementPaginate(?PaginateData $paginate_dto = null)
+ */
 interface Procurement extends DataManagement
 {
-    public function showUsingRelation(): array;
-    public function getProcurement(): mixed;
-    public function prepareShowProcurement(?Model $model = null, ?array $attributes = null): ?Model;
-    public function showProcurement(?Model $model = null): array;
-    public function prepareStoreProcurement(mixed $attributes = null): Model;
-    public function prepareStoreProcurementItems(mixed $attributes = null): Model;
-    public function storeProcurement(): array;
-    public function prepareProcurementPaginate(mixed $cache_reference_type, ?array $morphs = null, int $perPage = 50, array $columns = ['*'], string $pageName = 'page', ?int $page = null, ?int $total = null): LengthAwarePaginator;
-    public function viewProcurementPaginate(mixed $reference_type, ?array $morphs = null, int $perPage = 50, array $columns = ['*'], string $pageName = 'page', ?int $page = null, ?int $total = null): array;
+    public function prepareStoreProcurement(ProcurementData $procurement_dto): Model;
     public function prepareMainReportProcurement(Model $procurement): Model;
     public function prepareReportProcurement(?array $attributes = null): Model;
     public function reportProcurement(): array;
-    public function prepareDeleteProcurement(?array $attributes = null): bool;
-    public function deleteProcurement(): bool;
     public function procurement(mixed $morphs = null, mixed $conditionals = null): Builder;
 }

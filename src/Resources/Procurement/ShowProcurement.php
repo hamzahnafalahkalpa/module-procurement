@@ -12,24 +12,17 @@ class ShowProcurement extends ViewProcurement
     public function toArray(\Illuminate\Http\Request $request): array
     {
         $arr = [
-            'author' => $this->relationValidation('author', function () {
-                return $this->author->getViewResource();
-            }),
-            'supplier' => $this->relationValidation('supplier', function () {
-                return $this->supplier->getShowResource();
-            }),
-            'funding' => $this->relationValidation('funding', function () {
-                return $this->funding->getShowResource();
-            }),
+            'tax'   => $this->tax,
+            'note'  => $this->note,
             'card_stocks' => $this->relationValidation('cardStocks', function () {
                 return $this->cardStocks->transform(function ($cardStock) {
-                    return $cardStock->getShowResource();
+                    return $cardStock->toViewApi()->resolve();
                 });
-            })
+            }),
+            'rab_work_lists' => $this->prop_rab_work_lists ?? []
+            // 'procurement_lists' => $this->procurement_lists
         ];
         $arr = $this->mergeArray(parent::toArray($request), $arr);
-
-
         return $arr;
     }
 }

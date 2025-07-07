@@ -3,6 +3,6 @@
 namespace Hanafalah\ModuleProcurement;
 
 use Hanafalah\ModuleProcurement\Contracts\ModuleProcurement as ContractsModuleProcurement;
-use Hanafalah\LaravelSupport\Supports\PackageManagement;
+use Hanafalah\ModuleProcurement\Supports\BaseModuleProcurement;
 
-class ModuleProcurement extends PackageManagement implements ContractsModuleProcurement {}
+class ModuleProcurement extends BaseModuleProcurement implements ContractsModuleProcurement {}
