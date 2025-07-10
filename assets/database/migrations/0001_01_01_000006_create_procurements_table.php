@@ -1,6 +1,7 @@
 <?php
 
 use Hanafalah\ModuleProcurement\Models\Procurement;
+use Hanafalah\ModuleProcurement\Models\PurchaseLabel;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,6 +25,8 @@ return new class extends Migration
         $table_name = $this->__table->getTable();
         if (! $this->isTableExists()) {
             Schema::create($table_name, function (Blueprint $table) {
+                $purchase_label = app(config('database.models.PurchaseLabel',PurchaseLabel::class));
+
                 $table->ulid('id')->primary();
                 $table->string('name',255)->nullable();
                 $table->string('reference_type', 50)->nullable();
@@ -33,6 +36,8 @@ return new class extends Migration
                 $table->string('warehouse_type', 50)->nullable();
                 $table->string('warehouse_id', 36)->nullable();
                 $table->string('status', 50)->nullable(false);
+                $table->foreignIdFor($purchase_label::class)->nullable()->index()->constrained()
+                      ->cascadeOnUpdate()->restrictOnDelete();
                 $table->unsignedBigInteger('total_cogs')->default(0)->nullable(false);
                 $table->timestamp('reported_at')->nullable();
                 $table->json('props')->nullable();
