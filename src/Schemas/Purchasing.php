@@ -42,8 +42,13 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
             $purchasing_total_tax = &$procurment_dto->props->total_tax;
             foreach ($purchasing_dto->purchase_orders as $order_dto){
                 $order_dto->purchasing_id                 = $purchasing->getKey();
-                $order_dto->procurement->props->tax       = clone $purchasing_dto->procurement->props->tax;
-                $order_dto->procurement->props->total_tax = clone $purchasing_dto->procurement->props->total_tax;
+                try {
+                    $order_dto->procurement->props->tax       = clone $purchasing_dto->procurement->props->tax;
+                    $order_dto->procurement->props->total_tax = clone $purchasing_dto->procurement->props->total_tax;
+                } catch (\Throwable $th) {
+                    dd($purchasing_dto->procurement);
+                    //throw $th;
+                }
                 $order_dto->props->props['prop_purchasing'] = [
                     'id'   => $purchasing->getKey(),
                     'name' => $purchasing->name
