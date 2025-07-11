@@ -19,6 +19,7 @@ class ViewProcurement extends ApiResource
             'author'            => $this->prop_author,
             'warehouse'         => $this->prop_warehouse,
             'reported_at'       => $this->reported_at,
+            'approved_at'       => $this->approved_at,
             'status'            => $this->status,
             'before_tax'        => $this->total_cogs ?? 0 - $this->total_tax->total ?? 0,
             'total_cogs'        => $this->total_cogs,

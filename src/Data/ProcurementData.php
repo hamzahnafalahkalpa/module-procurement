@@ -55,6 +55,10 @@ class ProcurementData extends Data implements DataProcurementData{
     #[MapInputName('reported_at')] 
     public ?string $reported_at = null;
 
+    #[MapName('approved_at')] 
+    #[MapInputName('approved_at')] 
+    public ?string $approved_at = null;
+
     #[MapName('status')] 
     #[MapInputName('status')] 
     public ?string $status = null;

@@ -62,8 +62,11 @@ class ReceiveOrderData extends Data implements DataReceiveOrderData
 
         $procurement = &$attributes['procurement'];
         $procurement['reporting'] ??= false;
-        if ($procurement['reporting']) $procurement['reported_at'] = now();
-        
+        if ($procurement['reporting']) {
+            $procurement['reported_at'] ??= now();
+            $procurement['is_reported_at'] = true;
+        }
+
         $procurement['name'] ??= $attributes['name'];
         if (!isset($procurement)) $procurement = ['id'=>null];
 

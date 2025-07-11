@@ -40,6 +40,7 @@ return new class extends Migration
                       ->cascadeOnUpdate()->restrictOnDelete();
                 $table->unsignedBigInteger('total_cogs')->default(0)->nullable(false);
                 $table->timestamp('reported_at')->nullable();
+                $table->timestamp('approved_at')->nullable();
                 $table->json('props')->nullable();
                 $table->timestamps();
                 $table->softDeletes();

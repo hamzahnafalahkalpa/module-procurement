@@ -24,21 +24,26 @@ class Procurement extends BaseModel
         'id', 'name', 'reference_type', 'reference_id', 
         'author_type', 'author_id', 'purchase_label_id',
         'warehouse_type', 'warehouse_id', 'total_cogs',
-        'reported_at', 'status', 'props'
+        'reported_at', 'approved_at', 'status', 'props'
     ];
 
     protected $casts = [
         'reported_at'    => 'date',
+        'approved_at' => 'date',
+        'is_approved' => 'boolean',
+        'is_reported' => 'boolean',
         'author_name'    => 'string',
         'warehouse_name' => 'string',
-        'purchase_label_id' => 'string'
+        'purchase_label_id' => 'string',
     ];
 
     public function getPropsQuery(): array
     {
         return [
             'author_name'    => 'props->prop_author->name',
-            'warehouse_name' => 'props->prop_warehouse->name'
+            'warehouse_name' => 'props->prop_warehouse->name',
+            'is_reported' => 'props->is_reported',
+            'is_approved' => 'props->is_approved'
         ];
     }
 
