@@ -14,12 +14,13 @@ class ViewPurchaseOrder extends ApiResource
    */
   public function toArray(\Illuminate\Http\Request $request): array
   {
+    $supplier_id = $this->supplier_id ?? $this->sub_contractor_id;
     $arr = [
       'id'                  => $this->id,
       'tax'                 => $this->tax,
       'purchase_order_code' => $this->purchase_order_code,
-      'supplier_id'         => intval($this->supplier_id),
-      'supplier'            => $this->prop_supplier,
+      'supplier_id'         => isset($supplier_id) ? $supplier_id : null,
+      'supplier'            => $this->supplier_type == 'SubContractor' ? $this->prop_sub_contractor : $this->prop_supplier,
       'funding_id'          => $this->funding_id,
       'funding'             => $this->prop_funding,
       'received_address'    => $this->received_address,

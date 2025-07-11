@@ -20,18 +20,12 @@ class WorkOrderData extends DataPurchaseOrderData implements DataWorkOrderData
         parent::after($data);
         $props = &$data->props->props;
 
-        $props['prop_sub_contractor'] = [
-            'id'   => null,
-            'flag' => null,
-            'name' => null
-        ];
-
-        if (isset($data->supplier_id) && $data->supplier_type == 'SubContractor' && !isset($props['prop_sub_contractor']['name'])){
-            $sub_contractor = self::new()->SubContractorModel()->findOrFail($data->supplier_id);
-            $props['prop_sub_contractor']['id']   = $sub_contractor->name;
-            $props['prop_sub_contractor']['flag'] = 'SubContractor';
-            $props['prop_sub_contractor']['name'] = $sub_contractor->name;
+        $sub_contractor = self::new()->SubContractorModel();
+        if (isset($data->supplier_id) && $data->supplier_type == 'SubContractor'){
+            $sub_contractor = $sub_contractor->findOrFail($data->supplier_id);
+            $props['prop_supplier'] = $sub_contractor->toViewApi()->resolve();
         }
+        $props['prop_sub_contractor'] = $sub_contractor->toViewApi()->resolve();
         return $data;
     }
 }

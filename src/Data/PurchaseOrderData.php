@@ -47,6 +47,12 @@ class PurchaseOrderData extends Data implements DataPurchaseOrderData
     #[MapName('props')]
     public ?PurchaseOrderPropsData $props = null;
 
+    public static function before(array &$attributes){
+        $procurement = &$attributes['procurement'];
+        $procurement['reporting'] ??= false;
+        if ($procurement['reporting']) $procurement['reported_at'] = now();
+    }
+
     public static function after(mixed $data): mixed{
         $new = static::new();
         $props = &$data->props->props;

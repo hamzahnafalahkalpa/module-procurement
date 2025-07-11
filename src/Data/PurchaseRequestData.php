@@ -46,9 +46,15 @@ class PurchaseRequestData extends Data implements DataPurchaseRequestData
     #[MapName('props')]
     public ?array $props = null;
 
+    public static function before(array &$attributes){
+        $procurement = &$attributes['procurement'];
+        $procurement['reporting'] ??= false;
+        if ($procurement['reporting']) $procurement['reported_at'] = now();
+    }
+
     public static function after(PurchaseRequestData $data): PurchaseRequestData{
         $new = static::new();
-
+        
         $data->props['prop_approver'] = [
             'id'   => $data->approver_id ?? null,
             'name' => null

@@ -41,6 +41,9 @@ class PurchasingData extends Data implements DataPurchasingData
     public ?PurchasingPropsData $props = null;
 
     public static function before(array &$attributes){
-        $attributes['procurement']['name'] = $attributes['name'];
+        $procurement = &$attributes['procurement'];
+        $procurement['reporting'] ??= false;
+        if ($procurement['reporting']) $procurement['reported_at'] = now();
+        $procurement['name'] = $attributes['name'];
     }
 }
