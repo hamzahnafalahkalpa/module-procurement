@@ -51,6 +51,7 @@ class PurchaseOrderData extends Data implements DataPurchaseOrderData
         $new = static::new();
         $props = &$data->props->props;
 
+        $data->supplier_type ??= 'Supplier';
         $supplier = $new->{$data->supplier_type.'Model'}();
         if (isset($data->supplier_id)) $supplier = $supplier->findOrFail($data->supplier_id);
         $props['prop_supplier'] = $supplier->toViewApi()->resolve();
