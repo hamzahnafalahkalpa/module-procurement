@@ -8,17 +8,7 @@ use Hanafalah\ModuleProcurement\Resources\Supplier\ViewSupplier;
 
 class Supplier extends Organization
 {
-    protected $table = 'organizations';
-
-    protected static function booted(): void{
-        parent::booted();
-        static::addGlobalScope('flag',function($query){
-            $query->flagIn('Supplier');
-        });
-        static::creating(function ($query) {
-            $query->flag = 'Supplier';
-        });
-    }
+    protected $table = 'unicodes';
 
     public function getViewResource(){
         return ViewSupplier::class;
