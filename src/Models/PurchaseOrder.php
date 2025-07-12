@@ -35,8 +35,17 @@ class PurchaseOrder extends BaseModel
         'funding_name'   => 'string',
         'supplier_id'    => 'int',
         'supplier_name'  => 'string',
-        'purchasing_id'  => 'string'
+        'purchasing_id'  => 'string',
+        'is_approved' => 'boolean',
+        'is_reported' => 'boolean',
     ];
+
+    public function getPropsQuery(): array{
+        return [
+            'is_reported' => 'props->prop_procurement->is_reported',
+            'is_approved' => 'props->prop_procurement->is_approved'
+        ];
+    }
 
     protected static function booted(): void{
         parent::booted();

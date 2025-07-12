@@ -28,8 +28,17 @@ class ReceiveOrder extends BaseModel
 
     protected $casts = [
         'name' => 'string',
-        'received_at' => 'immutable_date'
+        'received_at' => 'immutable_date',
+        'is_approved' => 'boolean',
+        'is_reported' => 'boolean',
     ];
+
+    public function getPropsQuery(): array{
+        return [
+            'is_reported' => 'props->prop_procurement->is_reported',
+            'is_approved' => 'props->prop_procurement->is_approved'
+        ];
+    }
 
     protected static function booted(): void{
         parent::booted();

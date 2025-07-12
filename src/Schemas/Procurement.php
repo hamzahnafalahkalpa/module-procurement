@@ -45,6 +45,12 @@ class Procurement extends PackageManagement implements ContractsProcurement
         }
         $procurement->total_cogs = $procurement_dto->total_cogs + $procurement_dto->props->total_tax?->total ?? 0;
         $this->fillingProps($procurement,$procurement_dto->props);
+        if (isset($procurement_dto->reported_at)){
+            $procurement->reported_at = $procurement_dto->reported_at;
+        }
+        if (isset($procurement_dto->approved_at)){
+            $procurement->approved_at = $procurement_dto->approved_at;
+        }
         $procurement->save();
         return static::$procurement_model = $procurement;
     }

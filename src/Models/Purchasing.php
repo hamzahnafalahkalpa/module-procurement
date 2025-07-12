@@ -26,9 +26,18 @@ class Purchasing extends BaseModel
     ];
 
     protected $casts = [
-        'name' => 'string'
+        'name' => 'string',
+        'is_approved' => 'boolean',
+        'is_reported' => 'boolean',
     ];
 
+    public function getPropsQuery(): array{
+        return [
+            'is_reported' => 'props->prop_procurement->is_reported',
+            'is_approved' => 'props->prop_procurement->is_approved'
+        ];
+    }
+    
     protected static function booted(): void{
         parent::booted();
         static::creating(function ($query) {

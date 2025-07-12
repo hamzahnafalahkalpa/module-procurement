@@ -48,8 +48,8 @@ class PurchaseRequestData extends Data implements DataPurchaseRequestData
 
     public static function before(array &$attributes){
         $procurement = &$attributes['procurement'];
-        $procurement['reporting'] ??= false;
-        if ($procurement['reporting']) {
+        $attributes['reporting'] ??= false;
+        if ($attributes['reporting']) {
             $procurement['reported_at'] ??= now();
             $procurement['is_reported'] = true;
         }

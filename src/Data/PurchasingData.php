@@ -42,13 +42,14 @@ class PurchasingData extends Data implements DataPurchasingData
 
     public static function before(array &$attributes){
         $procurement = &$attributes['procurement'];
-        $procurement['reporting'] ??= false;
-        $procurement['approving'] ??= false;
-        if ($procurement['approving']) {
+        $attributes['approving'] ??= false;
+        if ($attributes['approving']) {
             $procurement['approved_at'] ??= now();
             $procurement['is_approved'] = true;
+            $attributes['reporting'] = true;
         }
-        if ($procurement['reporting']) {
+        $attributes['reporting'] ??= false;
+        if ($attributes['reporting']) {
             $procurement['reported_at'] ??= now();
             $procurement['is_reported'] = true;
         }

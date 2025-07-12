@@ -61,10 +61,10 @@ class ReceiveOrderData extends Data implements DataReceiveOrderData
         $new = self::new();
 
         $procurement = &$attributes['procurement'];
-        $procurement['reporting'] ??= false;
-        if ($procurement['reporting']) {
+        $attributes['reporting'] ??= false;
+        if ($attributes['reporting']) {
             $procurement['reported_at'] ??= now();
-            $procurement['is_reported_at'] = true;
+            $procurement['is_reported'] = true;
         }
 
         $procurement['name'] ??= $attributes['name'];

@@ -104,7 +104,6 @@ class ProcurementData extends Data implements DataProcurementData{
         $purchase_label = $new->PurchaseLabelModel();
         if (isset($data->purchase_label_id)) $purchase_label = $purchase_label->findOrFail($data->purchase_label_id);
         $props['prop_purchase_label'] = $purchase_label->toViewApi()->resolve();
-
         return $data;
     }
 }

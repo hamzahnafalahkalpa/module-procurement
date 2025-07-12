@@ -27,14 +27,17 @@ class PurchaseRequest extends BaseModel
     protected $casts = [
         'name' => 'string',
         'approver_name' => 'string',
-        'purchase_label_id' => 'string'
+        'purchase_label_id' => 'string',
+        'is_approved' => 'boolean',
+        'is_reported' => 'boolean',
     ];
 
-    public function getPropsQuery(): array
-    {
+    public function getPropsQuery(): array{
         return [
             'approver_name' => 'props->prop_approver->name',
-            'purchase_label_id' => 'props->prop_procurement->purchase_label_id'
+            'purchase_label_id' => 'props->prop_procurement->purchase_label_id',
+            'is_reported' => 'props->prop_procurement->is_reported',
+            'is_approved' => 'props->prop_procurement->is_approved'
         ];
     }
 

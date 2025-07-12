@@ -16,6 +16,22 @@ class WorkOrderData extends DataPurchaseOrderData implements DataWorkOrderData
     #[DataCollectionOf(PurchaseOrderData::class)]
     public ?array $purchase_orders = [];
 
+    public static function before(array &$attributes){
+        $procurement = &$attributes['procurement'];
+        $attributes['approving'] ??= false;
+        if ($attributes['approving']) {
+            $procurement['approved_at'] ??= now();
+            $procurement['is_approved'] = true;
+            $attributes['reporting'] = true;
+        }
+        $attributes['reporting'] ??= false;
+        if ($attributes['reporting']) {
+            $procurement['reported_at'] ??= now();
+            $procurement['is_reported'] = true;
+        }
+        $procurement['name'] = $attributes['name'];
+    }
+
     public static function after(mixed $data): mixed{
         parent::after($data);
         $props = &$data->props->props;
