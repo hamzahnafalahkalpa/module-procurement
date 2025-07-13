@@ -41,7 +41,7 @@ class Purchasing extends BaseModel
     protected static function booted(): void{
         parent::booted();
         static::creating(function ($query) {
-            $query->purchasing_code ??= static::hasEncoding('PURCHASING_CODE');
+            $query->purchasing_code ??= static::hasEncoding('PURCHASING');
         });
     }
 
