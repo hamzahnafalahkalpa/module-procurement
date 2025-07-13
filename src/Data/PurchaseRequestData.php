@@ -41,7 +41,6 @@ class PurchaseRequestData extends Data implements DataPurchaseRequestData
     #[DateFormat('Y-m-d')]
     public ?string $estimate_used_at = null;
 
-
     #[MapInputName('props')]
     #[MapName('props')]
     public ?array $props = null;
