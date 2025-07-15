@@ -17,6 +17,7 @@ class ViewPurchaseOrder extends ApiResource
     $supplier_id = $this->supplier_id ?? $this->sub_contractor_id;
     $arr = [
       'id'                  => $this->id,
+      'name'                => $this->name,
       'tax'                 => $this->tax,
       'purchase_order_code' => $this->purchase_order_code,
       'supplier_id'         => isset($supplier_id) ? $supplier_id : null,
