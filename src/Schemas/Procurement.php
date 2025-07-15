@@ -95,8 +95,10 @@ class Procurement extends PackageManagement implements ContractsProcurement
                 $card_stock_model = $this->schemaContract('card_stock')->prepareStoreCardStock($card_stock_dto);
                 // if ($is_calculate_total_cogs) $procurement_dto->total_cogs += $card_stock_model->total_cogs;
                 $procurement_dto->total_cogs += $card_stock_model->total_cogs;
-                $procurement_dto->props->total_tax->ppn   += $card_stock_model->total_tax;
-                $procurement_dto->props->total_tax->total += $card_stock_model->total_tax;
+                if (isset($procurement_dto->props->total_tax)){
+                    $procurement_dto->props->total_tax->ppn   += $card_stock_model->total_tax;
+                    $procurement_dto->props->total_tax->total += $card_stock_model->total_tax;
+                }
                 $keep[] = $card_stock_model->getKey();
             }
             $this->CardStockModel()->where('transaction_id', $transaction->getKey())->whereNotIn('id', $keep)->delete();
