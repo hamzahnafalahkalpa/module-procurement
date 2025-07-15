@@ -32,17 +32,15 @@ class Procurement extends PackageManagement implements ContractsProcurement
 
         $procurement_dto->total_cogs   ??= 0;
         $procurement->load("transaction");
-        $this->prepareStoreCardStock($procurement_dto, $procurement);
-        $this->prepareStoreProcurementService($procurement_dto, $procurement);
-        $this->prepareStoreProcurementList($procurement_dto, $procurement);
-
         if (isset($procurement_dto->props->total_tax)){
             $proc_props = &$procurement_dto->props;
             $proc_props->total_tax->total ??= 0;
             $proc_props->total_tax->ppn   ??= 0;
-            $proc_props->total_tax->ppn    += $procurement_dto->total_cogs * ($procurement_dto->props->tax->ppn / 100);
-            $proc_props->total_tax->total  += $proc_props->total_tax->ppn;
         }
+        $this->prepareStoreCardStock($procurement_dto, $procurement);
+        $this->prepareStoreProcurementService($procurement_dto, $procurement);
+        $this->prepareStoreProcurementList($procurement_dto, $procurement);
+
         $procurement->total_cogs = $procurement_dto->total_cogs + $procurement_dto->props->total_tax?->total ?? 0;
         $this->fillingProps($procurement,$procurement_dto->props);
         if (isset($procurement_dto->reported_at)){
@@ -72,9 +70,9 @@ class Procurement extends PackageManagement implements ContractsProcurement
         }
     }
 
-    protected function prepareStoreCardStock(ProcurementData $procurement_dto, Model $procurement): void{
+    protected function prepareStoreCardStock(ProcurementData &$procurement_dto, Model $procurement): void{
         $transaction = $procurement->transaction;
-        $is_calculate_total_cogs = !isset($procurement_dto->total_cogs);
+        // $is_calculate_total_cogs = !isset($procurement_dto->total_cogs);
         if (isset($procurement_dto->card_stocks) && count($procurement_dto->card_stocks) > 0) {
             $transaction_id = $transaction->getKey();
             $keep           = [];
@@ -93,8 +91,14 @@ class Procurement extends PackageManagement implements ContractsProcurement
                 $props = &$card_stock_dto->props->props;
                 $props['is_procurement'] = true;
                 $props['prop_reference'] = $procurement->toViewApi()->resolve();
+                $card_stock_dto->props->props['tax'] = $procurement_dto->props->tax;
                 $card_stock_model = $this->schemaContract('card_stock')->prepareStoreCardStock($card_stock_dto);
-                if ($is_calculate_total_cogs) $procurement_dto->total_cogs += $card_stock_model->total_cogs;
+                // if ($is_calculate_total_cogs) $procurement_dto->total_cogs += $card_stock_model->total_cogs;
+                $procurement_dto->total_cogs += $card_stock_model->total_cogs;
+                if (isset($procurement_dto->props->total_tax)){
+                    $procurement_dto->props->total_tax->ppn   += $card_stock_model->total_tax;
+                    $procurement_dto->props->total_tax->total += $card_stock_model->total_tax;
+                }
                 $keep[] = $card_stock_model->getKey();
             }
             $this->CardStockModel()->where('transaction_id', $transaction->getKey())->whereNotIn('id', $keep)->delete();

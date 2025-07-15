@@ -13,6 +13,10 @@ class ViewProcurement extends ApiResource
      */
     public function toArray(\Illuminate\Http\Request $request): array
     {
+        $before_tax = $this->total_cogs ?? 0;
+        if (isset($this->total_tax) && isset($this->total_tax['total'])){
+            $before_tax -= $this->total_tax['total'];
+        }
         $arr = [
             'id'                => $this->id,
             'procurement_code'  => $this->procurement_code,
@@ -23,7 +27,7 @@ class ViewProcurement extends ApiResource
             'approved_at'       => $this->approved_at,
             'is_approved'       => $this->is_approved ?? false,
             'status'            => $this->status,
-            'before_tax'        => $this->total_cogs ?? 0 - $this->total_tax->total ?? 0,
+            'before_tax'        => $before_tax,
             'total_cogs'        => $this->total_cogs,
             'total_tax'         => $this->total_tax,
             'transaction'       => $this->prop_transaction,
