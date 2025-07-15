@@ -19,6 +19,10 @@ class PurchaseOrderData extends Data implements DataPurchaseOrderData
     #[MapName('parent_id')]
     public mixed $parent_id = null;
 
+    #[MapInputName('name')]
+    #[MapName('name')]
+    public ?string $name = null;
+
     #[MapInputName('purchasing_id')]
     #[MapName('purchasing_id')]
     public mixed $purchasing_id = null;
