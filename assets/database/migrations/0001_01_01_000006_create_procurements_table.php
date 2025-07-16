@@ -35,6 +35,8 @@ return new class extends Migration
                 $table->string('author_id', 36)->nullable();
                 $table->string('warehouse_type', 50)->nullable();
                 $table->string('warehouse_id', 36)->nullable();
+                $table->string('sender_type', 50)->nullable();
+                $table->string('sender_id', 36)->nullable();
                 $table->string('status', 50)->nullable(false);
                 $table->foreignIdFor($purchase_label::class)->nullable()->index()->constrained()
                       ->cascadeOnUpdate()->restrictOnDelete();
@@ -46,6 +48,7 @@ return new class extends Migration
                 $table->softDeletes();
 
                 $table->index(['warehouse_type', 'warehouse_id'], 'fk_prc_warehouse');
+                $table->index(['sender_type', 'sender_id'], 'fk_prc_sender');
                 $table->index(['author_type', 'author_id'], 'fk_prc_author');
                 $table->index(['reference_type', 'reference_id'], 'fk_prc_reference');
             });

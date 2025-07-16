@@ -22,6 +22,7 @@ class ViewProcurement extends ApiResource
             'procurement_code'  => $this->procurement_code,
             'author'            => $this->prop_author,
             'warehouse'         => $this->prop_warehouse,
+            'sender'            => $this->prop_sender,
             'reported_at'       => $this->reported_at,
             'is_reported'       => $this->is_reported ?? false,
             'approved_at'       => $this->approved_at,

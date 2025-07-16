@@ -23,7 +23,8 @@ class Procurement extends BaseModel
     protected $list = [
         'id', 'name', 'reference_type', 'reference_id', 
         'author_type', 'author_id', 'purchase_label_id',
-        'warehouse_type', 'warehouse_id', 'total_cogs',
+        'warehouse_type', 'warehouse_id', 
+        'sender_type', 'sender_id', 'total_cogs',
         'reported_at', 'approved_at', 'status', 'props'
     ];
 
