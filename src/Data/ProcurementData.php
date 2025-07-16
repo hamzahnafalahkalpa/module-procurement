@@ -51,6 +51,14 @@ class ProcurementData extends Data implements DataProcurementData{
     #[MapInputName('warehouse_id')] 
     public mixed $warehouse_id = null;
 
+    #[MapName('sender_type')] 
+    #[MapInputName('sender_type')] 
+    public ?string $sender_type = null;
+
+    #[MapName('sender_id')] 
+    #[MapInputName('sender_id')] 
+    public mixed $sender_id = null;
+
     #[MapName('reported_at')] 
     #[MapInputName('reported_at')] 
     public ?string $reported_at = null;
@@ -92,7 +100,6 @@ class ProcurementData extends Data implements DataProcurementData{
         }
 
         $data->warehouse_type ??= config('module-procurement.warehouse');
-
         if (isset($data->warehouse_type)){
             $warehouse = $new->{$data->warehouse_type.'Model'}();
             if (isset($data->warehouse_id)) $warehouse = $warehouse->findOrFail($data->warehouse_id);
