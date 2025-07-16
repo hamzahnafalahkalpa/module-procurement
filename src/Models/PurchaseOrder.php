@@ -33,7 +33,7 @@ class PurchaseOrder extends BaseModel
     protected $casts = [
         'name'           => 'string',
         'funding_name'   => 'string',
-        'supplier_id'    => 'int',
+        'supplier_id'    => 'string',
         'supplier_name'  => 'string',
         'purchasing_id'  => 'string',
         'is_approved' => 'boolean',

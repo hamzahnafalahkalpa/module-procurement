@@ -19,11 +19,11 @@
     }
   },
   "require": {
-    "hanafalah/module-service" : "1.x-dev as 1.0",
-    "hanafalah/module-item": "1.x-dev as 1.0",
-    "hanafalah/laravel-support": "1.x-dev as 1.0",
-    "hanafalah/module-transaction": "1.x-dev as 1.0",
-    "hanafalah/module-funding": "1.x-dev as 1.0",
-    "hanafalah/module-payment": "1.x-dev as 1.0"
+    "hanafalah/module-service" : "dev-main",
+    "hanafalah/module-item": "dev-main",
+    "hanafalah/laravel-support": "dev-main",
+    "hanafalah/module-transaction": "dev-main",
+    "hanafalah/module-funding": "dev-main",
+    "hanafalah/module-payment": "dev-main"
   }
 }

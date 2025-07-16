@@ -43,6 +43,9 @@ class Purchasing extends BaseModel
         static::creating(function ($query) {
             $query->purchasing_code ??= static::hasEncoding('PURCHASING');
         });
+        static::deleted(function ($query) {
+            $query->purchaseOrders()->delete();
+        });
     }
 
     public function viewUsingRelation(): array{

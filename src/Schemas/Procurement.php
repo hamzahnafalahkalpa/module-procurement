@@ -103,7 +103,12 @@ class Procurement extends PackageManagement implements ContractsProcurement
             }
             $this->CardStockModel()->where('transaction_id', $transaction->getKey())->whereNotIn('id', $keep)->delete();
         } else {
-            $this->CardStockModel()->where('transaction_id', $transaction->getKey())->delete();
+            try {
+                $this->CardStockModel()->where('transaction_id', $transaction->getKey())->delete();
+            } catch (\Throwable $th) {
+                dd($procurement);
+                //throw $th;
+            }
         }
     }
 
