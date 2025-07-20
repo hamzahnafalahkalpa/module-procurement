@@ -14,8 +14,8 @@ use Hanafalah\ModuleProcurement\Enums\Procurement\Status;
 class Procurement extends PackageManagement implements ContractsProcurement
 {
     protected string $__entity = 'Procurement';
-    public static $procurement_model;
-    public static $procurement_item_model;
+    public $procurement_model;
+    public $procurement_item_model;
     protected mixed $__order_by_created_at = 'desc'; //asc, desc, false
 
     public function prepareStoreProcurement(ProcurementData $procurement_dto): Model{
@@ -50,7 +50,7 @@ class Procurement extends PackageManagement implements ContractsProcurement
             $procurement->approved_at = $procurement_dto->approved_at;
         }
         $procurement->save();
-        return static::$procurement_model = $procurement;
+        return $this->procurement_model = $procurement;
     }
 
     protected function prepareStoreProcurementService(ProcurementData $procurement_dto, Model $procurement): void{
@@ -135,7 +135,7 @@ class Procurement extends PackageManagement implements ContractsProcurement
         if (!isset($attributes['id'])) throw new \Exception('No id provided', 422);
 
         $procurement = $this->{$this->__entity . 'Model'}()->find($attributes['id']);
-        return static::$procurement_model = $this->prepareMainReportProcurement($procurement);
+        return $this->procurement_model = $this->prepareMainReportProcurement($procurement);
     }
 
     public function reportProcurement(): array{

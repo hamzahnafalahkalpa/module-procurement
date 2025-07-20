@@ -12,7 +12,7 @@ use Hanafalah\ModuleProcurement\Contracts\Data\PurchaseRequestData;
 class PurchaseRequest extends BaseModuleProcurement implements ContractsPurchaseRequest
 {
     protected string $__entity = 'PurchaseRequest';
-    public static $purchase_request_model;
+    public $purchase_request_model;
 
     protected array $__cache = [
         'index' => [
@@ -36,6 +36,6 @@ class PurchaseRequest extends BaseModuleProcurement implements ContractsPurchase
 
         $this->fillingProps($purchase_request,$purchase_request_dto->props);
         $purchase_request->save();
-        return static::$purchase_request_model = $purchase_request;
+        return $this->purchase_request_model = $purchase_request;
     }
 }

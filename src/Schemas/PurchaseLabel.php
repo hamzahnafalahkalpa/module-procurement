@@ -8,7 +8,7 @@ use Hanafalah\ModuleProcurement\Contracts\Schemas\PurchaseLabel as ContractsPurc
 class PurchaseLabel extends ItemStuff implements ContractsPurchaseLabel
 {
     protected string $__entity = 'PurchaseLabel';
-    public static $purchase_label_model;
+    public $purchase_label_model;
     //protected mixed $__order_by_created_at = false; //asc, desc, false
 
     protected array $__cache = [

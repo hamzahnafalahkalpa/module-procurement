@@ -13,7 +13,7 @@ use Hanafalah\ModuleProcurement\Contracts\Data\PurchasingUpdateData;
 class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
 {
     protected string $__entity = 'Purchasing';
-    public static $purchasing_model;
+    public $purchasing_model;
     protected mixed $__order_by_created_at = 'desc'; //asc, desc, false
 
     protected array $__cache = [
@@ -63,7 +63,7 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
         $this->fillingProps($purchasing->procurement,$purchasing_dto->procurement->props);
         $purchasing->procurement->save();
         $purchasing->save();
-        return static::$purchasing_model = $purchasing;
+        return $this->purchasing_model = $purchasing;
     }
 
     protected function updateUsingPurchaseRequests(PurchasingData &$purchasing_dto, $requests, $procurement): self{
@@ -116,6 +116,6 @@ class Purchasing extends BaseModuleProcurement implements ContractsPurchasing
         $procurement->save();
         $this->fillingProps($model,$purchasing_dto->props);
         $model->save();
-        return static::$purchasing_model = $model;
+        return $this->purchasing_model = $model;
     }
 }

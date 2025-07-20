@@ -10,7 +10,7 @@ use Hanafalah\ModuleProcurement\Contracts\Data\SupplierData;
 class Supplier extends Organization implements ContractsSupplier
 {
     protected string $__entity = 'Supplier';
-    public static $supplier_model;
+    public $supplier_model;
     protected mixed $__order_by_created_at = false; //asc, desc, false
 
     protected array $__cache = [
@@ -23,6 +23,6 @@ class Supplier extends Organization implements ContractsSupplier
 
     public function prepareStoreSupplier(SupplierData $supplier_dto): Model{
         $supplier = $this->prepareStoreOrganization($supplier_dto);
-        return static::$supplier_model = $supplier;
+        return $this->supplier_model = $supplier;
     }
 }

@@ -8,7 +8,7 @@ use Hanafalah\ModuleProcurement\Contracts\Schemas\ReceiveUnit as ContractsReceiv
 class ReceiveUnit extends ItemStuff implements ContractsReceiveUnit
 {
     protected string $__entity = 'ReceiveUnit';
-    public static $receive_unit_model;
+    public $receive_unit_model;
     //protected mixed $__order_by_created_at = false; //asc, desc, false
 
     protected array $__cache = [

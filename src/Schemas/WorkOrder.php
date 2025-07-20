@@ -10,7 +10,7 @@ use Hanafalah\ModuleProcurement\Contracts\Data\WorkOrderUpdateData;
 class WorkOrder extends PurchaseOrder implements ContractsWorkOrder
 {
     protected string $__entity = 'WorkOrder';
-    public static $work_order_model;
+    public $work_order_model;
 
     protected array $__cache = [
         'index' => [
@@ -54,7 +54,7 @@ class WorkOrder extends PurchaseOrder implements ContractsWorkOrder
         $this->fillingProps($work_order->procurement,$work_order_dto->procurement->props);
         $work_order->save();
         $work_order->procurement->save();
-        return static::$work_order_model = $work_order;
+        return $this->work_order_model = $work_order;
     }
 
     public function prepareUpdateWorkOrder(WorkOrderUpdateData $work_order_dto): Model{
@@ -75,6 +75,6 @@ class WorkOrder extends PurchaseOrder implements ContractsWorkOrder
         $procurement->save();
         $this->fillingProps($model,$work_order_dto->props);
         $model->save();
-        return static::$work_order_model = $model;
+        return $this->work_order_model = $model;
     }
 }

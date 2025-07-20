@@ -12,7 +12,7 @@ use Hanafalah\ModuleProcurement\Contracts\Data\PurchaseOrderData;
 class PurchaseOrder extends BaseModuleProcurement implements ContractsPurchaseOrder
 {
     protected string $__entity = 'PurchaseOrder';
-    public static $purchase_order_model;
+    public $purchase_order_model;
     protected mixed $__order_by_created_at = 'desc'; //asc, desc, false
 
     protected array $__cache = [
@@ -37,6 +37,6 @@ class PurchaseOrder extends BaseModuleProcurement implements ContractsPurchaseOr
         $this->initializeProcurementDTO($purchase_order,$purchase_order_dto);
         $this->fillingProps($purchase_order,$purchase_order_dto->props);
         $purchase_order->save();
-        return static::$purchase_order_model = $purchase_order;
+        return $this->purchase_order_model = $purchase_order;
     }
 }

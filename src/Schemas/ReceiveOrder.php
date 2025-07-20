@@ -12,7 +12,7 @@ use Hanafalah\ModuleProcurement\Contracts\Data\ReceiveOrderData;
 class ReceiveOrder extends BaseModuleProcurement implements ContractsReceiveOrder
 {
     protected string $__entity = 'ReceiveOrder';
-    public static $receive_order_model;
+    public $receive_order_model;
 
     protected array $__cache = [
         'index' => [
@@ -45,6 +45,6 @@ class ReceiveOrder extends BaseModuleProcurement implements ContractsReceiveOrde
         $receive_order_dto->props->props['received_file'] = $receive_order->setupFile($receive_order_dto->received_file);
         $this->fillingProps($receive_order,$receive_order_dto->props);
         $receive_order->save();
-        return static::$receive_order_model = $receive_order;
+        return $this->receive_order_model = $receive_order;
     }
 }

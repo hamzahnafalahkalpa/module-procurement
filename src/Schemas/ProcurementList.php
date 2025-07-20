@@ -13,7 +13,7 @@ use Hanafalah\ModuleProcurement\Contracts\Data\ProcurementListData;
 class ProcurementList extends BaseModuleProcurement implements ContractsProcurementList
 {
     protected string $__entity = 'ProcurementList';
-    public static $procurement_list_model;
+    public $procurement_list_model;
 
     protected array $__cache = [
         'index' => [
@@ -31,6 +31,6 @@ class ProcurementList extends BaseModuleProcurement implements ContractsProcurem
                     ]);
         $this->fillingProps($procurement_list,$procurement_list_dto->props);
         $procurement_list->save();
-        return static::$procurement_list_model = $procurement_list;
+        return $this->procurement_list_model = $procurement_list;
     }
 }
