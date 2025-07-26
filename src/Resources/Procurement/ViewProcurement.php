@@ -11,7 +11,7 @@ class ViewProcurement extends ApiResource
      *
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray(\Illuminate\Http\Request $request): array
+    public function toArray(\Illuminate\Http\Request $request): array   
     {
         $before_tax = $this->total_cogs ?? 0;
         if (isset($this->total_tax) && isset($this->total_tax['total'])){
@@ -21,6 +21,8 @@ class ViewProcurement extends ApiResource
             'id'                => $this->id,
             'procurement_code'  => $this->procurement_code,
             'author'            => $this->prop_author,
+            'warehouse_type'    => $this->warehouse_type,
+            'warehouse_id'      => $this->warehouse_id,
             'warehouse'         => $this->prop_warehouse,
             'sender'            => $this->prop_sender,
             'reported_at'       => $this->reported_at,
