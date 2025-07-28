@@ -78,7 +78,6 @@ class ReceiveOrderData extends Data implements DataReceiveOrderData
         $attributes['prop_purchasing'] = $purchasing->toViewApi()->resolve();
 
         $procurement['purchase_label_id'] ??= $purchasing->prop_procurement['purchase_label_id'];
-
         if (!isset($procurement['warehouse_id'])){
             $procurement['warehouse_id']   = $purchasing->prop_procurement['warehouse_id'];
             $procurement['warehouse_type'] = $purchasing->prop_procurement['warehouse_type'];

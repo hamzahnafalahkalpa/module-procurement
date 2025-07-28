@@ -43,12 +43,8 @@ class Procurement extends PackageManagement implements ContractsProcurement
 
         $procurement->total_cogs = $procurement_dto->total_cogs + $procurement_dto->props->total_tax?->total ?? 0;
         $this->fillingProps($procurement,$procurement_dto->props);
-        if (isset($procurement_dto->reported_at)){
-            $procurement->reported_at = $procurement_dto->reported_at;
-        }
-        if (isset($procurement_dto->approved_at)){
-            $procurement->approved_at = $procurement_dto->approved_at;
-        }
+        if (isset($procurement_dto->reported_at)) $procurement->reported_at = $procurement_dto->reported_at;
+        if (isset($procurement_dto->approved_at)) $procurement->approved_at = $procurement_dto->approved_at;
         $procurement->save();
         return $this->procurement_model = $procurement;
     }
@@ -83,9 +79,12 @@ class Procurement extends PackageManagement implements ContractsProcurement
                 if (isset($card_stock_dto->stock_movement)){
                     $stock_movement_dto               = &$card_stock_dto->stock_movement;
                     $stock_movement_dto->funding_id ??= $procurement->funding_id ?? null;
+                    if (isset($stock_movement_dto->item_stock)){
+                        $item_stock_dto = &$stock_movement_dto->item_stock;
+                        $item_stock_dto->procurement_id ??= $procurement->getKey();
+                        $item_stock_dto->procurement_type ??= $procurement->getMorphClass();
+                    }
                 }
-                // $card_stock_dto->props->props['warehouse_id']     = $procurement_dto->warehouse_id;
-                // $card_stock_dto->props->props['warehouse_type']   = $procurement_dto->warehouse_type;
                 
                 $card_stock_dto->transaction_id ??= $transaction->getKey();
                 $props = &$card_stock_dto->props->props;
@@ -93,7 +92,6 @@ class Procurement extends PackageManagement implements ContractsProcurement
                 $props['prop_reference'] = $procurement->toViewApi()->resolve();
                 $card_stock_dto->props->props['tax'] = $procurement_dto->props->tax;
                 $card_stock_model = $this->schemaContract('card_stock')->prepareStoreCardStock($card_stock_dto);
-                // if ($is_calculate_total_cogs) $procurement_dto->total_cogs += $card_stock_model->total_cogs;
                 $procurement_dto->total_cogs += $card_stock_model->total_cogs;
                 if (isset($procurement_dto->props->total_tax)){
                     $procurement_dto->props->total_tax->ppn   += $card_stock_model->total_tax;
@@ -103,12 +101,7 @@ class Procurement extends PackageManagement implements ContractsProcurement
             }
             $this->CardStockModel()->where('transaction_id', $transaction->getKey())->whereNotIn('id', $keep)->delete();
         } else {
-            try {
-                $this->CardStockModel()->where('transaction_id', $transaction->getKey())->delete();
-            } catch (\Throwable $th) {
-                dd($procurement);
-                //throw $th;
-            }
+            $this->CardStockModel()->where('transaction_id', $transaction->getKey())->delete();
         }
     }
 

@@ -110,11 +110,11 @@ class ProcurementData extends Data implements DataProcurementData{
         if (isset($data->author_type)){
             $author = $new->{$data->author_type.'Model'}();
             if (isset($data->author_id)) $author = $author->findOrFail($data->author_id);
-            $props['prop_author'] = $author->toViewApi()->resolve();
+            $props['prop_author'] = $author->toViewApi()->only(['id','name']);
         }
         $purchase_label = $new->PurchaseLabelModel();
         if (isset($data->purchase_label_id)) $purchase_label = $purchase_label->findOrFail($data->purchase_label_id);
-        $props['prop_purchase_label'] = $purchase_label->toViewApi()->resolve();
+        $props['prop_purchase_label'] = $purchase_label->toViewApi()->only(['id','name','flag','label']);
         return $data;
     }
 }

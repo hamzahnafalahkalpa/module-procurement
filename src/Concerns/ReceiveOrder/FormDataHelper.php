@@ -3,7 +3,6 @@
 namespace Hanafalah\ModuleProcurement\Concerns\ReceiveOrder;
 
 use Hanafalah\ModuleWarehouse\Enums\MainMovement\Direction;
-use Illuminate\Database\Eloquent\Model;
 
 trait FormDataHelper
 {
@@ -25,21 +24,21 @@ trait FormDataHelper
             $stock_movement['qty']            = $card_stock['receive_qty'];
             $stock_movement['reference_type'] = $procurement['warehouse_type'];
             $stock_movement['reference_id']   = $procurement['warehouse_id'];
-            if (isset($procurement['reported_at'])){
+            // if (isset($procurement['reported_at'])){
                 $stock_movement['item_stock'] = [
                     'id'             => null,
                     'funding_id'     => $purchase_order->funding_id,
                     'supplier_type'  => $purchase_order->supplier_type,
                     'supplier_id'    => $purchase_order->supplier_id,
-                    'procurement_id' => $procurement['id'],
+                    'procurement_id' => $procurement['id'] ?? null,
                     'procurement_type' => 'Procurement',
                     'subject_type'   => 'Item',
                     'subject_id'     => $card_stock_model->item_id,
                     'warehouse_type' => $procurement['warehouse_type'],
                     'warehouse_id'   => $procurement['warehouse_id'],
-                    'stock'          => $card_stock['receive_qty']
+                    'stock'          => $stock_movement['receive_qty']
                 ];
-            }
+            // }
         }
     }
 
