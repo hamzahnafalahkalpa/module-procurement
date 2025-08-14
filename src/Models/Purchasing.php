@@ -72,7 +72,6 @@ class Purchasing extends BaseModel
     public function getShowResource(){
         return ShowPurchasing::class;
     }
-
     
     public function purchaseRequests(){return $this->hasManyModel('PurchaseRequest');}
     public function purchaseOrders(){return $this->hasManyModel('PurchaseOrder');}
