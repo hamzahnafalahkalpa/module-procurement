@@ -16,7 +16,7 @@ class ViewSupplier extends ViewOrganization
         $arr = [
             'id'         => $this->id,
             'name'       => $this->name,
-            'supplier_code'       => $this->supplier_code,
+            'supplier_code' => $this->supplier_code,
             'phone'      => $this->phone,
             'address'    => $this->address,
             'created_at' => $this->created_at,
