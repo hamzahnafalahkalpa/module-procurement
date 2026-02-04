@@ -29,13 +29,13 @@ trait FormDataHelper
                     'id'             => null,
                     'funding_id'     => $purchase_order->funding_id,
                     'supplier_type'  => $purchase_order->supplier_type,
-                    'supplier_id'    => $purchase_order->supplier_id,
+                    'supplier_id'    => (string) $purchase_order->supplier_id,
                     'procurement_id' => $procurement['id'] ?? null,
                     'procurement_type' => 'Procurement',
                     'subject_type'   => 'Item',
-                    'subject_id'     => $card_stock_model->item_id,
+                    'subject_id'     => (string) $card_stock_model->item_id,
                     'warehouse_type' => $procurement['warehouse_type'],
-                    'warehouse_id'   => $procurement['warehouse_id'],
+                    'warehouse_id'   => (string) $procurement['warehouse_id'],
                     'stock'          => $stock_movement['receive_qty']
                 ];
             // }
@@ -83,13 +83,13 @@ trait FormDataHelper
                     'id'             => null,
                     'funding_id'     => $purchase_order->funding_id,
                     'supplier_type'  => $purchase_order->supplier_type,
-                    'supplier_id'    => $purchase_order->supplier_id,
+                    'supplier_id'    => (string) $purchase_order->supplier_id,
                     'procurement_id' => $procurement['id'],
                     'procurement_type' => 'Procurement',
                     'subject_type'   => 'Item',
-                    'subject_id'     => $card_stock_model->item_id,
+                    'subject_id'     => (string) $card_stock_model->item_id,
                     'warehouse_type' => $procurement['warehouse_type'],
-                    'warehouse_id'   => $procurement['warehouse_id'],
+                    'warehouse_id'   => (string) $procurement['warehouse_id'],
                     'stock'          => $card_stock['receive_qty']
                 ];
             }
